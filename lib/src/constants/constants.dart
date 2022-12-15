@@ -1,1 +1,1 @@
-const appName = 'flutter_app';
+const appName = 'ag_keyboard';

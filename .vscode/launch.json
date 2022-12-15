@@ -2,18 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "pattern_m",
+      "name": "ag_keyboard",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "pattern_m (profile mode)",
+      "name": "ag_keyboard (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "pattern_m (release mode)",
+      "name": "ag_keyboard (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
