@@ -68,10 +68,7 @@ class CustomKey extends StatelessWidget {
           child: Center(
             child: onBackspace == null
                 ? _buileButton(digit: dispayText, charList: charList)
-                : const Icon(
-                    // Icons.arrow_back,
-                    Icons.backspace_rounded,
-                    size: 34),
+                : const Icon(Icons.backspace_rounded, size: 34),
           ),
         ),
       ),
@@ -80,23 +77,29 @@ class CustomKey extends StatelessWidget {
 }
 
 class ResultButton extends ConsumerWidget {
-  const ResultButton({super.key, this.buttonColor, this.flex = 1});
+  const ResultButton(
+      {super.key, required this.controller, this.buttonColor, this.flex = 1});
   final Color? buttonColor;
+  final TextEditingController controller;
   final int? flex;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController controller = ref.watch(controllerProvier);
+    // TextEditingController controller = ref.watch(controllerProvier);
 
     return Flexible(
       flex: flex ?? 1,
       child: GestureDetector(
         onTap: () {
+          if (ref.read(shouldRecalculateProvider)) return;
+          if (controller.text.isEmpty) return;
           String res = ref
               .read(resultProvider.notifier)
               .getResult(expression: controller.text);
 
-          controller.text = '${controller.text} = $res';
+          // controller.text = '${controller.text} = $res';
+          controller.text = res;
+          ref.read(displayTextProvider.notifier).state += ' = $res';
           ref.read(shouldRecalculateProvider.notifier).state = true;
         },
         child: Container(
@@ -106,7 +109,7 @@ class ResultButton extends ConsumerWidget {
           ),
           child: const Center(
             child: Text(
-              '=', //TODO:bug: screen needs to be cleared if button pressed again
+              '=',
               style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
           ),

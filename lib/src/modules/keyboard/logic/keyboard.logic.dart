@@ -3,34 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class KeyboardLogic {
-  static void insertText(
-      {required String myText,
-      required WidgetRef ref,
-      required TextEditingController textController}) {
-    // bool recalculate = ref.read(calculationProvider).shouldRecalculate;
+  static void insertText({
+    required String myText,
+    required WidgetRef ref,
+    required TextEditingController ted,
+  }) {
+    // TextEditingController ted = ref.watch(controllerProvier);
+
     bool recalculate = ref.read(shouldRecalculateProvider);
 
     if (recalculate) {
-      textController.clear();
-      // ref.watch(calculationProvider).shouldRecalculate = false;
+      ted.clear();
       ref.read(shouldRecalculateProvider.notifier).state = false;
+      ref.read(displayTextProvider.notifier).state = '';
     }
-    final text = textController.text;
-    final textSelection = textController.selection;
+    final text = ted.text;
+
+    final textSelection = ted.selection;
     final newText = text.replaceRange(
       textSelection.start,
       textSelection.end,
       myText,
     );
+    ref.read(displayTextProvider.notifier).state += newText[newText.length - 1];
     final myTextLength = myText.length;
-    textController.text = newText;
-    textController.selection = textSelection.copyWith(
+    ted.text = newText;
+
+    ted.selection = textSelection.copyWith(
       baseOffset: textSelection.start + myTextLength,
       extentOffset: textSelection.start + myTextLength,
     );
   }
 
-  static void backspace({required TextEditingController textController}) {
+  static void backspace(
+      {required TextEditingController textController, required WidgetRef ref}) {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
@@ -46,11 +52,14 @@ class KeyboardLogic {
         textSelection.end,
         '',
       );
+      ref.read(displayTextProvider.notifier).state = '';
       textController.text = newText;
       textController.selection = textSelection.copyWith(
         baseOffset: textSelection.start,
         extentOffset: textSelection.start,
       );
+      ref.read(displayTextProvider.notifier).state = textController.text;
+
       return;
     }
 
@@ -70,6 +79,8 @@ class KeyboardLogic {
       '',
     );
     textController.text = newText;
+    ref.read(displayTextProvider.notifier).state = newText;
+
     textController.selection = textSelection.copyWith(
       baseOffset: newStart,
       extentOffset: newStart,

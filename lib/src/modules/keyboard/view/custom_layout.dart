@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'custom_key.dart';
 
 class CustomLayout extends StatelessWidget {
-  CustomLayout({
+  const CustomLayout({
     required this.onTextInput,
     required this.textController,
     required this.onBackspace,
@@ -20,7 +20,7 @@ class CustomLayout extends StatelessWidget {
       backButtonColor,
       pointColor,
       resultColor;
-  TextEditingController textController; //TODO: pass it to equal button
+  final TextEditingController textController; //TODO: pass it to equal button
   final ValueSetter<String>? onTextInput;
   final VoidCallback? onBackspace;
 
@@ -151,6 +151,7 @@ class CustomLayout extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ResultButton(
+            controller: textController,
             flex: 2,
             buttonColor: resultColor,
           )

@@ -24,7 +24,8 @@ class ResultProvider extends Notifier<String> {
       ContextModel cm = ContextModel();
       result = '${exp.evaluate(EvaluationType.REAL, cm)}';
     } catch (e) {
-      result = e.toString();
+      // result = e.toString();
+      result = '';
     }
     return result;
   }

@@ -2,24 +2,22 @@ import 'package:ag_keyboard/src/modules/keyboard/logic/keyboard.logic.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'custom_layout.dart';
 
 class AgKeyboard extends ConsumerWidget {
   const AgKeyboard({
     super.key,
+    required this.controller,
     this.backgroundColor,
     this.digitColor = Colors.blue,
     this.operatorColor = Colors.cyan,
-    required this.textController,
     required this.focusNode,
     this.backButtonColor = Colors.red,
     this.pointColor = Colors.grey,
     this.resultColor = Colors.cyan,
     this.displayColor = Colors.grey,
   });
-
-  final TextEditingController textController;
+  final TextEditingController controller;
   final int backspaceIndex = 12;
 
   final Color? backgroundColor,
@@ -33,25 +31,47 @@ class AgKeyboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TextEditingController controller = ref.watch(controllerProvier);
     return Visibility(
       visible: focusNode.hasFocus,
-      child: _buildKeyboard(context),
+      child: _buildKeyboard(context, ref),
     );
   }
 
-  Column _buildKeyboard(BuildContext context) {
+  Column _buildKeyboard(BuildContext context, WidgetRef ref) {
+    // TextEditingController controller = ref.watch(controllerProvier);
+    String displayText = ref.watch(displayTextProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        TextField(
-          style: Theme.of(context).textTheme.headlineMedium,
-          keyboardType: TextInputType.none,
-          controller: textController,
-          autofocus: false,
-          decoration: _displayDecoration(),
-          showCursor: true,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: 70,
+          width: double.infinity,
+          color: Colors.black45,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                displayText,
+                style: const TextStyle(fontSize: 32),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
         ),
+        // TextField(
+        //   style: Theme.of(context).textTheme.headlineMedium,
+        //   keyboardType: TextInputType.none,
+        //   controller: controller,
+        //   autofocus: true,
+        //   decoration: _displayDecoration(),
+        //   enableInteractiveSelection: false,
+        //   showCursor: false,
+        // ),
         Container(
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           height: 350,
@@ -61,22 +81,20 @@ class AgKeyboard extends ConsumerWidget {
               return CustomLayout(
                   onTextInput: (myText) {
                     KeyboardLogic.insertText(
-                        myText: myText,
-                        ref: ref,
-                        textController: textController);
+                        myText: myText, ref: ref, ted: controller);
                   },
                   onBackspace: () {
                     ref.watch(shouldRecalculateProvider)
                         ? null
                         : KeyboardLogic.backspace(
-                            textController: textController);
+                            textController: controller, ref: ref);
                   },
                   digitColor: digitColor,
                   operatorColor: operatorColor,
                   pointColor: pointColor,
                   backButtonColor: backButtonColor,
                   resultColor: resultColor,
-                  textController: textController);
+                  textController: controller);
             },
           ),
         )

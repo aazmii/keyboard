@@ -9,7 +9,7 @@ class KeyboardView extends ConsumerWidget {
   final Color agLight = const Color(0xff37B2F3);
   final Color agDark = const Color(0xff226DC6);
   final bool isKeyboardVisible = false;
-  // final _controller = TextEditingController();
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,20 +28,18 @@ class KeyboardView extends ConsumerWidget {
               children: [
                 TextField(
                   focusNode: _focusNode1,
-                  // controller: _controller,
-
-                  controller: ref.watch(controllerProvier),
+                  // controller: ref.watch(controllerProvier), //works
+                  controller: _controller,
                   keyboardType: TextInputType.none,
+                  showCursor: true,
                   style: Theme.of(context).textTheme.headlineMedium,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), hintText: ''),
                 ),
                 const SizedBox(height: 20),
-                Text(ref.watch(displayTextProvider)),
                 ElevatedButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    // ref.read(displayTextProvider.notifier).state += 'o';
                   },
                   child: const Text('Close keyboard'),
                 ),
@@ -50,8 +48,7 @@ class KeyboardView extends ConsumerWidget {
           ),
           AgKeyboard(
             focusNode: _focusNode1,
-            textController: ref.watch(controllerProvier),
-            // textController: _controller,
+            controller: _controller,
             backgroundColor: agDark,
             digitColor: agLight,
             operatorColor: Colors.black.withOpacity(0.4),
