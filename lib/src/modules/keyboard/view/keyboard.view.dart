@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'custom_keyboard.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../provider/calculation.provider.dart';
+import 'ag.keyboard.dart';
 
-class KeyboardView extends StatelessWidget {
+class KeyboardView extends ConsumerWidget {
   KeyboardView({super.key});
-  final TextEditingController _controller1 = TextEditingController();
-  final TextEditingController _controller2 = TextEditingController();
   final FocusNode _focusNode1 = FocusNode();
-  final FocusNode _focusNode2 = FocusNode();
   final Color agLight = const Color(0xff37B2F3);
   final Color agDark = const Color(0xff226DC6);
   final bool isKeyboardVisible = false;
+  // final _controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    //!removing this line gives error, god knows why
+    bool shouldRecalculate = ref.watch(shouldRecalculateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Keyboard View'),
@@ -26,35 +28,34 @@ class KeyboardView extends StatelessWidget {
               children: [
                 TextField(
                   focusNode: _focusNode1,
-                  controller: _controller1,
+                  // controller: _controller,
+
+                  controller: ref.watch(controllerProvier),
                   keyboardType: TextInputType.none,
                   style: Theme.of(context).textTheme.headlineMedium,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Textfield 1'),
+                      border: OutlineInputBorder(), hintText: ''),
                 ),
-                const SizedBox(height: 10),
-                TextField(
-                  focusNode: _focusNode2,
-                  controller: _controller2,
-                  keyboardType: TextInputType.none,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Textfield 2'),
-                ),
+                const SizedBox(height: 20),
+                Text(ref.watch(displayTextProvider)),
                 ElevatedButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
+                    // ref.read(displayTextProvider.notifier).state += 'o';
                   },
-                  child: const Text('Unfocus Textfields'),
+                  child: const Text('Close keyboard'),
                 ),
               ],
             ),
           ),
-          CustomKeyboard(
+          AgKeyboard(
             focusNode: _focusNode1,
-            textController: _controller1,
+            textController: ref.watch(controllerProvier),
+            // textController: _controller,
             backgroundColor: agDark,
-            buttonColor: agLight,
-            operatorColor: Colors.teal,
+            digitColor: agLight,
+            operatorColor: Colors.black.withOpacity(0.4),
+            resultColor: Colors.black.withOpacity(0.7),
           ),
         ],
       ),

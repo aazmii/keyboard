@@ -1,178 +1,178 @@
-import 'package:flutter/material.dart';
-import 'custom_key.dart';
+// import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
+// import 'package:ag_keyboard/src/modules/keyboard/view/custom_layout.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomKeyboard extends StatefulWidget {
-  CustomKeyboard({
-    super.key,
-    this.backgroundColor,
-    this.buttonColor,
-    this.operatorColor,
-    required this.textController,
-    required this.focusNode,
-  });
-  TextEditingController textController;
-  final Color? backgroundColor, buttonColor, operatorColor;
-  final FocusNode focusNode;
+// class CustomKeyboard extends StatefulWidget {
+//   const CustomKeyboard(
+//       {super.key,
+//       this.backgroundColor,
+//       this.digitColor = Colors.blue,
+//       this.operatorColor = Colors.cyan,
+//       required this.textController,
+//       required this.focusNode,
+//       this.backButtonColor = Colors.red,
+//       this.pointColor = Colors.grey,
+//       this.resultColor = Colors.cyan});
+//   final TextEditingController textController;
 
-  @override
-  State<CustomKeyboard> createState() => _CustomKeyboardState();
-}
+//   final Color? backgroundColor,
+//       digitColor,
+//       operatorColor,
+//       backButtonColor,
+//       pointColor,
+//       resultColor;
+//   final FocusNode focusNode;
 
-class _CustomKeyboardState extends State<CustomKeyboard> {
-  // final Color agLight = const Color(0xff37B2F3);
-  // final Color agDark = const Color(0xff226DC6);
-  bool isKeyboardVisible = false;
-  final int backspaceIndex = 12;
+//   @override
+//   State<CustomKeyboard> createState() => _CustomKeyboardState();
+// }
 
-  void _toggleFocus(BuildContext context) {
-    setState(() => isKeyboardVisible = widget.focusNode.hasFocus);
-  }
+// class _CustomKeyboardState extends State<CustomKeyboard> {
+//   bool isKeyboardVisible = false;
+//   final int backspaceIndex = 12;
+//   void _toggleFocus(BuildContext context) {
+//     setState(() => isKeyboardVisible = widget.focusNode.hasFocus);
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    widget.focusNode.addListener(() {
-      _toggleFocus(context);
-    });
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     widget.focusNode.addListener(() {
+//       _toggleFocus(context);
+//     });
+//   }
 
-  @override
-  void dispose() {
-    widget.focusNode.removeListener(() {
-      _toggleFocus(context);
-    });
-    widget.focusNode.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     widget.focusNode.removeListener(() {
+//       _toggleFocus(context);
+//     });
+//     widget.focusNode.dispose();
+//     super.dispose();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: isKeyboardVisible,
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        height: 350,
-        color: widget.backgroundColor,
-        child: GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: 16,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            mainAxisSpacing: 4,
-            crossAxisSpacing: 4,
-            childAspectRatio: 5 / 4.5,
-          ),
-          itemBuilder: (context, index) {
-            return index != backspaceIndex
-                ? CustomKey(
-                    onTextInput: (myText) {
-                      _insertText(myText);
-                    },
-                    text: keyList[index],
-                    buttonColor: isOperator(index)
-                        ? widget.operatorColor
-                        : widget.buttonColor,
-                  )
-                : CustomKey(
-                    onBackspace: () {
-                      _backspace();
-                    },
-                    text: keyList[index],
-                    buttonColor: Colors.red,
-                  );
-          },
-        ),
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Visibility(
+//       visible: isKeyboardVisible,
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         mainAxisAlignment: MainAxisAlignment.end,
+//         children: [
+//           TextField(
+//             style: Theme.of(context).textTheme.headlineMedium,
+//             keyboardType: TextInputType.none,
+//             controller: widget.textController,
+//             autofocus: false,
+//             decoration: _displayDecoration(),
+//             showCursor: true,
+//           ),
+//           Container(
+//             padding: const EdgeInsets.only(top: 10, bottom: 10),
+//             height: 350,
+//             color: widget.backgroundColor,
+//             // child: getGridLayout(),
 
-  void _insertText(String myText) {
-    final text = widget.textController.text;
-    final textSelection = widget.textController.selection;
-    final newText = text.replaceRange(
-      textSelection.start,
-      textSelection.end,
-      myText,
-    );
-    final myTextLength = myText.length;
-    widget.textController.text = newText;
-    widget.textController.selection = textSelection.copyWith(
-      baseOffset: textSelection.start + myTextLength,
-      extentOffset: textSelection.start + myTextLength,
-    );
-  }
+//             child: Consumer(
+//               builder: (context, ref, child) {
+//                 return CustomLayout(
+//                   onTextInput: (myText) {
+//                     _insertText(myText, ref);
+//                   },
+//                   onBackspace: () {
+//                     ref.watch(calculationProvider).shouldRecalculate
+//                         ? null
+//                         : _backspace();
+//                   },
+//                   digitColor: widget.digitColor,
+//                   operatorColor: widget.operatorColor,
+//                   pointColor: widget.pointColor,
+//                   backButtonColor: widget.backButtonColor,
+//                   resultColor: widget.resultColor,
+//                 );
+//               },
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
 
-  void _backspace() {
-    final text = widget.textController.text;
-    final textSelection = widget.textController.selection;
-    final selectionLength = textSelection.end - textSelection.start;
+//   void _insertText(String myText, WidgetRef ref) {
+//     bool recalculate = ref.read(calculationProvider).shouldRecalculate;
+//     if (recalculate) {
+//       widget.textController.clear();
+//       ref.watch(calculationProvider).shouldRecalculate = false;
+//     }
+//     final text = widget.textController.text;
+//     final textSelection = widget.textController.selection;
+//     final newText = text.replaceRange(
+//       textSelection.start,
+//       textSelection.end,
+//       myText,
+//     );
+//     final myTextLength = myText.length;
+//     widget.textController.text = newText;
+//     widget.textController.selection = textSelection.copyWith(
+//       baseOffset: textSelection.start + myTextLength,
+//       extentOffset: textSelection.start + myTextLength,
+//     );
+//   }
 
-    // There is a selection.
-    if (selectionLength > 0) {
-      final newText = text.replaceRange(
-        textSelection.start,
-        textSelection.end,
-        '',
-      );
-      widget.textController.text = newText;
-      widget.textController.selection = textSelection.copyWith(
-        baseOffset: textSelection.start,
-        extentOffset: textSelection.start,
-      );
-      return;
-    }
+//   void _backspace() {
+//     final text = widget.textController.text;
+//     final textSelection = widget.textController.selection;
+//     final selectionLength = textSelection.end - textSelection.start;
 
-    // The cursor is at the beginning.
-    if (textSelection.start == 0) {
-      return;
-    }
+//     // There is a selection.
+//     if (selectionLength > 0) {
+//       final newText = text.replaceRange(
+//         textSelection.start,
+//         textSelection.end,
+//         '',
+//       );
+//       widget.textController.text = newText;
+//       widget.textController.selection = textSelection.copyWith(
+//         baseOffset: textSelection.start,
+//         extentOffset: textSelection.start,
+//       );
+//       return;
+//     }
 
-    // Delete the previous character
-    final previousCodeUnit = text.codeUnitAt(textSelection.start - 1);
-    final offset = _isUtf16Surrogate(previousCodeUnit) ? 2 : 1;
-    final newStart = textSelection.start - offset;
-    final newEnd = textSelection.start;
-    final newText = text.replaceRange(
-      newStart,
-      newEnd,
-      '',
-    );
-    widget.textController.text = newText;
-    widget.textController.selection = textSelection.copyWith(
-      baseOffset: newStart,
-      extentOffset: newStart,
-    );
-  }
+//     // The cursor is at the beginning.
+//     if (textSelection.start == 0) {
+//       return;
+//     }
 
-  bool _isUtf16Surrogate(int value) {
-    return value & 0xF800 == 0xD800;
-  }
+//     // Delete the previous character
+//     final previousCodeUnit = text.codeUnitAt(textSelection.start - 1);
+//     final offset = _isUtf16Surrogate(previousCodeUnit) ? 2 : 1;
+//     final newStart = textSelection.start - offset;
+//     final newEnd = textSelection.start;
+//     final newText = text.replaceRange(
+//       newStart,
+//       newEnd,
+//       '',
+//     );
+//     widget.textController.text = newText;
+//     widget.textController.selection = textSelection.copyWith(
+//       baseOffset: newStart,
+//       extentOffset: newStart,
+//     );
+//   }
 
-  bool isOperator(int index) {
-    if (index == 3 || index == 7 || index == 11 || index == 15) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+//   bool _isUtf16Surrogate(int value) {
+//     return value & 0xF800 == 0xD800;
+//   }
 
-  //! Order sensetive
-  final List<String> keyList = [
-    '1',
-    '2',
-    '3',
-    '+',
-    '4',
-    '5',
-    '6',
-    '-',
-    '7',
-    '8',
-    '9',
-    '*',
-    '<',
-    '0',
-    '.',
-    '/',
-  ];
-}
+//   InputDecoration _displayDecoration() => InputDecoration(
+//         fillColor: Colors.grey.withOpacity(0.3),
+//         filled: true,
+//         contentPadding: const EdgeInsets.symmetric(
+//           horizontal: 10,
+//           vertical: 12,
+//         ),
+//         border: InputBorder.none,
+//       );
+// }
