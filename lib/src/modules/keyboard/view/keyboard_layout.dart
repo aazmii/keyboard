@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_key.dart';
@@ -52,7 +53,7 @@ class KeyboardLayout extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               CustomKey(
-                dispayText: '0',
+                calcKey: CalcKey.zero,
                 onTextInput: _textInputHandler,
                 buttonColor: digitColor,
               ),
@@ -70,28 +71,25 @@ class KeyboardLayout extends StatelessWidget {
         child: Column(
           children: [
             CustomKey(
+              calcKey: CalcKey.one, //TODO: doesnt make sense, remove it
               onBackspace: _backspaceHandler,
-              dispayText: '<',
               buttonColor: backButtonColor,
             ),
             const SizedBox(height: 10),
             CustomKey(
-              dispayText: '1',
-              charList: const ['_'],
+              calcKey: CalcKey.one,
               onTextInput: _textInputHandler,
               buttonColor: digitColor,
             ),
             const SizedBox(height: 10),
             CustomKey(
-              dispayText: '4',
-              charList: const ['g', 'h', 'i'],
+              calcKey: CalcKey.four,
               onTextInput: _textInputHandler,
               buttonColor: digitColor,
             ),
             const SizedBox(height: 10),
             CustomKey(
-              dispayText: '7',
-              charList: const ['p', 'q', 'r', 's'],
+              calcKey: CalcKey.seven,
               onTextInput: _textInputHandler,
               buttonColor: digitColor,
             ),
@@ -103,28 +101,25 @@ class KeyboardLayout extends StatelessWidget {
         child: Column(
           children: [
             CustomKey(
-              dispayText: '/',
+              calcKey: CalcKey.division,
               onTextInput: _textInputHandler,
               buttonColor: operatorColor,
             ),
             const SizedBox(height: 10),
             CustomKey(
-              dispayText: '2',
-              charList: const ['a', 'b', 'c'],
+              calcKey: CalcKey.two,
               onTextInput: _textInputHandler,
               buttonColor: digitColor,
             ),
             const SizedBox(height: 10),
             CustomKey(
-              dispayText: '5',
-              charList: const ['j', 'k', 'l'],
+              calcKey: CalcKey.five,
               onTextInput: _textInputHandler,
               buttonColor: digitColor,
             ),
             const SizedBox(height: 10),
             CustomKey(
-              dispayText: '8',
-              charList: const ['t', 'u', 'v'],
+              calcKey: CalcKey.eight,
               onTextInput: _textInputHandler,
               buttonColor: digitColor,
             ),
@@ -138,13 +133,13 @@ class KeyboardLayout extends StatelessWidget {
       child: Column(
         children: [
           CustomKey(
-            dispayText: '-',
+            calcKey: CalcKey.substract,
             onTextInput: _textInputHandler,
             buttonColor: operatorColor,
           ),
           const SizedBox(height: 10),
           CustomKey(
-            dispayText: '+',
+            calcKey: CalcKey.add,
             onTextInput: _textInputHandler,
             flex: 2,
             buttonColor: operatorColor,
@@ -166,34 +161,31 @@ class KeyboardLayout extends StatelessWidget {
       child: Column(
         children: [
           CustomKey(
-            dispayText: '*',
+            calcKey: CalcKey.multiply,
             onTextInput: _textInputHandler,
             buttonColor: operatorColor,
           ),
           const SizedBox(height: 10),
           CustomKey(
-            dispayText: '3',
-            charList: const ['d', 'e', 'f'],
+            calcKey: CalcKey.three,
             onTextInput: _textInputHandler,
             buttonColor: digitColor,
           ),
           const SizedBox(height: 10),
           CustomKey(
-            dispayText: '6',
-            charList: const ['m', 'n', 'o'],
+            calcKey: CalcKey.six,
             onTextInput: _textInputHandler,
             buttonColor: digitColor,
           ),
           const SizedBox(height: 10),
           CustomKey(
-            dispayText: '9',
-            charList: const ['w', 'x', 'y', 'z'],
+            calcKey: CalcKey.nine,
             onTextInput: _textInputHandler,
             buttonColor: digitColor,
           ),
           const SizedBox(height: 10),
           CustomKey(
-            dispayText: '.',
+            calcKey: CalcKey.point,
             onTextInput: _textInputHandler,
             buttonColor: pointColor,
           ),
