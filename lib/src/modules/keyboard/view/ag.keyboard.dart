@@ -2,7 +2,7 @@ import 'package:ag_keyboard/src/modules/keyboard/logic/keyboard.logic.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'custom_layout.dart';
+import 'keyboard_layout.dart';
 
 class AgKeyboard extends ConsumerWidget {
   const AgKeyboard({
@@ -67,10 +67,13 @@ class AgKeyboard extends ConsumerWidget {
           color: backgroundColor,
           child: Consumer(
             builder: (context, ref, child) {
-              return CustomLayout(
+              return KeyboardLayout(
                 onTextInput: (myText) {
                   KeyboardLogic.insertText(
-                      myText: myText, ref: ref, ted: controller);
+                    ref: ref,
+                    myText: myText,
+                    ted: controller,
+                  );
                 },
                 onBackspace: () {
                   KeyboardLogic.backspace(textController: controller, ref: ref);

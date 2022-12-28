@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'custom_key.dart';
 
-class CustomLayout extends StatelessWidget {
-  const CustomLayout({
+class KeyboardLayout extends StatelessWidget {
+  const KeyboardLayout({
     required this.onTextInput,
     required this.textController,
     required this.onBackspace,

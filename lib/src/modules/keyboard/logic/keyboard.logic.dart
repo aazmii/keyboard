@@ -8,14 +8,37 @@ class KeyboardLogic {
     required WidgetRef ref,
     required TextEditingController ted,
   }) {
+    String lastOperator = '';
     bool recalculate = ref.read(shouldRecalculateProvider);
+    if (ted.text.isNotEmpty) {
+      lastOperator = ted.text[ted.text.length - 1] == '+' ? '+' : '';
+      lastOperator = ted.text[ted.text.length - 1] == '-' ? '-' : '';
+      lastOperator = ted.text[ted.text.length - 1] == '*' ? '*' : '';
+      lastOperator = ted.text[ted.text.length - 1] == '/' ? '/' : '';
+    }
 
     if (recalculate) {
       ted.clear();
       ref.read(shouldRecalculateProvider.notifier).state = false;
       ref.read(displayTextProvider.notifier).state = '';
     }
+    //do not allow operator to be first character
+    if (ted.text.isEmpty) {
+      if (myText == '+') return;
+      if (myText == '-') return;
+      if (myText == '*') return;
+      if (myText == '/') return;
+    }
+
+    // do not allow consequent operator
+
+    if (lastOperator == myText) return;
+    if (lastOperator == myText) return;
+    if (lastOperator == myText) return;
+    if (lastOperator == myText) return;
+
     final text = ted.text;
+
     final textSelection = ted.selection;
     final newText = text.replaceRange(
       textSelection.start,

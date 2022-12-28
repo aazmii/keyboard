@@ -28,7 +28,6 @@ class KeyboardView extends ConsumerWidget {
               children: [
                 TextField(
                   focusNode: _focusNode1,
-                  // controller: ref.watch(controllerProvier), //works
                   controller: _controller,
                   keyboardType: TextInputType.none,
                   showCursor: true,
