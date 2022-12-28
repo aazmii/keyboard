@@ -85,22 +85,23 @@ class ResultButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TextEditingController controller = ref.watch(controllerProvier);
-
     return Flexible(
       flex: flex ?? 1,
       child: GestureDetector(
         onTap: () {
           if (ref.read(shouldRecalculateProvider)) return;
           if (controller.text.isEmpty) return;
-          String res = ref
-              .read(resultProvider.notifier)
-              .getResult(expression: controller.text);
+          try {
+            String res = ref
+                .read(resultProvider.notifier)
+                .getResult(expression: controller.text);
 
-          // controller.text = '${controller.text} = $res';
-          controller.text = res;
-          ref.read(displayTextProvider.notifier).state += ' = $res';
-          ref.read(shouldRecalculateProvider.notifier).state = true;
+            controller.text = res;
+            ref.read(displayTextProvider.notifier).state += ' = $res';
+            ref.read(shouldRecalculateProvider.notifier).state = true;
+          } catch (e) {
+            //
+          }
         },
         child: Container(
           decoration: BoxDecoration(

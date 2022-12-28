@@ -20,7 +20,7 @@ class CustomLayout extends StatelessWidget {
       backButtonColor,
       pointColor,
       resultColor;
-  final TextEditingController textController; //TODO: pass it to equal button
+  final TextEditingController textController;
   final ValueSetter<String>? onTextInput;
   final VoidCallback? onBackspace;
 

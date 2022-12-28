@@ -14,19 +14,19 @@ final shouldRecalculateProvider =
 final resultProvider =
     NotifierProvider<ResultProvider, String>(ResultProvider.new);
 
-//provides result
 class ResultProvider extends Notifier<String> {
   String result = '';
   String getResult({String expression = ''}) {
-    try {
-      Parser p = Parser();
-      Expression exp = p.parse(expression);
-      ContextModel cm = ContextModel();
-      result = '${exp.evaluate(EvaluationType.REAL, cm)}';
-    } catch (e) {
-      // result = e.toString();
-      result = '';
+    Parser p = Parser();
+    Expression exp = p.parse(expression);
+    ContextModel cm = ContextModel();
+    double value = (exp.evaluate(EvaluationType.REAL, cm));
+    if (value == value.toInt()) {
+      result = value.toInt().toString();
+    } else {
+      result = value.toStringAsFixed(3);
     }
+
     return result;
   }
 
@@ -35,15 +35,3 @@ class ResultProvider extends Notifier<String> {
     return result;
   }
 }
-
-// final displayTextProvider =
-//     NotifierProvider<DiaplayTextProvider, String>(DiaplayTextProvider.new);
-
-// class DiaplayTextProvider extends Notifier<String> {
-//   String displayText = '';
-
-//   @override
-//   String build() {
-//     return displayText;
-//   }
-// }

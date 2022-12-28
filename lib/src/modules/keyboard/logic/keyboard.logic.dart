@@ -8,8 +8,6 @@ class KeyboardLogic {
     required WidgetRef ref,
     required TextEditingController ted,
   }) {
-    // TextEditingController ted = ref.watch(controllerProvier);
-
     bool recalculate = ref.read(shouldRecalculateProvider);
 
     if (recalculate) {
@@ -18,7 +16,6 @@ class KeyboardLogic {
       ref.read(displayTextProvider.notifier).state = '';
     }
     final text = ted.text;
-
     final textSelection = ted.selection;
     final newText = text.replaceRange(
       textSelection.start,
@@ -40,7 +37,7 @@ class KeyboardLogic {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
-
+    if (ref.watch(shouldRecalculateProvider)) return;
     bool isUtf16Surrogate(int value) {
       return value & 0xF800 == 0xD800;
     }

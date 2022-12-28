@@ -31,7 +31,6 @@ class AgKeyboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TextEditingController controller = ref.watch(controllerProvier);
     return Visibility(
       visible: focusNode.hasFocus,
       child: _buildKeyboard(context, ref),
@@ -39,7 +38,6 @@ class AgKeyboard extends ConsumerWidget {
   }
 
   Column _buildKeyboard(BuildContext context, WidgetRef ref) {
-    // TextEditingController controller = ref.watch(controllerProvier);
     String displayText = ref.watch(displayTextProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -63,15 +61,6 @@ class AgKeyboard extends ConsumerWidget {
             ),
           ),
         ),
-        // TextField(
-        //   style: Theme.of(context).textTheme.headlineMedium,
-        //   keyboardType: TextInputType.none,
-        //   controller: controller,
-        //   autofocus: true,
-        //   decoration: _displayDecoration(),
-        //   enableInteractiveSelection: false,
-        //   showCursor: false,
-        // ),
         Container(
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           height: 350,
@@ -79,36 +68,24 @@ class AgKeyboard extends ConsumerWidget {
           child: Consumer(
             builder: (context, ref, child) {
               return CustomLayout(
-                  onTextInput: (myText) {
-                    KeyboardLogic.insertText(
-                        myText: myText, ref: ref, ted: controller);
-                  },
-                  onBackspace: () {
-                    ref.watch(shouldRecalculateProvider)
-                        ? null
-                        : KeyboardLogic.backspace(
-                            textController: controller, ref: ref);
-                  },
-                  digitColor: digitColor,
-                  operatorColor: operatorColor,
-                  pointColor: pointColor,
-                  backButtonColor: backButtonColor,
-                  resultColor: resultColor,
-                  textController: controller);
+                onTextInput: (myText) {
+                  KeyboardLogic.insertText(
+                      myText: myText, ref: ref, ted: controller);
+                },
+                onBackspace: () {
+                  KeyboardLogic.backspace(textController: controller, ref: ref);
+                },
+                digitColor: digitColor,
+                operatorColor: operatorColor,
+                pointColor: pointColor,
+                backButtonColor: backButtonColor,
+                resultColor: resultColor,
+                textController: controller,
+              );
             },
           ),
         )
       ],
     );
   }
-
-  InputDecoration _displayDecoration() => InputDecoration(
-        fillColor: displayColor!.withOpacity(0.3),
-        filled: true,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 12,
-        ),
-        border: InputBorder.none,
-      );
 }
