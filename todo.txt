@@ -1,8 +1,7 @@
-1. = press er pore courser age chole ase.
-2. back button is not working in some cases.
-3. = er pore result er sathe notun kichu add or remove kora jachche na.
-4. 120.+63 should not be allowed.
-5. -3 ei type er input allow kora jachche na.
+1. = press er pore courser age chole ase. ✔
+2. back button is not working in some cases. ✔
+3. = er pore result er sathe notun kichu add or remove kora jachche na. ✔
+4. 120.+63 should not be allowed. ✔ 
+5. -3 ei type er input allow kora jachche na. ✔
 6. .9.9 invalid input.
-
-7. bracket er feature add korte hobe.
+7. bracket er feature add korte hobe. ❌aborted 

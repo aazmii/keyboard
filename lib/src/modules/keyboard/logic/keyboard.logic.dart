@@ -2,9 +2,12 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+//! ATTENTION: changing here anything mmight cost another 40 minutes of work to fix
+
 class KeyboardLogic {
   String lastOperator = '';
   String lastChar = '';
+  int numOfPoint = 0; // each number can not contain more than one point
 
   bool isOperator(String char) {
     if (char == '+' || char == '-' || char == '*' || char == '/') {
@@ -19,30 +22,40 @@ class KeyboardLogic {
     required WidgetRef ref,
     required TextEditingController ted,
   }) {
+    print(numOfPoint);
+    numOfPoint++;
+    print(numOfPoint);
     bool recalculate = ref.read(shouldRecalculateProvider);
-    //restart calculation
+
     if (recalculate) {
-      ted.clear();
-      ref.read(shouldRecalculateProvider.notifier).state = false;
-      ref.read(displayTextProvider.notifier).state = '';
+      if (!isOperator(myText)) {
+        ted.clear();
+        ref.read(shouldRecalculateProvider.notifier).state = false;
+        ref.read(displayTextProvider.notifier).state = '';
+      } else {
+        ref.read(shouldRecalculateProvider.notifier).state = false;
+      }
     }
-    //first char cant be operator
+    //first char cant be operator except (-)
     if (ted.text.isEmpty) {
-      if (myText == '+') return;
-      if (myText == '-') return;
-      if (myText == '*') return;
-      if (myText == '/') return;
-    }
-    //save if operator found
-    if (ted.text.isNotEmpty) {
+      if (myText == '.') {
+        // numOfPoint++;
+      }
+
+      if (myText != '-') if (isOperator(myText)) return;
+    } else {
       lastChar = ted.text[ted.text.length - 1];
+      if (myText == '.') {
+        // numOfPoint += 1;
+      }
       if (isOperator(lastChar) && isOperator(myText)) {
+        // not more than one point allowed for each numer
+        // numOfPoint = 0;
         backspace(textController: ted, ref: ref);
       }
     }
 
     final text = ted.text;
-
     final textSelection = ted.selection;
     final newText = text.replaceRange(
       textSelection.start,
@@ -64,7 +77,7 @@ class KeyboardLogic {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
-    if (ref.watch(shouldRecalculateProvider)) return;
+    // if (ref.watch(shouldRecalculateProvider)) return;
     bool isUtf16Surrogate(int value) {
       return value & 0xF800 == 0xD800;
     }
@@ -86,12 +99,10 @@ class KeyboardLogic {
 
       return;
     }
-
     // The cursor is at the beginning.
     if (textSelection.start == 0) {
       return;
     }
-
     // Delete the previous character
     final previousCodeUnit = text.codeUnitAt(textSelection.start - 1);
     final offset = isUtf16Surrogate(previousCodeUnit) ? 2 : 1;

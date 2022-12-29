@@ -106,6 +106,8 @@ class ResultButton extends ConsumerWidget {
                 .getResult(expression: controller.text);
 
             controller.text = res;
+            controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: controller.text.length));
             ref.read(displayTextProvider.notifier).state += ' = $res';
             ref.read(shouldRecalculateProvider.notifier).state = true;
           } catch (e) {
