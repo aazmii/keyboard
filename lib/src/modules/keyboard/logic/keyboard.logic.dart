@@ -3,39 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class KeyboardLogic {
-  static void insertText({
+  String lastOperator = '';
+  String lastChar = '';
+
+  bool isOperator(String char) {
+    if (char == '+' || char == '-' || char == '*' || char == '/') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void insertText({
     required String myText,
     required WidgetRef ref,
     required TextEditingController ted,
   }) {
-    String lastOperator = '';
     bool recalculate = ref.read(shouldRecalculateProvider);
-    if (ted.text.isNotEmpty) {
-      lastOperator = ted.text[ted.text.length - 1] == '+' ? '+' : '';
-      lastOperator = ted.text[ted.text.length - 1] == '-' ? '-' : '';
-      lastOperator = ted.text[ted.text.length - 1] == '*' ? '*' : '';
-      lastOperator = ted.text[ted.text.length - 1] == '/' ? '/' : '';
-    }
-
+    //restart calculation
     if (recalculate) {
       ted.clear();
       ref.read(shouldRecalculateProvider.notifier).state = false;
       ref.read(displayTextProvider.notifier).state = '';
     }
-    //do not allow operator to be first character
+    //first char cant be operator
     if (ted.text.isEmpty) {
       if (myText == '+') return;
       if (myText == '-') return;
       if (myText == '*') return;
       if (myText == '/') return;
     }
-
-    // do not allow consequent operator
-
-    if (lastOperator == myText) return;
-    if (lastOperator == myText) return;
-    if (lastOperator == myText) return;
-    if (lastOperator == myText) return;
+    //save if operator found
+    if (ted.text.isNotEmpty) {
+      lastChar = ted.text[ted.text.length - 1];
+      if (isOperator(lastChar) && isOperator(myText)) {
+        backspace(textController: ted, ref: ref);
+      }
+    }
 
     final text = ted.text;
 

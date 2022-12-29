@@ -69,7 +69,7 @@ class AgKeyboard extends ConsumerWidget {
             builder: (context, ref, child) {
               return KeyboardLayout(
                 onTextInput: (myText) {
-                  KeyboardLogic.insertText(
+                  KeyboardLogic().insertText(
                     ref: ref,
                     myText: myText,
                     ted: controller,
