@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,25 +6,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CustomKey extends StatelessWidget {
   const CustomKey({
     Key? key,
-    required this.dispayText,
-    this.charList,
+    required this.calcKey,
     this.onTextInput,
     this.buttonColor,
     this.buttonSize = 60,
     this.onBackspace,
     this.flex,
   }) : super(key: key);
-
-  final String dispayText;
+  final CalcKey calcKey;
   final int? flex;
   final Color? buttonColor;
   final double? buttonSize;
   final ValueSetter<String>? onTextInput;
   final VoidCallback? onBackspace;
-  final List<dynamic>? charList;
 
-  Widget _buileButton(
-      {required String digit, required List<dynamic>? charList}) {
+  Widget _buildButton({
+    required CalcKey calcKey,
+    required String digit,
+    required List<dynamic>? charList,
+  }) {
     TextStyle digitStyle =
         const TextStyle(fontSize: 26, fontWeight: FontWeight.bold);
     TextStyle alphabetStyle = const TextStyle(fontSize: 16);
@@ -34,13 +35,14 @@ class CustomKey extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
-          digit,
+          calcKey.getChar(calcKey),
+          // digit,
           style: digitStyle,
         ),
-        charList != null
+        calcKey.charactes != null
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: charList.map((char) {
+                children: calcKey.charactes!.map((char) {
                   return Text(
                     char,
                     style: alphabetStyle,
@@ -58,7 +60,7 @@ class CustomKey extends StatelessWidget {
       flex: flex ?? 1,
       child: GestureDetector(
         onTap: (() => onBackspace == null
-            ? onTextInput!.call(dispayText)
+            ? onTextInput!.call(calcKey.getChar(calcKey))
             : onBackspace!.call()),
         child: Container(
           decoration: BoxDecoration(
@@ -67,7 +69,10 @@ class CustomKey extends StatelessWidget {
           ),
           child: Center(
             child: onBackspace == null
-                ? _buileButton(digit: dispayText, charList: charList)
+                ? _buildButton(
+                    digit: calcKey.getChar(calcKey),
+                    charList: calcKey.charactes,
+                    calcKey: calcKey)
                 : const Icon(Icons.backspace_rounded, size: 34),
           ),
         ),
@@ -77,8 +82,12 @@ class CustomKey extends StatelessWidget {
 }
 
 class ResultButton extends ConsumerWidget {
-  const ResultButton(
-      {super.key, required this.controller, this.buttonColor, this.flex = 1});
+  const ResultButton({
+    super.key,
+    required this.controller,
+    this.buttonColor,
+    this.flex = 1,
+  });
   final Color? buttonColor;
   final TextEditingController controller;
   final int? flex;
