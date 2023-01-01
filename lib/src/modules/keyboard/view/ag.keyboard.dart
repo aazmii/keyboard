@@ -1,11 +1,11 @@
-import 'package:ag_keyboard/src/modules/keyboard/logic/keyboard.logic.dart';
-import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'keyboard_layout.dart';
 
 class AgKeyboard extends ConsumerWidget {
-  const AgKeyboard({
+  AgKeyboard({
     super.key,
     required this.controller,
     this.backgroundColor,
@@ -17,9 +17,11 @@ class AgKeyboard extends ConsumerWidget {
     this.resultColor = Colors.cyan,
     this.displayColor = Colors.grey,
   });
+  final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
+      KeyPressProvider.new);
+
   final TextEditingController controller;
   final int backspaceIndex = 12;
-
   final Color? backgroundColor,
       digitColor,
       operatorColor,
@@ -28,7 +30,6 @@ class AgKeyboard extends ConsumerWidget {
       resultColor,
       displayColor;
   final FocusNode focusNode;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Visibility(
@@ -68,15 +69,15 @@ class AgKeyboard extends ConsumerWidget {
           child: Consumer(
             builder: (context, ref, child) {
               return KeyboardLayout(
-                onTextInput: (myText) {
-                  KeyboardLogic().insertText(
-                    ref: ref,
-                    myText: myText,
-                    ted: controller,
-                  );
+                onTextInput: (value) {
+                  ref
+                      .watch(keyPressProvider)
+                      .insertText(myText: value, ref: ref, ted: controller);
                 },
                 onBackspace: () {
-                  KeyboardLogic.backspace(textController: controller, ref: ref);
+                  ref
+                      .watch(keyPressProvider)
+                      .backspace(textController: controller, ref: ref);
                 },
                 digitColor: digitColor,
                 operatorColor: operatorColor,

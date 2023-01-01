@@ -1,13 +1,11 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-//! ATTENTION: changing here anything mmight cost another 40 minutes of work to fix
-
-class KeyboardLogic {
+class KeyPressProvider extends Notifier<KeyPressProvider> {
   String lastOperator = '';
   String lastChar = '';
-  int numOfPoint = 0; // each number can not contain more than one point
+  int numOfPoint = 0;
 
   bool isOperator(String char) {
     if (char == '+' || char == '-' || char == '*' || char == '/') {
@@ -22,37 +20,41 @@ class KeyboardLogic {
     required WidgetRef ref,
     required TextEditingController ted,
   }) {
-    print(numOfPoint);
-    numOfPoint++;
-    print(numOfPoint);
-    bool recalculate = ref.read(shouldRecalculateProvider);
+    bool repeat = ref.watch(shouldRecalculateProvider);
 
-    if (recalculate) {
+    if (repeat) {
       if (!isOperator(myText)) {
         ted.clear();
-        ref.read(shouldRecalculateProvider.notifier).state = false;
+
+        ref.watch(shouldRecalculateProvider.notifier).state = false;
         ref.read(displayTextProvider.notifier).state = '';
       } else {
-        ref.read(shouldRecalculateProvider.notifier).state = false;
+        ref.watch(shouldRecalculateProvider.notifier).state = false;
       }
     }
     //first char cant be operator except (-)
     if (ted.text.isEmpty) {
+      numOfPoint = 0;
       if (myText == '.') {
-        // numOfPoint++;
+        numOfPoint++;
       }
-
       if (myText != '-') if (isOperator(myText)) return;
     } else {
       lastChar = ted.text[ted.text.length - 1];
       if (myText == '.') {
-        // numOfPoint += 1;
+        numOfPoint++;
       }
+
       if (isOperator(lastChar) && isOperator(myText)) {
-        // not more than one point allowed for each numer
-        // numOfPoint = 0;
+        numOfPoint = 0;
         backspace(textController: ted, ref: ref);
       }
+    }
+    if (isOperator(myText)) {
+      numOfPoint = 0;
+    }
+    if (numOfPoint >= 2) {
+      if (myText == '.') return;
     }
 
     final text = ted.text;
@@ -72,12 +74,11 @@ class KeyboardLogic {
     );
   }
 
-  static void backspace(
+  void backspace(
       {required TextEditingController textController, required WidgetRef ref}) {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
-    // if (ref.watch(shouldRecalculateProvider)) return;
     bool isUtf16Surrogate(int value) {
       return value & 0xF800 == 0xD800;
     }
@@ -120,5 +121,10 @@ class KeyboardLogic {
       baseOffset: newStart,
       extentOffset: newStart,
     );
+  }
+
+  @override
+  KeyPressProvider build() {
+    return KeyPressProvider();
   }
 }

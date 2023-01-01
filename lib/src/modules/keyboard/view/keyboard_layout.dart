@@ -71,7 +71,7 @@ class KeyboardLayout extends StatelessWidget {
         child: Column(
           children: [
             CustomKey(
-              calcKey: CalcKey.one, //TODO: doesnt make sense, remove it
+              calcKey: CalcKey.one,
               onBackspace: _backspaceHandler,
               buttonColor: backButtonColor,
             ),

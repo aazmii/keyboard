@@ -1,5 +1,5 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
-import 'package:ag_keyboard/src/modules/keyboard/provider/calculation.provider.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -94,6 +94,7 @@ class ResultButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // bool repeatCalculation = ref.read(keyPressProvider).repeat;
     return Flexible(
       flex: flex ?? 1,
       child: GestureDetector(
@@ -109,7 +110,7 @@ class ResultButton extends ConsumerWidget {
             controller.selection = TextSelection.fromPosition(
                 TextPosition(offset: controller.text.length));
             ref.read(displayTextProvider.notifier).state += ' = $res';
-            ref.read(shouldRecalculateProvider.notifier).state = true;
+            ref.watch(shouldRecalculateProvider.notifier).state = true;
           } catch (e) {
             //
           }

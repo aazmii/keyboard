@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../provider/calculation.provider.dart';
 import 'ag.keyboard.dart';
 
 class KeyboardView extends ConsumerWidget {
@@ -14,7 +13,7 @@ class KeyboardView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //!removing this line gives error, god knows why
-    bool shouldRecalculate = ref.watch(shouldRecalculateProvider);
+    // bool shouldRecalculate = ref.watch(shouldRecalculateProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Keyboard View'),
