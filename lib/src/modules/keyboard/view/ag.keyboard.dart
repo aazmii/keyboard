@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'components/keyboard.display.dart';
 import 'keyboard_layout.dart';
+import '../model/record.dart';
 
 class AgKeyboard extends ConsumerWidget {
   AgKeyboard({
@@ -36,7 +37,9 @@ class AgKeyboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String displayText = ref.watch(displayTextProvider);
+    //TODO: converting
     String historyText = History.asText; //+ displayText;
+    // String historyText = Record.asText;
     final keyPress = ref.watch(keyPressProvider);
     return Visibility(
       visible: focusNode.hasFocus,
@@ -44,7 +47,7 @@ class AgKeyboard extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          KeyboardDisplay(displayText: '$historyText $displayText'),
+          KeyboardDisplay(displayText: ' $displayText $historyText '),
           Container(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             height: 350,

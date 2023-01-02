@@ -1,7 +1,7 @@
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import './model/record.dart';
 import 'history.dart';
 
 bool isOperator(String char) {
@@ -50,21 +50,26 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
         .getResult(expression: controller.text);
   } catch (e) {
     ref.watch(shouldRecalculateProvider.notifier).state = true;
-    ref.watch(displayTextProvider.notifier).state = '';
+    // ref.watch(displayTextProvider.notifier).state = '';
     ref.watch(expressionProvider.notifier).state = '';
+    return;
   }
   ref.read(displayTextProvider.notifier).state += '=$res';
   ref.watch(expressionProvider.notifier).state += '=$res';
-  History.history.add(ref.read(expressionProvider.notifier).state);
+  History.history.insert(0, ref.read(expressionProvider.notifier).state);
+  //TODO: convert to model
+  // Record.records.add(
+  //   Record(
+  //       equation: ref.read(expressionProvider.notifier).state,
+  //       inputTime: DateTime.now().millisecondsSinceEpoch),
+  // );
   //make ready for next expression
   ref.watch(expressionProvider.notifier).state = res;
   ref.read(displayTextProvider.notifier).state = '';
-  // print('sol: ${}');
   ref.watch(shouldRecalculateProvider.notifier).state = true;
   controller.text = res;
   controller.selection = TextSelection.fromPosition(
     TextPosition(offset: controller.text.length),
   );
-
   print(History.asText);
 }
