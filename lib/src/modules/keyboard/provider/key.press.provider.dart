@@ -7,7 +7,6 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
   String lastOperator = '';
   String lastChar = '';
   int numOfPoint = 0;
-  String expression = '';
   void insertText({
     required String myText,
     required WidgetRef ref,
@@ -21,28 +20,32 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
       } else {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
-        // expression = ref.read(resultProvider.notifier).result;
       }
     }
     //first char cant be operator except (-)
     if (ted.text.isEmpty) {
       numOfPoint = 0;
-      expression += myText;
+      ref.watch(expressionProvider.notifier).state += myText;
 
       if (myText == '.') {
         numOfPoint++;
       }
       if (myText != '-') if (isOperator(myText)) return;
     } else {
-      // expression += myText;
+      ref.watch(expressionProvider.notifier).state += myText;
+
       lastChar = ted.text[ted.text.length - 1];
       if (myText == '.') {
         numOfPoint++;
       }
 
       if (isOperator(lastChar) && isOperator(myText)) {
+        final text = ref.watch(expressionProvider.notifier).state;
+
         numOfPoint = 0;
-        // expression = expression.substring(0, expression.length - 1);
+        ref.watch(expressionProvider.notifier).state =
+            text.substring(0, text.length - 1);
+
         //replace
         backspace(textController: ted, ref: ref);
       }

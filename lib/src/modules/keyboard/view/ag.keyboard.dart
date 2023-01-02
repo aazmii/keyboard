@@ -3,6 +3,7 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dar
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'components/keyboard.display.dart';
 import 'keyboard_layout.dart';
 
 class AgKeyboard extends ConsumerWidget {
@@ -33,64 +34,47 @@ class AgKeyboard extends ConsumerWidget {
   final FocusNode focusNode;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String displayText = ref.watch(displayTextProvider);
+    final keyPress = ref.watch(keyPressProvider);
     return Visibility(
       visible: focusNode.hasFocus,
-      child: _buildKeyboard(context, ref),
-    );
-  }
-
-  Column _buildKeyboard(BuildContext context, WidgetRef ref) {
-    String displayText = ref.watch(displayTextProvider);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          height: 70,
-          width: double.infinity,
-          color: Colors.black45,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Text(
-                displayText,
-                style: const TextStyle(fontSize: 32),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          KeyboardDisplay(displayText: displayText),
+          Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            height: 350,
+            color: backgroundColor,
+            child: Consumer(
+              builder: (context, ref, child) {
+                return KeyboardLayout(
+                  onTextInput: (value) {
+                    keyPress.insertText(
+                      myText: value,
+                      ref: ref,
+                      ted: controller,
+                    );
+                  },
+                  onBackspace: () {
+                    keyPress.backspace(
+                      textController: controller,
+                      ref: ref,
+                    );
+                  },
+                  digitColor: digitColor,
+                  operatorColor: operatorColor,
+                  pointColor: pointColor,
+                  backButtonColor: backButtonColor,
+                  resultColor: resultColor,
+                  textController: controller,
+                );
+              },
             ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          height: 350,
-          color: backgroundColor,
-          child: Consumer(
-            builder: (context, ref, child) {
-              return KeyboardLayout(
-                onTextInput: (value) {
-                  ref
-                      .watch(keyPressProvider)
-                      .insertText(myText: value, ref: ref, ted: controller);
-                },
-                onBackspace: () {
-                  ref
-                      .watch(keyPressProvider)
-                      .backspace(textController: controller, ref: ref);
-                },
-                digitColor: digitColor,
-                operatorColor: operatorColor,
-                pointColor: pointColor,
-                backButtonColor: backButtonColor,
-                resultColor: resultColor,
-                textController: controller,
-              );
-            },
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 

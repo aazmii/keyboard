@@ -2,6 +2,8 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'history.dart';
+
 bool isOperator(String char) {
   if (char == '+' || char == '-' || char == '*' || char == '/') {
     return true;
@@ -14,7 +16,6 @@ String? checkInuput(String? value) {
   String? char;
   if (value!.isEmpty) return '';
   char = value.substring(value.length - 1);
-  print(char);
 
   if (!isOperator(char)) {
     if (char == '.') {
@@ -38,25 +39,32 @@ String? checkInuput(String? value) {
 calculateResult(WidgetRef ref, TextEditingController controller) {
   bool reClculate = ref.watch(shouldRecalculateProvider);
   final formKey = ref.watch(formKeyProvider);
+  String res = '';
   if (reClculate) return;
   // if (controller.text.isEmpty) return;
   if (!formKey.currentState!.validate()) return;
   if (isOperator(controller.text[controller.text.length - 1])) return;
   try {
-    String res = ref
+    res = ref
         .read(resultProvider.notifier)
         .getResult(expression: controller.text);
-    controller.text = res;
-    controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: controller.text.length),
-    );
-    ref.read(displayTextProvider.notifier).state += ' = $res';
-    ref.watch(expressionProvider.notifier).state += '=$res';
-    ref.watch(shouldRecalculateProvider.notifier).state = true;
   } catch (e) {
     ref.watch(shouldRecalculateProvider.notifier).state = true;
     ref.watch(displayTextProvider.notifier).state = '';
+    ref.watch(expressionProvider.notifier).state = '';
   }
-  // history.add(ref.read(displayTextProvider.notifier).state);
-  // print(history);
+  ref.read(displayTextProvider.notifier).state += '=$res';
+
+  ref.watch(expressionProvider.notifier).state += '=$res';
+  History.history.add(ref.read(expressionProvider.notifier).state);
+  //make ready for next expression
+  ref.watch(expressionProvider.notifier).state = res;
+
+  ref.watch(shouldRecalculateProvider.notifier).state = true;
+  controller.text = res;
+  controller.selection = TextSelection.fromPosition(
+    TextPosition(offset: controller.text.length),
+  );
+
+  print(History.history);
 }
