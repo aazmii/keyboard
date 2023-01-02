@@ -2,10 +2,10 @@
 
 class History {
   static List<String> history = [];
-  static String get singleLineHistory {
+  static String get asText {
     String singleString = ' ';
     for (String expression in history) {
-      singleString += expression;
+      singleString += '$expression, ';
     }
     return singleString;
   }

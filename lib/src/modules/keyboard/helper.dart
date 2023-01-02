@@ -54,17 +54,17 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
     ref.watch(expressionProvider.notifier).state = '';
   }
   ref.read(displayTextProvider.notifier).state += '=$res';
-
   ref.watch(expressionProvider.notifier).state += '=$res';
   History.history.add(ref.read(expressionProvider.notifier).state);
   //make ready for next expression
   ref.watch(expressionProvider.notifier).state = res;
-
+  ref.read(displayTextProvider.notifier).state = '';
+  // print('sol: ${}');
   ref.watch(shouldRecalculateProvider.notifier).state = true;
   controller.text = res;
   controller.selection = TextSelection.fromPosition(
     TextPosition(offset: controller.text.length),
   );
 
-  print(History.history);
+  print(History.asText);
 }

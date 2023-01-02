@@ -1,8 +1,8 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:flutter/material.dart';
 
-import 'custom_key.dart';
-import 'result.button.dart';
+import 'components/custom_key.dart';
+import 'components/result.button.dart';
 
 class KeyboardLayout extends StatelessWidget {
   const KeyboardLayout({

@@ -1,4 +1,5 @@
 import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
+import 'package:ag_keyboard/src/modules/keyboard/history.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class AgKeyboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String displayText = ref.watch(displayTextProvider);
+    String historyText = History.asText; //+ displayText;
     final keyPress = ref.watch(keyPressProvider);
     return Visibility(
       visible: focusNode.hasFocus,
@@ -42,7 +44,7 @@ class AgKeyboard extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          KeyboardDisplay(displayText: displayText),
+          KeyboardDisplay(displayText: '$historyText $displayText'),
           Container(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             height: 350,

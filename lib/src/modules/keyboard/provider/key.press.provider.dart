@@ -18,8 +18,12 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         ted.clear();
         ref.read(displayTextProvider.notifier).state = '';
         ref.watch(shouldRecalculateProvider.notifier).state = false;
+        ref.watch(expressionProvider.notifier).state = '';
       } else {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
+        print(ref.watch(resultProvider.notifier).state);
+        ref.watch(displayTextProvider.notifier).state =
+            '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
       }
     }
     //first char cant be operator except (-)
@@ -45,7 +49,6 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         numOfPoint = 0;
         ref.watch(expressionProvider.notifier).state =
             text.substring(0, text.length - 1);
-
         //replace
         backspace(textController: ted, ref: ref);
       }
