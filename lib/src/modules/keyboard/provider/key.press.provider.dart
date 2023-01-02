@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,40 +7,34 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
   String lastOperator = '';
   String lastChar = '';
   int numOfPoint = 0;
-
-  bool isOperator(String char) {
-    if (char == '+' || char == '-' || char == '*' || char == '/') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+  String expression = '';
   void insertText({
     required String myText,
     required WidgetRef ref,
     required TextEditingController ted,
   }) {
     bool repeat = ref.watch(shouldRecalculateProvider);
-
     if (repeat) {
       if (!isOperator(myText)) {
         ted.clear();
-
-        ref.watch(shouldRecalculateProvider.notifier).state = false;
         ref.read(displayTextProvider.notifier).state = '';
+        ref.watch(shouldRecalculateProvider.notifier).state = false;
       } else {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
+        // expression = ref.read(resultProvider.notifier).result;
       }
     }
     //first char cant be operator except (-)
     if (ted.text.isEmpty) {
       numOfPoint = 0;
+      expression += myText;
+
       if (myText == '.') {
         numOfPoint++;
       }
       if (myText != '-') if (isOperator(myText)) return;
     } else {
+      // expression += myText;
       lastChar = ted.text[ted.text.length - 1];
       if (myText == '.') {
         numOfPoint++;
@@ -47,6 +42,8 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
 
       if (isOperator(lastChar) && isOperator(myText)) {
         numOfPoint = 0;
+        // expression = expression.substring(0, expression.length - 1);
+        //replace
         backspace(textController: ted, ref: ref);
       }
     }
@@ -116,6 +113,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     );
     textController.text = newText;
     ref.read(displayTextProvider.notifier).state = newText;
+    ref.read(expressionProvider.notifier).state = newText;
 
     textController.selection = textSelection.copyWith(
       baseOffset: newStart,

@@ -1,7 +1,5 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomKey extends StatelessWidget {
   const CustomKey({
@@ -36,7 +34,6 @@ class CustomKey extends StatelessWidget {
       children: [
         Text(
           calcKey.getChar(calcKey),
-          // digit,
           style: digitStyle,
         ),
         calcKey.charactes != null
@@ -74,57 +71,6 @@ class CustomKey extends StatelessWidget {
                     charList: calcKey.charactes,
                     calcKey: calcKey)
                 : const Icon(Icons.backspace_rounded, size: 34),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ResultButton extends ConsumerWidget {
-  const ResultButton({
-    super.key,
-    required this.controller,
-    this.buttonColor,
-    this.flex = 1,
-  });
-  final Color? buttonColor;
-  final TextEditingController controller;
-  final int? flex;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // bool repeatCalculation = ref.read(keyPressProvider).repeat;
-    return Flexible(
-      flex: flex ?? 1,
-      child: GestureDetector(
-        onTap: () {
-          if (ref.read(shouldRecalculateProvider)) return;
-          if (controller.text.isEmpty) return;
-          try {
-            String res = ref
-                .read(resultProvider.notifier)
-                .getResult(expression: controller.text);
-
-            controller.text = res;
-            controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: controller.text.length));
-            ref.read(displayTextProvider.notifier).state += ' = $res';
-            ref.watch(shouldRecalculateProvider.notifier).state = true;
-          } catch (e) {
-            //
-          }
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: buttonColor,
-          ),
-          child: const Center(
-            child: Text(
-              '=',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            ),
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
@@ -91,5 +92,9 @@ class AgKeyboard extends ConsumerWidget {
         )
       ],
     );
+  }
+
+  static String? checkExpression(String? value) {
+    return checkInuput(value);
   }
 }

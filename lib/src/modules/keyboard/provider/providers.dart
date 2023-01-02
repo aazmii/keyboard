@@ -13,3 +13,9 @@ final shouldRecalculateProvider = StateProvider<bool>((ref) => false);
 
 final resultProvider =
     NotifierProvider<ResultProvider, String>(ResultProvider.new);
+final expressionProvider = StateProvider<String>((ref) => '');
+
+final formKeyProvider = StateProvider.autoDispose<GlobalKey<FormState>>((ref) {
+  final formKey = GlobalKey<FormState>();
+  return formKey;
+});

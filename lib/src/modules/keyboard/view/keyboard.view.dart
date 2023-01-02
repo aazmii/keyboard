@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'ag.keyboard.dart';
@@ -12,7 +13,7 @@ class KeyboardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //!removing this line gives error, god knows why
+    //!removing this line sometime occurs error
     // bool shouldRecalculate = ref.watch(shouldRecalculateProvider);
     return Scaffold(
       appBar: AppBar(
@@ -25,14 +26,21 @@ class KeyboardView extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                TextField(
-                  focusNode: _focusNode1,
-                  controller: _controller,
-                  keyboardType: TextInputType.none,
-                  showCursor: true,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: ''),
+                Form(
+                  key: ref.watch(formKeyProvider),
+                  child: TextFormField(
+                    focusNode: _focusNode1,
+                    controller: _controller,
+                    validator: (value) {
+                      return AgKeyboard.checkExpression(value);
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.none,
+                    showCursor: true,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), hintText: ''),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
