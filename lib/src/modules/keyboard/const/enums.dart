@@ -13,6 +13,8 @@ enum CalcKey {
   add(keyType: Type.operator),
   substract(keyType: Type.operator),
   division(keyType: Type.operator),
+  equalKey(keyType: Type.equal),
+  backSpace(keyType: Type.backspace),
   multiply(keyType: Type.operator);
 
   String getChar(CalcKey key) {
@@ -45,6 +47,10 @@ enum CalcKey {
         return '-';
       case CalcKey.division:
         return '/';
+      case CalcKey.equalKey:
+        return '=';
+      case CalcKey.backSpace:
+        return '↩';
       case CalcKey.multiply:
         return '*';
     }
@@ -59,4 +65,4 @@ enum CalcKey {
   });
 }
 
-enum Type { number, operator }
+enum Type { number, operator, backspace, equal }

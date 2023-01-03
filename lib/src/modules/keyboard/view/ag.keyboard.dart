@@ -5,8 +5,7 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'components/keyboard.display.dart';
-import 'keyboard_layout.dart';
-import '../model/record.dart';
+import 'components/numpad.dart';
 
 class AgKeyboard extends ConsumerWidget {
   AgKeyboard({
@@ -37,9 +36,8 @@ class AgKeyboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String displayText = ref.watch(displayTextProvider);
-    //TODO: converting
     String historyText = History.asText; //+ displayText;
-    // String historyText = Record.asText;
+
     final keyPress = ref.watch(keyPressProvider);
     return Visibility(
       visible: focusNode.hasFocus,
@@ -48,36 +46,24 @@ class AgKeyboard extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           KeyboardDisplay(displayText: ' $displayText $historyText '),
-          Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            height: 350,
-            color: backgroundColor,
-            child: Consumer(
-              builder: (context, ref, child) {
-                return KeyboardLayout(
-                  onTextInput: (value) {
-                    keyPress.insertText(
-                      myText: value,
-                      ref: ref,
-                      ted: controller,
-                    );
-                  },
-                  onBackspace: () {
-                    keyPress.backspace(
-                      textController: controller,
-                      ref: ref,
-                    );
-                  },
-                  digitColor: digitColor,
-                  operatorColor: operatorColor,
-                  pointColor: pointColor,
-                  backButtonColor: backButtonColor,
-                  resultColor: resultColor,
-                  textController: controller,
-                );
-              },
+          NumPad(
+            backgroundColor: backgroundColor,
+            // textController: controller,
+            keyPress: keyPress,
+            controller: controller,
+            digitColor: digitColor,
+            operatorColor: operatorColor,
+            pointColor: pointColor,
+            backButtonColor: backButtonColor,
+            resultColor: resultColor,
+            onTextInput: (value) {
+              keyPress.insertText(myText: value, ref: ref, ted: controller);
+            },
+            onBackspace: () => keyPress.backspace(
+              textController: controller,
+              ref: ref,
             ),
-          )
+          ),
         ],
       ),
     );
