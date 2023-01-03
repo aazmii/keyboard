@@ -36,6 +36,7 @@ String? checkInuput(String? value) {
 }
 
 calculateResult(WidgetRef ref, TextEditingController controller) {
+  bool shouldSeperate = History.histories.length >= 1;
   bool reClculate = ref.watch(shouldRecalculateProvider);
   final formKey = ref.watch(formKeyProvider);
   String res = '';
@@ -53,10 +54,11 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
     ref.watch(expressionProvider.notifier).state = '';
     return;
   }
-  ref.read(displayTextProvider.notifier).state += '=$res';
-  ref.watch(expressionProvider.notifier).state += '=$res';
-  History.history.insert(0, ref.read(expressionProvider.notifier).state);
-
+  ref.read(displayTextProvider.notifier).state +=
+      shouldSeperate ? '=$res,' : '=$res';
+  ref.watch(expressionProvider.notifier).state +=
+      shouldSeperate ? '=$res,' : '=$res';
+  History.histories.insert(0, ref.read(expressionProvider.notifier).state);
   //make ready for next expression
   ref.watch(expressionProvider.notifier).state = res;
   ref.read(displayTextProvider.notifier).state = '';

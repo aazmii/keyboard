@@ -23,3 +23,5 @@ final formKeyProvider = StateProvider.autoDispose<GlobalKey<FormState>>((ref) {
 
 final keyPressProvider =
     NotifierProvider<KeyPressProvider, KeyPressProvider>(KeyPressProvider.new);
+
+final historyViewProvider = StateProvider<bool>((ref) => false);

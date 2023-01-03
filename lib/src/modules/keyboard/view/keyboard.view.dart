@@ -1,10 +1,7 @@
-import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/theme/themes/dark/dark.theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'ag.keyboard.dart';
-import 'components/custom_key.dart';
 
 class KeyboardView extends ConsumerWidget {
   KeyboardView({super.key});

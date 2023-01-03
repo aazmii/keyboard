@@ -36,7 +36,7 @@ class AgKeyboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String displayText = ref.watch(displayTextProvider);
-    String historyText = History.asText; //+ displayText;
+    String historyText = History.asText;
 
     final keyPress = ref.watch(keyPressProvider);
     return Visibility(
@@ -45,10 +45,9 @@ class AgKeyboard extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          KeyboardDisplay(displayText: ' $displayText $historyText '),
+          KeyboardDisplay(displayText: '$displayText$historyText'),
           NumPad(
             backgroundColor: backgroundColor,
-            // textController: controller,
             keyPress: keyPress,
             controller: controller,
             digitColor: digitColor,
