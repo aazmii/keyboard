@@ -21,7 +21,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         ref.watch(expressionProvider.notifier).state = '';
       } else {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
-        print(ref.watch(resultProvider.notifier).state);
+        // print(ref.watch(resultProvider.notifier).state);
         ref.watch(displayTextProvider.notifier).state =
             '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
       }

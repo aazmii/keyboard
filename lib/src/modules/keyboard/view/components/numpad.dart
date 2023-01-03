@@ -1,8 +1,5 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
-import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/components/custom_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'custom.key2.dart';
@@ -12,6 +9,7 @@ class NumPad extends ConsumerWidget {
     super.key,
     this.onTextInput,
     this.onBackspace,
+    this.numPadHeight = 350,
     required this.backgroundColor,
     required this.keyPress,
     required this.controller,
@@ -30,7 +28,7 @@ class NumPad extends ConsumerWidget {
   final Color? pointColor;
   final Color? backButtonColor;
   final Color? resultColor;
-  final double keyboardHeight = 350;
+  final double numPadHeight;
   final double horizontalSpacing = 30;
   final double vSpacing = 8;
 
@@ -44,7 +42,7 @@ class NumPad extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-      height: keyboardHeight,
+      height: numPadHeight,
       width: MediaQuery.of(context).size.width,
       color: backgroundColor,
       alignment: Alignment.center,
@@ -57,7 +55,7 @@ class NumPad extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                  height: keyboardHeight - 95,
+                  height: numPadHeight - 95,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

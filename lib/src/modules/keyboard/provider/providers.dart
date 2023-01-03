@@ -25,3 +25,5 @@ final keyPressProvider =
     NotifierProvider<KeyPressProvider, KeyPressProvider>(KeyPressProvider.new);
 
 final historyViewProvider = StateProvider<bool>((ref) => false);
+
+final historyProvider = StateProvider<List<String>>((ref) => []);
