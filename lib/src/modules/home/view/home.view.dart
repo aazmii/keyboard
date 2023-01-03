@@ -1,4 +1,4 @@
-import 'package:ag_keyboard/src/modules/keyboard/view/keyboard.view.dart';
+import 'package:ag_keyboard/src/modules/keyboard/keyboard.view.dart';
 import 'package:flutter/material.dart';
 import '../../../localization/loalization.dart';
 import '../../../theme/themes/themes.dart';

@@ -2,7 +2,7 @@ import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'custom.key2.dart';
+import 'custom.key.dart';
 
 class NumPad extends ConsumerWidget {
   const NumPad({
@@ -31,10 +31,8 @@ class NumPad extends ConsumerWidget {
   final double numPadHeight;
   final double horizontalSpacing = 30;
   final double vSpacing = 8;
-
   final ValueSetter<String>? onTextInput;
   final VoidCallback? onBackspace;
-
   // void _textInputHandler(String text) => onTextInput!.call(text);
   // void _backspaceHandler() => onBackspace!.call();
 
@@ -66,7 +64,7 @@ class NumPad extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 5),
-                CustomKey2(
+                CustomKey(
                   calcKey: CalcKey.zero,
                   color: digitColor,
                   onTextInput: onTextInput,
@@ -87,26 +85,26 @@ class NumPad extends ConsumerWidget {
       width: buttonWidth,
       child: Column(
         children: [
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.backSpace,
             color: backButtonColor,
             iconData: Icons.arrow_back_sharp,
             onBackspace: onBackspace,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.one,
             color: digitColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.four,
             color: digitColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
               calcKey: CalcKey.seven,
               color: digitColor,
               onTextInput: onTextInput),
@@ -122,25 +120,25 @@ class NumPad extends ConsumerWidget {
       width: buttonWidth,
       child: Column(
         children: [
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.division,
             color: operatorColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.two,
             color: digitColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.five,
             color: digitColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.eight,
             onTextInput: onTextInput,
             color: digitColor,
@@ -157,31 +155,31 @@ class NumPad extends ConsumerWidget {
       width: buttonWidth,
       child: Column(
         children: [
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.multiply,
             color: operatorColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.three,
             color: digitColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.six,
             color: digitColor,
             onTextInput: onTextInput,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.nine,
             onTextInput: onTextInput,
             color: digitColor,
           ),
           SizedBox(height: vSpacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.point,
             onTextInput: onTextInput,
             color: pointColor,
@@ -198,21 +196,21 @@ class NumPad extends ConsumerWidget {
       width: buttonWidth,
       child: Column(
         children: [
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.substract,
             color: operatorColor,
             onTextInput: onTextInput,
             flex: 1,
           ),
           SizedBox(height: spacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.add,
             color: operatorColor,
             onTextInput: onTextInput,
             flex: 2,
           ),
           SizedBox(height: spacing ?? defaultSpacing),
-          CustomKey2(
+          CustomKey(
             calcKey: CalcKey.equalKey,
             color: resultColor,
             controller: controller,

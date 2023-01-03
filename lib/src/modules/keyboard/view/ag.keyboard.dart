@@ -1,4 +1,4 @@
-import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,9 +36,6 @@ class AgKeyboard extends ConsumerWidget {
   final FocusNode focusNode;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // String displayText = ref.watch(displayTextProvider);
-    // String historyText = History.asText;
-
     final keyPress = ref.watch(keyPressProvider);
     return Visibility(
       visible: focusNode.hasFocus,
@@ -49,7 +46,6 @@ class AgKeyboard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Display(),
-              // KeyboardDisplay(displayText: '$displayText$historyText'),
               NumPad(
                 backgroundColor: backgroundColor,
                 keyPress: keyPress,
@@ -60,7 +56,8 @@ class AgKeyboard extends ConsumerWidget {
                 backButtonColor: backButtonColor,
                 resultColor: resultColor,
                 onTextInput: (value) {
-                  keyPress.insertText(myText: value, ref: ref, ted: controller);
+                  keyPress.insertText(
+                      myText: value, ref: ref, controller: controller);
                 },
                 onBackspace: () => keyPress.backspace(
                   textController: controller,

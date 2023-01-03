@@ -1,7 +1,7 @@
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'components/history.list.dart';
+import 'history.list.dart';
 
 class HistoryBoard extends ConsumerWidget {
   const HistoryBoard({
@@ -12,31 +12,28 @@ class HistoryBoard extends ConsumerWidget {
 
   final double? numPadHeight;
   final double? displayHeight;
-
+  final _duration = const Duration(milliseconds: 600);
   @override
   Widget build(BuildContext context, ref) {
     bool isActive = ref.watch(historyViewProvider);
-    return AnimatedOpacity(
-      opacity: isActive ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 200),
-      child: Visibility(
-        visible: isActive,
-        child: Container(
-          padding:
-              const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
-          height: numPadHeight! + displayHeight!,
-          width: MediaQuery.of(context).size.width * 0.75,
-          color: Colors.lightBlue,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _closeButton(ref: ref, context: context, name: 'Keyboard'),
-              const Expanded(
-                child: HistoryList(),
-              ),
-              const HistoryClearButton(),
-            ],
-          ),
+    return AnimatedPositioned(
+      duration: _duration,
+      curve: Curves.fastOutSlowIn,
+      width: isActive ? 300 : 0,
+      child: Container(
+        padding: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
+        height: numPadHeight! + displayHeight!,
+        width: MediaQuery.of(context).size.width * 0.75,
+        color: Colors.lightBlue,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _closeButton(ref: ref, context: context, name: 'Keyboard'),
+            const Expanded(
+              child: HistoryList(),
+            ),
+            const ClearHistoryButton(),
+          ],
         ),
       ),
     );
@@ -58,8 +55,8 @@ class HistoryBoard extends ConsumerWidget {
   }
 }
 
-class HistoryClearButton extends StatelessWidget {
-  const HistoryClearButton({
+class ClearHistoryButton extends StatelessWidget {
+  const ClearHistoryButton({
     super.key,
   });
 
@@ -68,7 +65,7 @@ class HistoryClearButton extends StatelessWidget {
     return Consumer(
       builder: (context, ref, child) => TextButton(
         onPressed: () {
-          ref.watch(historyProvider.notifier).state.clear();
+          ref.watch(historyProvider.notifier).state = [];
           ref.watch(historyViewProvider.notifier).state = false;
           // History.histories.clear();
         },

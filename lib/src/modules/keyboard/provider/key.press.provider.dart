@@ -1,4 +1,4 @@
-import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,24 +10,23 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
   void insertText({
     required String myText,
     required WidgetRef ref,
-    required TextEditingController ted,
+    required TextEditingController controller,
   }) {
     bool repeat = ref.watch(shouldRecalculateProvider);
     if (repeat) {
       if (!isOperator(myText)) {
-        ted.clear();
+        controller.clear();
         ref.read(displayTextProvider.notifier).state = '';
         ref.watch(shouldRecalculateProvider.notifier).state = false;
         ref.watch(expressionProvider.notifier).state = '';
       } else {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
-        // print(ref.watch(resultProvider.notifier).state);
         ref.watch(displayTextProvider.notifier).state =
             '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
       }
     }
     //first char cant be operator except (-)
-    if (ted.text.isEmpty) {
+    if (controller.text.isEmpty) {
       numOfPoint = 0;
       ref.watch(expressionProvider.notifier).state += myText;
 
@@ -36,9 +35,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
       }
       if (myText != '-') if (isOperator(myText)) return;
     } else {
-      ref.watch(expressionProvider.notifier).state += myText;
-
-      lastChar = ted.text[ted.text.length - 1];
+      lastChar = controller.text[controller.text.length - 1];
       if (myText == '.') {
         numOfPoint++;
       }
@@ -50,7 +47,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         ref.watch(expressionProvider.notifier).state =
             text.substring(0, text.length - 1);
         //replace
-        backspace(textController: ted, ref: ref);
+        backspace(textController: controller, ref: ref);
       }
     }
     if (isOperator(myText)) {
@@ -60,18 +57,25 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
       if (myText == '.') return;
     }
 
-    final text = ted.text;
-    final textSelection = ted.selection;
+    final text = controller.text;
+    final textSelection = controller.selection;
     final newText = text.replaceRange(
       textSelection.start,
       textSelection.end,
       myText,
     );
-    ref.read(displayTextProvider.notifier).state += newText[newText.length - 1];
-    final myTextLength = myText.length;
-    ted.text = newText;
 
-    ted.selection = textSelection.copyWith(
+    final myTextLength = myText.length;
+    controller.text = newText;
+
+    ref
+        .read(displayTextProvider.notifier)
+        .update((state) => state = controller.text);
+    ref
+        .read(expressionProvider.notifier)
+        .update((state) => state = controller.text);
+
+    controller.selection = textSelection.copyWith(
       baseOffset: textSelection.start + myTextLength,
       extentOffset: textSelection.start + myTextLength,
     );

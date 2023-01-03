@@ -1,11 +1,11 @@
-import 'package:ag_keyboard/src/modules/keyboard/helper.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../const/enums.dart';
 
-class CustomKey2 extends ConsumerWidget {
-  const CustomKey2({
+class CustomKey extends ConsumerWidget {
+  const CustomKey({
     super.key,
     required this.calcKey,
     this.controller,

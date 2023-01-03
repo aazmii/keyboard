@@ -54,12 +54,9 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
   }
   ref.read(displayTextProvider.notifier).state += '=$res,';
   ref.watch(expressionProvider.notifier).state += '=$res';
-  //insert to history
-  // History.histories.insert(0, ref.read(expressionProvider.notifier).state);
-  ref
-      .watch(historyProvider.notifier)
-      .state
-      .insert(0, ref.read(expressionProvider.notifier).state);
+  //insert into history
+  ref.watch(historyProvider.notifier).update(
+      (state) => [ref.read(expressionProvider.notifier).state, ...state]);
   //make ready for next expression
   ref.watch(expressionProvider.notifier).state = res;
   ref.read(displayTextProvider.notifier).state = '';

@@ -1,7 +1,7 @@
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'ag.keyboard.dart';
+import 'view/ag.keyboard.dart';
 
 class KeyboardView extends ConsumerWidget {
   KeyboardView({super.key});
