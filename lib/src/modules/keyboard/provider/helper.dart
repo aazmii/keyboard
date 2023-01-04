@@ -10,6 +10,15 @@ bool isOperator(String char) {
   }
 }
 
+//return true if any operator found
+bool containsOperator(String exp) {
+  if (exp.contains('+')) return true;
+  if (exp.contains('-')) return true;
+  if (exp.contains('*')) return true;
+  if (exp.contains('/')) return true;
+  return false;
+}
+
 String? checkInuput(String? value) {
   String? char;
   if (value!.isEmpty) return '';
@@ -39,9 +48,11 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
   final formKey = ref.watch(formKeyProvider);
   String res = '';
   if (reClculate) return;
-  // if (controller.text.isEmpty) return;
+  if (!containsOperator(controller.text)) return;
   if (!formKey.currentState!.validate()) return;
   if (isOperator(controller.text[controller.text.length - 1])) return;
+  //if no operator
+
   try {
     res = ref
         .read(resultProvider.notifier)
@@ -65,5 +76,4 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
   controller.selection = TextSelection.fromPosition(
     TextPosition(offset: controller.text.length),
   );
-  // print(History.asText);
 }

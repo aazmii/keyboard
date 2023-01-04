@@ -2,6 +2,7 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'history.list.dart';
+import 'ui.notifier.dart';
 
 class HistoryBoard extends ConsumerWidget {
   const HistoryBoard({
@@ -12,14 +13,19 @@ class HistoryBoard extends ConsumerWidget {
 
   final double? numPadHeight;
   final double? displayHeight;
+
   final _duration = const Duration(milliseconds: 600);
   @override
   Widget build(BuildContext context, ref) {
     bool isActive = ref.watch(historyViewProvider);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final activePosition = screenWidth / 4;
+    final deactivePosition = screenWidth;
+
     return AnimatedPositioned(
       duration: _duration,
       curve: Curves.fastOutSlowIn,
-      width: isActive ? 300 : 0,
+      right: isActive ? activePosition : deactivePosition,
       child: Container(
         padding: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
         height: numPadHeight! + displayHeight!,
@@ -67,7 +73,7 @@ class ClearHistoryButton extends StatelessWidget {
         onPressed: () {
           ref.watch(historyProvider.notifier).state = [];
           ref.watch(historyViewProvider.notifier).state = false;
-          // History.histories.clear();
+          notifyUser(context, 'history cleaned');
         },
         child: Text(
           'Clear History',
