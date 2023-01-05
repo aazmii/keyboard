@@ -1,3 +1,5 @@
+enum DeviceType { mobile, tablet, desktop }
+
 enum CalcKey {
   one(keyType: Type.number, charactes: []),
   two(keyType: Type.number, charactes: ['a', 'b', 'c']),

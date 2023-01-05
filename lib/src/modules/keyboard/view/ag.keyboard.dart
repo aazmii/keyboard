@@ -1,9 +1,11 @@
+import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
+import 'package:ag_keyboard/src/modules/keyboard/const/keyboard.constraints.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'components/display.dart';
-import 'components/numpad.dart';
+import 'components/numpad.layout.dart';
 import 'history.board/history.board.dart';
 
 class AgKeyboard extends ConsumerWidget {
@@ -18,14 +20,14 @@ class AgKeyboard extends ConsumerWidget {
     this.pointColor = Colors.grey,
     this.resultColor = Colors.cyan,
     this.displayColor = Colors.grey,
-    this.numPadHeight = 350,
+    this.numpadHeight,
     this.displayHeight = 70,
   });
   final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
       KeyPressProvider.new);
 
   final TextEditingController controller;
-  final double? numPadHeight, displayHeight;
+  final double? numpadHeight, displayHeight;
   final Color? backgroundColor,
       digitColor,
       operatorColor,
@@ -36,43 +38,56 @@ class AgKeyboard extends ConsumerWidget {
   final FocusNode focusNode;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Size size = MediaQuery.of(context).size;
+    double defaultNumpadHeight = size.height * numpadHeightFactor;
+    double displayHeight = size.height * displayHeightFactor;
     final keyPress = ref.watch(keyPressProvider);
-    return Visibility(
-      visible: focusNode.hasFocus,
-      child: Stack(
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Display(),
-              NumPad(
-                backgroundColor: backgroundColor,
-                keyPress: keyPress,
-                controller: controller,
-                digitColor: digitColor,
-                operatorColor: operatorColor,
-                pointColor: pointColor,
-                backButtonColor: backButtonColor,
-                resultColor: resultColor,
-                onTextInput: (value) {
-                  keyPress.insertText(
-                      myText: value, ref: ref, controller: controller);
-                },
-                onBackspace: () => keyPress.backspace(
-                  textController: controller,
-                  ref: ref,
+
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      DeviceType deviceType = getDeviceType(constraints);
+      return Visibility(
+        visible: focusNode.hasFocus,
+        child: Stack(
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Display(height: displayHeight, deviceType: deviceType),
+                NumPadLayout(
+                  deviceType: deviceType,
+                  backgroundColor: backgroundColor,
+                  keyPress: keyPress,
+                  numpadHeight: numpadHeight ?? defaultNumpadHeight,
+                  controller: controller,
+                  digitColor: digitColor,
+                  operatorColor: operatorColor,
+                  pointColor: pointColor,
+                  backButtonColor: backButtonColor,
+                  resultColor: resultColor,
+                  onTextInput: (value) {
+                    keyPress.insertText(
+                        myText: value, ref: ref, controller: controller);
+                  },
+                  onBackspace: () => keyPress.backspace(
+                    textController: controller,
+                    ref: ref,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          HistoryBoard(
-            numPadHeight: numPadHeight,
-            displayHeight: displayHeight,
-          ),
-        ],
-      ),
-    );
+              ],
+            ),
+            if (deviceType == DeviceType.mobile)
+              HistoryBoard(
+                numPadHeight: numpadHeight != null
+                    ? numpadHeight! + displayHeight
+                    : defaultNumpadHeight + displayHeight,
+                displayHeight: displayHeight,
+              )
+          ],
+        ),
+      );
+    });
   }
 
   static String? checkExpression(String? value) {

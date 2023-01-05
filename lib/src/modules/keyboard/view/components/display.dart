@@ -1,11 +1,12 @@
+import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/providers.dart';
-import 'history.button.dart';
 
 class Display extends ConsumerWidget {
-  const Display({super.key, this.height = 70});
+  Display({super.key, this.height = 70, required this.deviceType});
   final double? height;
+  DeviceType deviceType;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -27,7 +28,9 @@ class Display extends ConsumerWidget {
               ],
             ),
           ),
-          const HistoryButton(),
+          deviceType == DeviceType.mobile
+              ? const HistoryButton()
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -75,6 +78,32 @@ class ExpressionList extends ConsumerWidget {
         ref.watch(historyProvider)[index],
         style: const TextStyle(fontSize: 18, color: Colors.white70),
       ),
+    );
+  }
+}
+
+class HistoryButton extends StatelessWidget {
+  const HistoryButton({
+    super.key,
+  });
+  _toggleHistoryView(WidgetRef ref, vlaue) {
+    ref.watch(historyViewProvider.notifier).state = vlaue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        bool isOpen = ref.watch(historyViewProvider);
+        return IconButton(
+          color: isOpen ? Colors.grey : Colors.white,
+          iconSize: 42,
+          onPressed: ref.watch(historyViewProvider)
+              ? null
+              : () => _toggleHistoryView(ref, !isOpen),
+          icon: const Icon(Icons.history),
+        );
+      },
     );
   }
 }

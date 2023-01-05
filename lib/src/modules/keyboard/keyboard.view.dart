@@ -1,7 +1,9 @@
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'view/ag.keyboard.dart';
+import 'view/components/ag.textfield.dart';
 
 class KeyboardView extends ConsumerWidget {
   KeyboardView({super.key});
@@ -10,6 +12,8 @@ class KeyboardView extends ConsumerWidget {
   final Color agDark = const Color(0xff226DC6);
   final bool isKeyboardVisible = false;
   final _controller = TextEditingController();
+
+  final myFocus = TextfieldFocusNode.focusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,11 +41,22 @@ class KeyboardView extends ConsumerWidget {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.none,
                     showCursor: true,
+                    readOnly: true,
                     style: Theme.of(context).textTheme.headlineMedium,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), hintText: ''),
                   ),
                 ),
+                const SizedBox(height: 20),
+                // AgTextField(
+                //   focusNode: myFocus,
+                //   controller: _controller,
+                //   autofocus: true, //doesnt work if false
+                //   style: const TextStyle(color: Colors.black, fontSize: 26),
+                //   onChanged: (value) {
+                //     print(value);
+                //   },
+                // ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -54,11 +69,13 @@ class KeyboardView extends ConsumerWidget {
           ),
           AgKeyboard(
             focusNode: _focusNode1,
+            // focusNode: myFocus,
             controller: _controller,
-            backgroundColor: agLight,
-            digitColor: agDark,
-            operatorColor: Colors.black.withOpacity(0.4),
-            resultColor: Colors.black.withOpacity(0.7),
+            backgroundColor: Colors.black87,
+            digitColor: Colors.grey.shade700,
+            operatorColor: Colors.grey.shade500,
+            resultColor: Colors.grey.shade500,
+            pointColor: Colors.grey.shade800,
           ),
         ],
       ),

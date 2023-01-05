@@ -73,7 +73,7 @@ class ClearHistoryButton extends StatelessWidget {
         onPressed: () {
           ref.watch(historyProvider.notifier).state = [];
           ref.watch(historyViewProvider.notifier).state = false;
-          notifyUser(context, 'history cleaned');
+          notifyUser(context, 'history cleared');
         },
         child: Text(
           'Clear History',
