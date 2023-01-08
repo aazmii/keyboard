@@ -20,7 +20,7 @@ class HistoryBoard extends ConsumerWidget {
         getNumpadHeight(screenHeight: screenHeight);
     bool isActive = ref.watch(historyViewProvider);
     final screenWidth = MediaQuery.of(context).size.width;
-
+    final mysteriousPadding = 10;
     final activePosition = screenWidth / 4;
     final deactivePosition = screenWidth;
 
@@ -33,7 +33,7 @@ class HistoryBoard extends ConsumerWidget {
         child: Container(
           padding:
               const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
-          height: historyBoardHeight,
+          height: historyBoardHeight + mysteriousPadding,
           color: historyColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

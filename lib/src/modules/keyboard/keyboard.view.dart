@@ -1,7 +1,6 @@
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'view/ag.keyboard.dart';
 import 'view/components/ag.textfield.dart';
 
@@ -41,22 +40,12 @@ class KeyboardView extends ConsumerWidget {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.none,
                     showCursor: true,
-                    readOnly: true,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    // readOnly: true,
+                    style: Theme.of(context).textTheme.headlineSmall,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), hintText: ''),
                   ),
                 ),
-                const SizedBox(height: 20),
-                // AgTextField(
-                //   focusNode: myFocus,
-                //   controller: _controller,
-                //   autofocus: true, //doesnt work if false
-                //   style: const TextStyle(color: Colors.black, fontSize: 26),
-                //   onChanged: (value) {
-                //     print(value);
-                //   },
-                // ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -71,12 +60,12 @@ class KeyboardView extends ConsumerWidget {
             focusNode: _focusNode1,
             // focusNode: myFocus,
             controller: _controller,
-            backgroundColor: Colors.black87,
-            digitColor: Colors.blue.shade100,
+            backgroundColor: Colors.grey.shade900,
+            digitColor: Colors.grey.shade700,
             historyColor: Colors.grey.shade900,
-            operatorColor: Colors.blue.shade200,
-            resultColor: Colors.blue.shade50,
+            operatorColor: Colors.grey.shade800,
             pointColor: Colors.grey.shade800,
+            resultColor: Colors.grey.shade600,
           ),
         ],
       ),

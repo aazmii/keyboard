@@ -49,7 +49,7 @@ class CustomKey2 extends ConsumerWidget {
           },
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(5),
               color: color,
             ),
             // width: width,
