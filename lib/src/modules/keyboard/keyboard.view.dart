@@ -73,6 +73,7 @@ class KeyboardView extends ConsumerWidget {
             controller: _controller,
             backgroundColor: Colors.black87,
             digitColor: Colors.grey.shade700,
+            historyColor: Colors.grey.shade900,
             operatorColor: Colors.grey.shade500,
             resultColor: Colors.grey.shade500,
             pointColor: Colors.grey.shade800,

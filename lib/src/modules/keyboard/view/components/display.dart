@@ -4,19 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/providers.dart';
 
 class Display extends ConsumerWidget {
-  Display({super.key, this.height = 70, required this.deviceType});
-  final double? height;
-  DeviceType deviceType;
+  const Display({super.key, required this.deviceType});
+  final double height = 70;
+  final DeviceType deviceType;
 
   @override
   Widget build(BuildContext context, ref) {
     String displayText = ref.watch(displayTextProvider);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+    return SizedBox(
       height: height,
-      width: double.infinity,
-      color: Colors.black45,
       child: Row(
         children: [
           Expanded(
