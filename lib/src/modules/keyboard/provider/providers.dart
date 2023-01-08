@@ -27,3 +27,9 @@ final keyPressProvider =
 final historyViewProvider = StateProvider<bool>((ref) => false);
 
 final historyProvider = StateProvider<List<String>>((ref) => []);
+
+final buttonColorProvider = StateProvider<Color>((ref) => Colors.blue);
+final operatorColorProvider = StateProvider<Color>((ref) => Colors.blue);
+final pointColorProvider = StateProvider<Color>((ref) => Colors.blue);
+final equelColorProvider = StateProvider<Color>((ref) => Colors.blue);
+final backColorProvider = StateProvider<Color>((ref) => Colors.blue);

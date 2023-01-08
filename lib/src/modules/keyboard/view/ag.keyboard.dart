@@ -3,7 +3,6 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'components/constraints.dart';
 import 'components/numpad.layout.dart';
 import 'history.board/history.board.dart';
 
@@ -15,9 +14,9 @@ class AgKeyboard extends ConsumerWidget {
     this.digitColor = Colors.blue,
     this.operatorColor = Colors.cyan,
     required this.focusNode,
-    this.backButtonColor = Colors.black87,
+    this.backButtonColor,
     this.pointColor = Colors.grey,
-    this.resultColor = Colors.cyan,
+    this.resultColor = Colors.grey,
     this.displayColor = Colors.grey,
     this.numpadHeight,
     this.historyColor,
@@ -26,7 +25,6 @@ class AgKeyboard extends ConsumerWidget {
       KeyPressProvider.new);
 
   final TextEditingController controller;
-
   final displayHeight = 70.0;
   final double? numpadHeight;
   final Color? backgroundColor,
@@ -40,7 +38,6 @@ class AgKeyboard extends ConsumerWidget {
   final FocusNode focusNode;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
     final keyPress = ref.watch(keyPressProvider);
 
     return LayoutBuilder(

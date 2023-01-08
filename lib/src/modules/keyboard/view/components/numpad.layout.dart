@@ -2,6 +2,7 @@ import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
+import 'package:ag_keyboard/src/modules/keyboard/view/components/custom.key2.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/display.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/history.board/history.list.dart';
 import 'package:flutter/material.dart';
@@ -15,25 +16,20 @@ class NumPadLayout extends ConsumerWidget {
     this.onTextInput,
     this.onBackspace,
     this.numPadHeight = 350,
-    required this.backgroundColor,
+    this.backgroundColor,
     required this.keyPress,
     required this.controller,
-    required this.digitColor,
-    required this.operatorColor,
-    required this.pointColor,
-    required this.backButtonColor,
-    required this.resultColor,
+    this.digitColor,
+    this.operatorColor,
+    this.pointColor,
+    this.backButtonColor,
+    this.resultColor,
     required this.deviceType,
   });
 
   final Color? backgroundColor;
   final KeyPressProvider keyPress;
   final TextEditingController controller;
-  final Color? digitColor;
-  final Color? operatorColor;
-  final Color? pointColor;
-  final Color? backButtonColor;
-  final Color? resultColor;
   final double numPadHeight;
   final double horizontalSpacing = 30;
   final double vSpacing = 8;
@@ -41,6 +37,11 @@ class NumPadLayout extends ConsumerWidget {
   final VoidCallback? onBackspace;
   final DeviceType deviceType;
   final double _boardWidth = 380;
+  final Color? digitColor,
+      resultColor,
+      backButtonColor,
+      pointColor,
+      operatorColor;
   // void _textInputHandler(String text) => onTextInput!.call(text);
   // void _backspaceHandler() => onBackspace!.call();
 
@@ -52,7 +53,7 @@ class NumPadLayout extends ConsumerWidget {
     bool isDesktop = deviceType == DeviceType.desktop;
     bool isTablet = deviceType == DeviceType.tablet;
     return Container(
-      color: backButtonColor,
+      color: backgroundColor,
       child: Row(
         children: [
           Expanded(
@@ -64,14 +65,23 @@ class NumPadLayout extends ConsumerWidget {
                   height: numpadHeight,
                   width: size.width,
                   child: Row(
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 4,
-                        child: LeftOneThird(),
+                        child: LeftOneThird(
+                          digitColor: digitColor,
+                          operatorColor: operatorColor,
+                          backColor: backButtonColor,
+                          controller: controller,
+                        ),
                       ),
                       Expanded(
                         flex: 1,
-                        child: RightColumn(),
+                        child: RightColumn(
+                          operatorColor: operatorColor,
+                          resColor: resultColor,
+                          controller: controller,
+                        ),
                       ),
                     ],
                   ),
@@ -136,47 +146,94 @@ class NumPadLayout extends ConsumerWidget {
 }
 
 class LeftOneThird extends StatelessWidget {
-  const LeftOneThird({super.key});
+  final Color? digitColor, operatorColor, backColor;
+  final TextEditingController controller;
+  const LeftOneThird({
+    this.digitColor,
+    this.operatorColor,
+    this.backColor,
+    required this.controller,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        Expanded(
-          flex: 12,
-          child: GridButtons(),
-        ),
+      children: [
         Expanded(
           flex: 4,
-          child: BottomRow(),
+          child: GridButtons(
+            digitColor: digitColor,
+            operatorColor: operatorColor,
+            controller: controller,
+            backColor: backColor,
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: BottomRow(
+            digitColor: digitColor,
+            operatorColor: operatorColor,
+            controller: controller,
+          ),
         ),
       ],
     );
   }
 }
 
-class RightColumn extends StatelessWidget {
-  const RightColumn({super.key});
+class RightColumn extends ConsumerWidget {
+  final Color? operatorColor, resColor;
+  final TextEditingController controller;
+  const RightColumn({
+    super.key,
+    required this.controller,
+    this.operatorColor,
+    this.resColor,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final press = ref.watch(keyPressProvider);
     return Padding(
-      padding: const EdgeInsets.only(top: 1.0),
+      padding: const EdgeInsets.only(top: 0.0),
       child: Column(
         children: [
           Expanded(
-            flex: 4,
-            child: demoButton(14),
+            flex: 3,
+            child: CustomKey2(
+              calcKey: CalcKey.substract,
+              color: operatorColor,
+              controller: controller,
+              onTextInput: (value) {
+                press.insertText(
+                    myText: value, ref: ref, controller: controller);
+              },
+            ),
           ),
-          const SizedBox(height: 1),
           Expanded(
             flex: 6,
-            child: demoButton(15),
+            child: CustomKey2(
+              calcKey: CalcKey.add,
+              color: operatorColor,
+              controller: controller,
+              onTextInput: (value) {
+                press.insertText(
+                    myText: value, ref: ref, controller: controller);
+              },
+            ),
           ),
-          const SizedBox(height: 1),
           Expanded(
             flex: 6,
-            child: demoButton(16),
+            child: CustomKey2(
+              calcKey: CalcKey.equalKey,
+              color: resColor,
+              controller: controller,
+              onTextInput: (value) {
+                press.insertText(
+                    myText: value, ref: ref, controller: controller);
+              },
+            ),
           ),
         ],
       ),
@@ -184,128 +241,227 @@ class RightColumn extends StatelessWidget {
   }
 }
 
-class GridButtons extends StatelessWidget {
-  const GridButtons({super.key});
+class GridButtons extends ConsumerWidget {
+  final Color? digitColor, operatorColor, backColor;
+  final TextEditingController controller;
+  const GridButtons({
+    this.digitColor,
+    required this.controller,
+    this.backColor = Colors.red,
+    this.operatorColor,
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(01.0),
-      child: Row(
-        children: [
-          Flexible(
-            flex: 1,
-            // child: demoButton(0),
-            child: backSpaceCol(),
-          ),
-          const SizedBox(width: 1),
-          Flexible(
-            flex: 1,
-            child: divisionColumn(),
-          ),
-          const SizedBox(width: 1),
-          Flexible(
-            flex: 1,
-            child: multiplyColumn(),
-          ),
-        ],
-      ),
+  Widget build(BuildContext context, ref) {
+    return Row(
+      children: [
+        Flexible(
+          flex: 1,
+          // child: demoButton(0),
+          child: backSpaceCol(ref),
+        ),
+        Flexible(
+          flex: 1,
+          child: divisionColumn(ref),
+        ),
+        Flexible(
+          flex: 1,
+          child: multiplyColumn(ref),
+        ),
+      ],
     );
   }
 
-  multiplyColumn() => Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: demoButton(0),
-            ),
-            const SizedBox(height: 1),
-            Flexible(
-              flex: 1,
-              child: demoButton(13),
-            ),
-            const SizedBox(height: 1),
-            Flexible(
-              flex: 1,
-              child: demoButton(13),
-            ),
-          ],
+  multiplyColumn(WidgetRef ref) {
+    final press = ref.watch(keyPressProvider);
+    return Column(
+      children: [
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.multiply,
+            color: operatorColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
         ),
-      );
-  divisionColumn() => Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: demoButton(0),
-            ),
-            const SizedBox(height: 1),
-            Flexible(
-              flex: 1,
-              child: demoButton(13),
-            ),
-            const SizedBox(height: 1),
-            Flexible(
-              flex: 1,
-              child: demoButton(13),
-            ),
-          ],
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.three,
+            color: digitColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
         ),
-      );
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.six,
+            color: digitColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.nine,
+            color: digitColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
-  backSpaceCol() => Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: demoButton(0),
-            ),
-            const SizedBox(height: 1),
-            Flexible(
-              flex: 1,
-              child: demoButton(13),
-            ),
-            const SizedBox(height: 1),
-            Flexible(
-              flex: 1,
-              child: demoButton(13),
-            ),
-          ],
+  divisionColumn(WidgetRef ref) {
+    final press = ref.watch(keyPressProvider);
+    return Column(
+      children: [
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.division,
+            color: operatorColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
         ),
-      );
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.two,
+            color: digitColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.five,
+            color: digitColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.eight,
+            color: digitColor,
+            controller: controller,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  backSpaceCol(WidgetRef ref) {
+    final press = ref.watch(keyPressProvider);
+
+    return Column(
+      children: [
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+              calcKey: CalcKey.backSpace,
+              iconData: Icons.backspace_outlined,
+              color: backColor ?? Colors.red,
+              onBackspace: () =>
+                  press.backspace(textController: controller, ref: ref)
+              // color: Colors.orange,
+              ),
+        ),
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.one,
+            color: digitColor,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.four,
+            color: digitColor,
+            onTextInput: (value) => press.insertText(
+                myText: value, ref: ref, controller: controller),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: CustomKey2(
+            calcKey: CalcKey.seven,
+            color: digitColor,
+            onTextInput: (value) => press.insertText(
+                myText: value, ref: ref, controller: controller),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class BottomRow extends StatelessWidget {
-  const BottomRow({super.key});
+class BottomRow extends ConsumerWidget {
+  final Color? digitColor, operatorColor;
+  final TextEditingController controller;
+  const BottomRow({
+    super.key,
+    this.digitColor,
+    required this.controller,
+    this.operatorColor,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final press = ref.watch(keyPressProvider);
     return Row(
       children: [
         Flexible(
           flex: 2,
-          child: demoButton(12),
+          child: CustomKey2(
+            calcKey: CalcKey.zero,
+            color: digitColor,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
         ),
-        const SizedBox(width: 1),
         Flexible(
           flex: 1,
-          child: demoButton(13),
+          child: CustomKey2(
+            calcKey: CalcKey.point,
+            color: digitColor,
+            onTextInput: (value) {
+              press.insertText(myText: value, ref: ref, controller: controller);
+            },
+          ),
         ),
-        const SizedBox(width: 1),
       ],
     );
   }
 }
-
-Widget demoButton(int num) => Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.blue.shade200,
-      ),
-      // color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-      child: Center(child: Text(num.toString())),
-    );

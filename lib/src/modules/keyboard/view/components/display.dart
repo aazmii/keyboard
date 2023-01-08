@@ -20,13 +20,25 @@ class Display extends ConsumerWidget {
             child: Column(
               children: [
                 const SizedBox(height: 4),
-                DisplayTextWidget(displayText: displayText),
+                // DisplayTextWidget(displayText: displayText),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      displayText,
+                      style: const TextStyle(fontSize: 32, color: Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
                 const Expanded(child: ExpressionList())
               ],
             ),
           ),
           deviceType == DeviceType.mobile
-              ? const HistoryButton()
+              ? HistoryButton()
               : const SizedBox.shrink(),
         ],
       ),
@@ -80,7 +92,9 @@ class ExpressionList extends ConsumerWidget {
 }
 
 class HistoryButton extends StatelessWidget {
-  const HistoryButton({
+  final Color enabledColor = Colors.grey;
+  final Color disabledColor = Colors.grey.shade300;
+  HistoryButton({
     super.key,
   });
   _toggleHistoryView(WidgetRef ref, vlaue) {
@@ -93,7 +107,7 @@ class HistoryButton extends StatelessWidget {
       builder: (context, ref, child) {
         bool isOpen = ref.watch(historyViewProvider);
         return IconButton(
-          color: isOpen ? Colors.grey : Colors.white,
+          color: isOpen ? enabledColor : disabledColor,
           iconSize: 42,
           onPressed: ref.watch(historyViewProvider)
               ? null

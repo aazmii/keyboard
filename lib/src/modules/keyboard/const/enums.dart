@@ -10,7 +10,7 @@ enum CalcKey {
   seven(keyType: Type.number, charactes: ['p', 'q', 'r', 's']),
   eight(keyType: Type.number, charactes: ['t', 'u', 'v']),
   nine(keyType: Type.number, charactes: ['w', 'x', 'y', 'z']),
-  zero(keyType: Type.operator),
+  zero(keyType: Type.number),
   point(keyType: Type.operator),
   add(keyType: Type.operator),
   substract(keyType: Type.operator),
