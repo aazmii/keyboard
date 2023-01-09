@@ -7,13 +7,13 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
   String lastOperator = '';
   String lastChar = '';
   int numOfPoint = 0;
+
   void insertText({
-    required String myText,
+    bool replace = false,
     required WidgetRef ref,
+    required String myText,
     required TextEditingController controller,
   }) {
-    print('myText: $myText');
-    print('controller text:  ${controller.text}');
     // controller.text = controller.text.substring(controller.text.length - 1);
     // print('after treaming ${controller.text}');
 
@@ -74,7 +74,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     );
     final myTextLength = myText.length;
 
-    controller.text = newText;
+    controller.text = replace ? myText : newText;
 
     ref
         .read(displayTextProvider.notifier)
@@ -83,10 +83,14 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         .read(expressionProvider.notifier)
         .update((state) => state = controller.text);
 
-    controller.selection = textSelection.copyWith(
-      baseOffset: textSelection.start + myTextLength,
-      extentOffset: textSelection.start + myTextLength,
-    );
+    if (!replace) {
+      controller.selection = textSelection.copyWith(
+        baseOffset: textSelection.start + myTextLength,
+        extentOffset: textSelection.start + myTextLength,
+      );
+    }
+    print('myText: $myText');
+    print('controller text:  ${controller.text}');
   }
 
   void backspace(

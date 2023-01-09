@@ -40,7 +40,11 @@ class _TestPageState extends State<KeyboardView2> {
                   onChanged: (value) {
                     AgKeyboard.checkExpression(value);
                     ref.watch(keyPressProvider).insertText(
-                        myText: value, ref: ref, controller: _controller);
+                          controller: _controller,
+                          replace: true,
+                          myText: value,
+                          ref: ref,
+                        );
                     // ref.watch(displayTextProvider.notifier).state = value;
                   },
                   controller: _controller,
