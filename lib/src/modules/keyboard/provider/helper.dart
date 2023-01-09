@@ -1,14 +1,15 @@
+import 'package:ag_keyboard/src/extensions/extensions.dart';
 import 'package:ag_keyboard/src/modules/keyboard/const/device.info.dart';
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../const/exp.dart';
+
 DeviceType getDeviceType(BoxConstraints constraints) {
   double height = constraints.maxHeight;
   double width = constraints.maxWidth;
-  // print('width $width');
-  // print('height $height');
   if (width <= maxMobileWidth && height <= maxMobileHeight) {
     return DeviceType.mobile;
   } else if (width <= tabletWidth && height <= tabletHight) {
@@ -65,6 +66,7 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
   String res = '';
   if (reClculate) return;
   if (!containsOperator(controller.text)) return;
+
   if (!formKey.currentState!.validate()) return;
   if (isOperator(controller.text[controller.text.length - 1])) return;
   //if no operator

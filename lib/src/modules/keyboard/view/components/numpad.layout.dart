@@ -112,7 +112,7 @@ class NumPadLayout extends ConsumerWidget {
         children: [
           const SizedBox(height: 12),
           getTitle(context),
-          const Expanded(child: HistoryList()),
+          Expanded(child: HistoryList()),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -204,7 +204,6 @@ class RightColumn extends ConsumerWidget {
             child: CustomKey2(
               calcKey: CalcKey.substract,
               color: operatorColor,
-              controller: controller,
               onTextInput: (value) {
                 press.insertText(
                     myText: value, ref: ref, controller: controller);
@@ -216,7 +215,6 @@ class RightColumn extends ConsumerWidget {
             child: CustomKey2(
               calcKey: CalcKey.add,
               color: operatorColor,
-              controller: controller,
               onTextInput: (value) {
                 press.insertText(
                     myText: value, ref: ref, controller: controller);
@@ -226,13 +224,11 @@ class RightColumn extends ConsumerWidget {
           Expanded(
             flex: 6,
             child: CustomKey2(
+              //!controller needed
+
               calcKey: CalcKey.equalKey,
-              color: resColor,
               controller: controller,
-              onTextInput: (value) {
-                press.insertText(
-                    myText: value, ref: ref, controller: controller);
-              },
+              color: resColor,
             ),
           ),
         ],
@@ -282,7 +278,6 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.multiply,
             color: operatorColor,
-            controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -293,7 +288,6 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.three,
             color: digitColor,
-            controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -304,7 +298,6 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.six,
             color: digitColor,
-            controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -315,7 +308,6 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.nine,
             color: digitColor,
-            controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -334,7 +326,7 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.division,
             color: operatorColor,
-            controller: controller,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -345,7 +337,7 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.two,
             color: digitColor,
-            controller: controller,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -356,7 +348,7 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.five,
             color: digitColor,
-            controller: controller,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -367,7 +359,7 @@ class GridButtons extends ConsumerWidget {
           child: CustomKey2(
             calcKey: CalcKey.eight,
             color: digitColor,
-            controller: controller,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -389,9 +381,7 @@ class GridButtons extends ConsumerWidget {
               iconData: Icons.backspace_outlined,
               color: backColor ?? Colors.red,
               onBackspace: () =>
-                  press.backspace(textController: controller, ref: ref)
-              // color: Colors.orange,
-              ),
+                  press.backspace(textController: controller, ref: ref)),
         ),
         Flexible(
           flex: 1,

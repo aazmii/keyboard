@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HistoryList extends StatelessWidget {
-  const HistoryList({super.key});
+  HistoryList({super.key});
+  final ScrollController _controller = ScrollController(initialScrollOffset: 0);
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
         final historyList = ref.watch(historyProvider);
         return Scrollbar(
+          controller: _controller,
           child: ListView.separated(
+            controller: _controller,
             reverse: true,
             itemCount: historyList.length,
             separatorBuilder: (BuildContext context, int index) =>

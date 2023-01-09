@@ -6,3 +6,4 @@
 6. .9.9 invalid input.
 7. bracket er feature add korte hobe. ❌
 8. 11 = 11 ✔
+9. history panel padding issue in mobile mode. 

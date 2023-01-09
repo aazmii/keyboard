@@ -12,6 +12,11 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     required WidgetRef ref,
     required TextEditingController controller,
   }) {
+    print('myText: $myText');
+    print('controller text:  ${controller.text}');
+    // controller.text = controller.text.substring(controller.text.length - 1);
+    // print('after treaming ${controller.text}');
+
     bool repeat = ref.watch(shouldRecalculateProvider);
     if (repeat) {
       if (!isOperator(myText)) {
@@ -25,6 +30,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
             '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
       }
     }
+
     //first char cant be operator except (-)
     if (controller.text.isEmpty) {
       numOfPoint = 0;
@@ -58,14 +64,16 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     }
 
     final text = controller.text;
+    // print(text.length);
+
     final textSelection = controller.selection;
     final newText = text.replaceRange(
       textSelection.start,
       textSelection.end,
       myText,
     );
-
     final myTextLength = myText.length;
+
     controller.text = newText;
 
     ref

@@ -1,8 +1,10 @@
+import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
+import 'const/exp.dart';
 import 'view/ag.keyboard.dart';
-import 'view/components/ag.textfield.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class KeyboardView2 extends StatefulWidget {
   const KeyboardView2({super.key});
@@ -16,7 +18,6 @@ class _TestPageState extends State<KeyboardView2> {
   VoidCallback? _showPersistantBottomSheetCallBack;
   final FocusNode _focusNode1 = FocusNode();
   final _controller = TextEditingController();
-
   @override
   void initState() {
     _showPersistantBottomSheetCallBack = _showBottomSheet;
@@ -27,26 +28,38 @@ class _TestPageState extends State<KeyboardView2> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: TextFormField(
-              controller: _controller,
-              focusNode: _focusNode1,
-              onTap: _showPersistantBottomSheetCallBack,
-              // validator: (value) {
-              //   return AgKeyboard.checkExpression(value);
-              // },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.none,
-              showCursor: true,
-              style: Theme.of(context).textTheme.headlineSmall,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), hintText: ''),
+      body: Consumer(
+        builder: (context, ref, child) => Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              child: Form(
+                key: ref.read(formKeyProvider),
+                child: TextFormField(
+                  onFieldSubmitted: (value) {},
+                  onChanged: (value) {
+                    AgKeyboard.checkExpression(value);
+                    ref.watch(keyPressProvider).insertText(
+                        myText: value, ref: ref, controller: _controller);
+                    // ref.watch(displayTextProvider.notifier).state = value;
+                  },
+                  controller: _controller,
+                  focusNode: _focusNode1,
+                  onTap: _showPersistantBottomSheetCallBack,
+                  validator: (value) {
+                    return AgKeyboard.checkExpression(value);
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  keyboardType: TextInputType.none,
+                  showCursor: true,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), hintText: ''),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

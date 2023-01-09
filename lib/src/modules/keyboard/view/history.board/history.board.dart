@@ -40,7 +40,7 @@ class HistoryBoard extends ConsumerWidget {
             children: [
               _closeButton(ref: ref, context: context, name: 'Keyboard'),
               // ClearHistoryButton(),
-              const Expanded(
+              Expanded(
                 child: HistoryList(),
               ),
               const ClearHistoryButton(),
