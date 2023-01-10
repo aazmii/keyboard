@@ -48,6 +48,11 @@ class CustomKey2 extends ConsumerWidget {
             }
           },
           child: Container(
+            constraints: const BoxConstraints(
+              minWidth: 50,
+              minHeight: 100,
+              maxHeight: 100,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: color,

@@ -1,6 +1,5 @@
-// RegExp expPattern = RegExp(r'\d+\.?\d* [\+\-\*\/] \d+\.?\d*');
-// RegExp expPattern = RegExp(r'[0-9]+[,.]{0,1}[0-9]*');
-RegExp expPattern = RegExp(r'(\d+)([\+\-\*\/])(\d+)$');
+RegExp regexPattern =
+    RegExp(r'^(([+-]?((\d+(\.\d*)?)|(\.\d+)))([+|\-|\*|\/]{1}?))+');
 
 // ^(\d+)([\+\-\*\/])(\d+)$
 // Test the regular expression
@@ -16,3 +15,4 @@ RegExp expPattern = RegExp(r'(\d+)([\+\-\*\/])(\d+)$');
                   // FilteringTextInputFormatter.allow(RegExp("[0-9\.\+\-\s]")),
                   // FilteringTextInputFormatter.allow(expPattern),
                   // ],
+// ^[-+]?[0-9]+([-+*/]+[-+]?[0-9]+)*$ 

@@ -1,6 +1,7 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'components/numpad.layout.dart';
@@ -24,6 +25,21 @@ class AgKeyboard extends ConsumerWidget {
   final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
       KeyPressProvider.new);
 
+  static void onChangeHandler({required String value, required WidgetRef ref}) {
+    ref.watch(displayTextProvider.notifier).state = value;
+  }
+
+  static void onFieldSubmittedHandler(
+      {required String value,
+      required WidgetRef ref,
+      required TextEditingController controller,
+      required FocusNode focusNode}) {
+    ref.watch(expressionProvider.notifier).state = controller.text;
+    calculateResult(ref, controller);
+    ref.watch(shouldRecalculateProvider.notifier).state = false;
+    focusNode.requestFocus();
+  }
+
   final TextEditingController controller;
   final displayHeight = 70.0;
   final double? numpadHeight;
@@ -45,7 +61,7 @@ class AgKeyboard extends ConsumerWidget {
         DeviceType deviceType = getDeviceType(constraints);
         return Visibility(
           // visible: focusNode.hasFocus,
-          visible: true,
+          // visible: true,
           child: Stack(
             children: [
               Column(
@@ -84,7 +100,7 @@ class AgKeyboard extends ConsumerWidget {
     );
   }
 
-  static String? checkExpression(String? value) {
+  static String? agValidator(String? value) {
     return checkInuput(value);
   }
 }

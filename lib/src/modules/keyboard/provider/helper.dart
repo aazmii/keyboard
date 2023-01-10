@@ -1,12 +1,10 @@
-import 'package:ag_keyboard/src/extensions/extensions.dart';
 import 'package:ag_keyboard/src/modules/keyboard/const/device.info.dart';
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../const/exp.dart';
-
+RegExp exp = RegExp(r'^(([+-]?((\d+(\.\d*)?)|(\.\d+)))([+|\-|\*|\/]{1}?))+');
 DeviceType getDeviceType(BoxConstraints constraints) {
   double height = constraints.maxHeight;
   double width = constraints.maxWidth;
@@ -61,10 +59,12 @@ String? checkInuput(String? value) {
 }
 
 calculateResult(WidgetRef ref, TextEditingController controller) {
-  bool reClculate = ref.watch(shouldRecalculateProvider);
+  bool recalculate = ref.watch(shouldRecalculateProvider);
   final formKey = ref.watch(formKeyProvider);
   String res = '';
-  if (reClculate) return;
+
+  if (recalculate) return;
+
   if (!containsOperator(controller.text)) return;
 
   if (!formKey.currentState!.validate()) return;

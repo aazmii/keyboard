@@ -20,7 +20,6 @@ class HistoryBoard extends ConsumerWidget {
         getNumpadHeight(screenHeight: screenHeight);
     bool isActive = ref.watch(historyViewProvider);
     final screenWidth = MediaQuery.of(context).size.width;
-    final mysteriousPadding = 10;
     final activePosition = screenWidth / 4;
     final deactivePosition = screenWidth;
 
@@ -28,24 +27,20 @@ class HistoryBoard extends ConsumerWidget {
       duration: _duration,
       curve: Curves.fastOutSlowIn,
       right: isActive ? activePosition : deactivePosition,
-      child: SizedBox(
+      child: Container(
+        padding: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
+        height: historyBoardHeight + screenHeight * 0.1,
         width: MediaQuery.of(context).size.width * 0.75,
-        child: Container(
-          padding:
-              const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
-          height: historyBoardHeight + mysteriousPadding,
-          color: historyColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _closeButton(ref: ref, context: context, name: 'Keyboard'),
-              // ClearHistoryButton(),
-              Expanded(
-                child: HistoryList(),
-              ),
-              const ClearHistoryButton(),
-            ],
-          ),
+        color: historyColor,
+        child: Column(
+          children: [
+            _closeButton(ref: ref, context: context, name: 'Keyboard'),
+            SizedBox(
+              height: screenHeight * 0.48,
+              child: HistoryList(),
+            ),
+            const ClearHistoryButton(),
+          ],
         ),
       ),
     );
@@ -53,8 +48,8 @@ class HistoryBoard extends ConsumerWidget {
 
   Widget _closeButton(
       {String name = '', required ref, required BuildContext context}) {
-    return TextButton(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         ref.watch(historyViewProvider.notifier).state = false;
       },
       child: Text(

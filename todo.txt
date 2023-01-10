@@ -6,4 +6,11 @@
 6. .9.9 invalid input.
 7. bracket er feature add korte hobe. ❌
 8. 11 = 11 ✔
-9. history panel padding issue in mobile mode. 
+9. physical keyboard diye type kora expression modify korte gele cursor jump kore end 
+e chole ashe . ✔
+10. everytime in desktop mode enter press korar por textfild unfocus hoye jacche ✔
+11. history panel padding issue just in mobile emulator. ✔
+13. history board behaviour responsivness onujayi accurate na ✔
+14. send history board back to place when keyboard dismissed 
+15. pixel overflow when window shrinked 
+16. focusnode should be disposed after usage

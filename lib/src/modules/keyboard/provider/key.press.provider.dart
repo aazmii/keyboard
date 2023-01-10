@@ -14,9 +14,6 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     required String myText,
     required TextEditingController controller,
   }) {
-    // controller.text = controller.text.substring(controller.text.length - 1);
-    // print('after treaming ${controller.text}');
-
     bool repeat = ref.watch(shouldRecalculateProvider);
     if (repeat) {
       if (!isOperator(myText)) {
@@ -26,8 +23,10 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         ref.watch(expressionProvider.notifier).state = '';
       } else {
         ref.watch(shouldRecalculateProvider.notifier).state = false;
+        //show result on display
         ref.watch(displayTextProvider.notifier).state =
             '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
+        controller.clear();
       }
     }
 
@@ -64,18 +63,14 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     }
 
     final text = controller.text;
-    // print(text.length);
-
     final textSelection = controller.selection;
     final newText = text.replaceRange(
       textSelection.start,
       textSelection.end,
       myText,
     );
-    final myTextLength = myText.length;
-
+    final myTextLength = replace ? 0 : myText.length;
     controller.text = replace ? myText : newText;
-
     ref
         .read(displayTextProvider.notifier)
         .update((state) => state = controller.text);
@@ -83,14 +78,15 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         .read(expressionProvider.notifier)
         .update((state) => state = controller.text);
 
-    if (!replace) {
-      controller.selection = textSelection.copyWith(
+    controller.selection = textSelection.copyWith(
         baseOffset: textSelection.start + myTextLength,
-        extentOffset: textSelection.start + myTextLength,
+        extentOffset: textSelection.start + myTextLength);
+
+    if (replace) {
+      controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length),
       );
     }
-    print('myText: $myText');
-    print('controller text:  ${controller.text}');
   }
 
   void backspace(
@@ -98,6 +94,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
+
     bool isUtf16Surrogate(int value) {
       return value & 0xF800 == 0xD800;
     }
