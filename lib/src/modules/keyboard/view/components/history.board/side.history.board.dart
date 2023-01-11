@@ -1,4 +1,3 @@
-import 'package:ag_keyboard/src/extensions/cntx.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/history.list.dart';
@@ -8,7 +7,7 @@ import 'ui.notifier.dart';
 
 class SideHistoryBoard extends StatelessWidget {
   const SideHistoryBoard({super.key});
-  final double iconSizeLarge = 40;
+  final double iconSizeLarge = 30;
   final double iconSizeSmall = 40;
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class SideHistoryBoard extends StatelessWidget {
           Expanded(child: HistoryList()),
           Consumer(builder: (context, ref, child) {
             return Padding(
-              padding: const EdgeInsets.only(right: 20.0, bottom: 20),
+              padding: const EdgeInsets.only(right: 20.0, bottom: 15),
               child: IconButton(
                 color: Colors.grey,
                 onPressed: () {
@@ -34,7 +33,7 @@ class SideHistoryBoard extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.delete,
-                  size: context.isPhone ? iconSizeSmall : iconSizeLarge,
+                  size: iconSizeLarge,
                 ),
               ),
             );
