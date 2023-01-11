@@ -89,10 +89,13 @@ class NumPadLayout extends ConsumerWidget {
               child: SideHistoryBoard(),
             ),
           if (isDesktop)
-            SizedBox(
-              width: _boardWidth,
-              height: keyboardHeight(screenHeight: size.height),
-              child: const SideHistoryBoard(),
+            Expanded(
+              flex: 5,
+              child: SizedBox(
+                width: _boardWidth,
+                height: keyboardHeight(screenHeight: size.height),
+                child: const SideHistoryBoard(),
+              ),
             ),
         ],
       ),
