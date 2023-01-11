@@ -26,7 +26,7 @@ class VisibilityView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
+            child: ListView(
               children: [
                 Consumer(
                   builder: (context, ref, child) {

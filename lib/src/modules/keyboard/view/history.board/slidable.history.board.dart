@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/extensions/cntx.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'history.list.dart';
 import 'ui.notifier.dart';
 
-class HistoryBoard extends ConsumerWidget {
-  const HistoryBoard({
+class SlidableHistoryBoard extends ConsumerWidget {
+  const SlidableHistoryBoard({
     this.historyColor = Colors.lightBlue,
     super.key,
   });
@@ -32,7 +33,8 @@ class HistoryBoard extends ConsumerWidget {
         height: historyBoardHeight + screenHeight * 0.1,
         width: MediaQuery.of(context).size.width * 0.75,
         color: historyColor,
-        child: Column(
+        child: ListView(
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _closeButton(ref: ref, context: context, name: 'Keyboard'),
             SizedBox(
@@ -52,11 +54,13 @@ class HistoryBoard extends ConsumerWidget {
       onTap: () {
         ref.watch(historyViewProvider.notifier).state = false;
       },
-      child: Text(
-        name,
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: Colors.white,
-            ),
+      child: Center(
+        child: Text(
+          name,
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                color: Colors.white,
+              ),
+        ),
       ),
     );
   }
@@ -78,9 +82,7 @@ class ClearHistoryButton extends StatelessWidget {
         },
         child: Text(
           'Clear History',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                color: Colors.white,
-              ),
+          style: TextStyle(fontSize: context.txtSize - 2),
         ),
       ),
     );

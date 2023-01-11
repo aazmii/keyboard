@@ -12,6 +12,5 @@ e chole ashe . ✔
 11. history panel padding issue just in mobile emulator. ✔
 13. history board behaviour responsivness onujayi accurate na ✔
 14. send history board back to place when keyboard dismissed 
-15. pixel overflow when window shrinked 
-16. focusnode should be disposed after usage
-. use listview instead of column in history 
+15. pixel overflow when window shrinked ✔
+. use listview instead of column in history ✔

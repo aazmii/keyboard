@@ -4,8 +4,8 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dar
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'components/numpad.layout.dart';
-import 'history.board/history.board.dart';
+import 'components/layout/numpad.layout.dart';
+import 'history.board/slidable.history.board.dart';
 
 class AgKeyboard extends ConsumerWidget {
   AgKeyboard({
@@ -87,7 +87,7 @@ class AgKeyboard extends ConsumerWidget {
               ],
             ),
             if (deviceType == DeviceType.mobile)
-              HistoryBoard(
+              SlidableHistoryBoard(
                 historyColor: historyColor,
               )
           ],
