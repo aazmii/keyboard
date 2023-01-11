@@ -22,7 +22,7 @@ class RightColumn extends ConsumerWidget {
       child: Column(
         children: [
           Expanded(
-            flex: 3,
+            flex: 8,
             child: CustomKey(
               calcKey: CalcKey.substract,
               color: operatorColor,
@@ -33,7 +33,7 @@ class RightColumn extends ConsumerWidget {
             ),
           ),
           Expanded(
-            flex: 6,
+            flex: 15,
             child: CustomKey(
               calcKey: CalcKey.add,
               color: operatorColor,
@@ -44,7 +44,7 @@ class RightColumn extends ConsumerWidget {
             ),
           ),
           Expanded(
-            flex: 6,
+            flex: 15,
             child: CustomKey(
               //!controller needed
 

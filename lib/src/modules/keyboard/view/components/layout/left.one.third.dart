@@ -19,7 +19,7 @@ class LeftOneThird extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          flex: 4,
+          flex: 5,
           child: GridButtons(
             digitColor: digitColor,
             operatorColor: operatorColor,

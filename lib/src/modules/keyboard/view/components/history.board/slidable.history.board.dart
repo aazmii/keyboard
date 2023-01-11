@@ -34,14 +34,13 @@ class SlidableHistoryBoard extends ConsumerWidget {
         width: MediaQuery.of(context).size.width * 0.75,
         color: historyColor,
         child: ListView(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _closeButton(ref: ref, context: context, name: 'Keyboard'),
             SizedBox(
               height: screenHeight * 0.48,
               child: HistoryList(),
             ),
-            const ClearHistoryButton(),
+            const Center(child: ClearHistoryButton()),
           ],
         ),
       ),
@@ -55,12 +54,7 @@ class SlidableHistoryBoard extends ConsumerWidget {
         ref.watch(historyViewProvider.notifier).state = false;
       },
       child: Center(
-        child: Text(
-          name,
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: Colors.white,
-              ),
-        ),
+        child: Text(name, style: TextStyle(fontSize: context.txtSize + 8)),
       ),
     );
   }
@@ -74,15 +68,21 @@ class ClearHistoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (context, ref, child) => TextButton(
-        onPressed: () {
-          ref.watch(historyProvider.notifier).state = [];
-          ref.watch(historyViewProvider.notifier).state = false;
-          notifyUser(context, 'history cleared');
-        },
-        child: Text(
-          'Clear History',
-          style: TextStyle(fontSize: context.txtSize - 2),
+      builder: (context, ref, child) => Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: GestureDetector(
+            onTap: () {
+              ref.watch(historyProvider.notifier).state = [];
+              ref.watch(historyViewProvider.notifier).state = false;
+              notifyUser(context, 'history cleared');
+            },
+            child: Text(
+              'Clear History',
+              style: TextStyle(fontSize: context.txtSize - 2),
+            ),
+          ),
         ),
       ),
     );

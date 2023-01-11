@@ -3,7 +3,7 @@ import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dar
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/display.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/layout/left.one.third.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/history.board/side.history.board.dart';
+import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/side.history.board.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'columns/right.column.dart';

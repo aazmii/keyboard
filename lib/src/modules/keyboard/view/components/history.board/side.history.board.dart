@@ -1,7 +1,7 @@
 import 'package:ag_keyboard/src/extensions/cntx.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/history.board/history.list.dart';
+import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/history.list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'ui.notifier.dart';
@@ -31,7 +31,7 @@ class SideHistoryBoard extends StatelessWidget {
               },
               icon: const Icon(
                 Icons.delete,
-                // size: iconSize,
+                size: 30,
               ),
             );
           })
