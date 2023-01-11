@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../const/enums.dart';
 
-class CustomKey2 extends ConsumerWidget {
-  const CustomKey2({
+class CustomKey extends ConsumerWidget {
+  const CustomKey({
     super.key,
     required this.calcKey,
     this.controller,
@@ -29,56 +29,51 @@ class CustomKey2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return LayoutBuilder(builder: (BuildContext context, constraints) {
-      getDeviceType(constraints);
-
-      return Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: InkWell(
-          onTap: () {
-            if (calcKey.keyType == Type.number ||
-                calcKey.keyType == Type.operator) {
-              return _textInputHandler(calcKey.getChar(calcKey));
-            }
-            if (calcKey.keyType == Type.backspace) {
-              return _backspaceHandler();
-            }
-            if (calcKey.keyType == Type.equal) {
-              controller != null ? calculateResult(ref, controller!) : null;
-            }
-          },
-          child: Container(
-            constraints: const BoxConstraints(
-              minWidth: 50,
-              minHeight: 100,
-              maxHeight: 100,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: color,
-            ),
-            // width: width,
-            child: Center(
-              child: _buildButton(calcKey: calcKey),
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: InkWell(
+        onTap: () {
+          if (calcKey.keyType == Type.number ||
+              calcKey.keyType == Type.operator) {
+            return _textInputHandler(calcKey.getChar(calcKey));
+          }
+          if (calcKey.keyType == Type.backspace) {
+            return _backspaceHandler();
+          }
+          if (calcKey.keyType == Type.equal) {
+            controller != null ? calculateResult(ref, controller!) : null;
+          }
+        },
+        child: Container(
+          constraints: const BoxConstraints(
+            minWidth: 50,
+            minHeight: 100,
+            maxHeight: 100,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: color,
+          ),
+          child: Center(
+            child: _buildButton(calcKey: calcKey),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   _buildButton({required CalcKey calcKey}) {
     return calcKey.keyType != Type.backspace
         ? Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                calcKey.getChar(calcKey),
-                style: calcKey.keyType == Type.operator
-                    ? operatorStyle
-                    : digitStyle,
+              Center(
+                child: Text(
+                  calcKey.getChar(calcKey),
+                  style: calcKey.keyType == Type.operator
+                      ? operatorStyle
+                      : digitStyle,
+                ),
               ),
               calcKey.charactes != null
                   ? getphabet(calcKey.charactes)

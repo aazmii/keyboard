@@ -15,7 +15,7 @@ class NumPadLayout extends ConsumerWidget {
     super.key,
     this.onTextInput,
     this.onBackspace,
-    this.numPadHeight = 350,
+    // this.numPadHeight = 350,
     this.backgroundColor,
     required this.keyPress,
     required this.controller,
@@ -30,7 +30,7 @@ class NumPadLayout extends ConsumerWidget {
   final Color? backgroundColor;
   final KeyPressProvider keyPress;
   final TextEditingController controller;
-  final double numPadHeight;
+  // final double numPadHeight;
   final double horizontalSpacing = 30;
   final double vSpacing = 8;
   final ValueSetter<String>? onTextInput;
@@ -201,7 +201,7 @@ class RightColumn extends ConsumerWidget {
         children: [
           Expanded(
             flex: 3,
-            child: CustomKey2(
+            child: CustomKey(
               calcKey: CalcKey.substract,
               color: operatorColor,
               onTextInput: (value) {
@@ -212,7 +212,7 @@ class RightColumn extends ConsumerWidget {
           ),
           Expanded(
             flex: 6,
-            child: CustomKey2(
+            child: CustomKey(
               calcKey: CalcKey.add,
               color: operatorColor,
               onTextInput: (value) {
@@ -223,7 +223,7 @@ class RightColumn extends ConsumerWidget {
           ),
           Expanded(
             flex: 6,
-            child: CustomKey2(
+            child: CustomKey(
               //!controller needed
 
               calcKey: CalcKey.equalKey,
@@ -275,7 +275,7 @@ class GridButtons extends ConsumerWidget {
       children: [
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.multiply,
             color: operatorColor,
             onTextInput: (value) {
@@ -285,7 +285,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.three,
             color: digitColor,
             onTextInput: (value) {
@@ -295,7 +295,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.six,
             color: digitColor,
             onTextInput: (value) {
@@ -305,7 +305,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.nine,
             color: digitColor,
             onTextInput: (value) {
@@ -323,7 +323,7 @@ class GridButtons extends ConsumerWidget {
       children: [
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.division,
             color: operatorColor,
             // controller: controller,
@@ -334,7 +334,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.two,
             color: digitColor,
             // controller: controller,
@@ -345,7 +345,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.five,
             color: digitColor,
             // controller: controller,
@@ -356,7 +356,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.eight,
             color: digitColor,
             // controller: controller,
@@ -376,7 +376,7 @@ class GridButtons extends ConsumerWidget {
       children: [
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
               calcKey: CalcKey.backSpace,
               iconData: Icons.backspace_outlined,
               color: backColor ?? Colors.red,
@@ -385,7 +385,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.one,
             color: digitColor,
             onTextInput: (value) {
@@ -395,7 +395,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.four,
             color: digitColor,
             onTextInput: (value) => press.insertText(
@@ -404,7 +404,7 @@ class GridButtons extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.seven,
             color: digitColor,
             onTextInput: (value) => press.insertText(
@@ -433,7 +433,7 @@ class BottomRow extends ConsumerWidget {
       children: [
         Flexible(
           flex: 2,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.zero,
             color: digitColor,
             onTextInput: (value) {
@@ -443,7 +443,7 @@ class BottomRow extends ConsumerWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomKey2(
+          child: CustomKey(
             calcKey: CalcKey.point,
             color: digitColor,
             onTextInput: (value) {

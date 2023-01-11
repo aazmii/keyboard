@@ -13,6 +13,7 @@ class Display extends ConsumerWidget {
     String displayText = ref.watch(displayTextProvider);
 
     return SizedBox(
+      // color: Colors.blue,
       height: height,
       child: Padding(
         padding: const EdgeInsets.only(left: 5.0),
@@ -29,8 +30,10 @@ class Display extends ConsumerWidget {
                       scrollDirection: Axis.horizontal,
                       child: Text(
                         displayText,
-                        style:
-                            const TextStyle(fontSize: 32, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 28,
+                          color: Colors.white,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -116,7 +119,10 @@ class HistoryButton extends StatelessWidget {
           onPressed: ref.watch(historyViewProvider)
               ? null
               : () => _toggleHistoryView(ref, !isOpen),
-          icon: const Icon(Icons.history),
+          icon: const Icon(
+            Icons.history,
+            size: 35,
+          ),
         );
       },
     );

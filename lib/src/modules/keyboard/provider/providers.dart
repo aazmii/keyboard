@@ -33,3 +33,5 @@ final operatorColorProvider = StateProvider<Color>((ref) => Colors.blue);
 final pointColorProvider = StateProvider<Color>((ref) => Colors.blue);
 final equelColorProvider = StateProvider<Color>((ref) => Colors.blue);
 final backColorProvider = StateProvider<Color>((ref) => Colors.blue);
+
+final alphabetSizeProvider = StateProvider.autoDispose<double>((ref) => 10);

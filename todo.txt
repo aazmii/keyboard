@@ -14,3 +14,4 @@ e chole ashe . ✔
 14. send history board back to place when keyboard dismissed 
 15. pixel overflow when window shrinked 
 16. focusnode should be disposed after usage
+. use listview instead of column in history 

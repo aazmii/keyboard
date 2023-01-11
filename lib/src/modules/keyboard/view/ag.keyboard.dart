@@ -19,7 +19,7 @@ class AgKeyboard extends ConsumerWidget {
     this.pointColor = Colors.grey,
     this.resultColor = Colors.grey,
     this.displayColor = Colors.grey,
-    this.numpadHeight,
+    // this.numpadHeight,
     this.historyColor,
   });
   final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
@@ -42,7 +42,7 @@ class AgKeyboard extends ConsumerWidget {
 
   final TextEditingController controller;
   final displayHeight = 70.0;
-  final double? numpadHeight;
+  // final double? numpadHeight;
   final Color? backgroundColor,
       digitColor,
       operatorColor,
@@ -59,42 +59,38 @@ class AgKeyboard extends ConsumerWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         DeviceType deviceType = getDeviceType(constraints);
-        return Visibility(
-          // visible: focusNode.hasFocus,
-          // visible: true,
-          child: Stack(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  NumPadLayout(
-                    deviceType: deviceType,
-                    backgroundColor: backgroundColor,
-                    keyPress: keyPress,
-                    controller: controller,
-                    digitColor: digitColor,
-                    operatorColor: operatorColor,
-                    pointColor: pointColor,
-                    backButtonColor: backButtonColor,
-                    resultColor: resultColor,
-                    onTextInput: (value) {
-                      keyPress.insertText(
-                          myText: value, ref: ref, controller: controller);
-                    },
-                    onBackspace: () => keyPress.backspace(
-                      textController: controller,
-                      ref: ref,
-                    ),
+        return Stack(
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                NumPadLayout(
+                  deviceType: deviceType,
+                  backgroundColor: backgroundColor,
+                  keyPress: keyPress,
+                  controller: controller,
+                  digitColor: digitColor,
+                  operatorColor: operatorColor,
+                  pointColor: pointColor,
+                  backButtonColor: backButtonColor,
+                  resultColor: resultColor,
+                  onTextInput: (value) {
+                    keyPress.insertText(
+                        myText: value, ref: ref, controller: controller);
+                  },
+                  onBackspace: () => keyPress.backspace(
+                    textController: controller,
+                    ref: ref,
                   ),
-                ],
-              ),
-              if (deviceType == DeviceType.mobile)
-                HistoryBoard(
-                  historyColor: historyColor,
-                )
-            ],
-          ),
+                ),
+              ],
+            ),
+            if (deviceType == DeviceType.mobile)
+              HistoryBoard(
+                historyColor: historyColor,
+              )
+          ],
         );
       },
     );
