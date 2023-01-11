@@ -8,11 +8,12 @@ import 'ui.notifier.dart';
 
 class SideHistoryBoard extends StatelessWidget {
   const SideHistoryBoard({super.key});
-  final double iconSize = 40;
+  final double iconSizeLarge = 40;
+  final double iconSizeSmall = 40;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    if (context.isDesktop) {}
+
     return SizedBox(
       height: keyboardHeight(screenHeight: size.height - 10),
       child: Column(
@@ -22,16 +23,19 @@ class SideHistoryBoard extends StatelessWidget {
           Center(child: getTitle(context)),
           Expanded(child: HistoryList()),
           Consumer(builder: (context, ref, child) {
-            return IconButton(
-              color: Colors.grey,
-              onPressed: () {
-                ref.watch(historyProvider.notifier).state = [];
-                ref.watch(historyViewProvider.notifier).state = false;
-                notifyUser(context, 'history cleared');
-              },
-              icon: const Icon(
-                Icons.delete,
-                size: 30,
+            return Padding(
+              padding: const EdgeInsets.only(right: 20.0, bottom: 20),
+              child: IconButton(
+                color: Colors.grey,
+                onPressed: () {
+                  ref.watch(historyProvider.notifier).state = [];
+                  ref.watch(historyViewProvider.notifier).state = false;
+                  notifyUser(context, 'history cleared');
+                },
+                icon: Icon(
+                  Icons.delete,
+                  size: context.isPhone ? iconSizeSmall : iconSizeLarge,
+                ),
               ),
             );
           })
