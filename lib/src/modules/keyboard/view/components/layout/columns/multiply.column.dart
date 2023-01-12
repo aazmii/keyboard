@@ -24,6 +24,7 @@ class MultiplyColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.multiply,
             color: operatorColor,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -34,6 +35,7 @@ class MultiplyColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.three,
             color: digitColor,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -44,6 +46,7 @@ class MultiplyColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.six,
             color: digitColor,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -54,6 +57,7 @@ class MultiplyColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.nine,
             color: digitColor,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },

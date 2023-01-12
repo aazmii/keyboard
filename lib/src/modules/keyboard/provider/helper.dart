@@ -91,6 +91,7 @@ calculateResult(WidgetRef ref, TextEditingController controller) {
   ref.read(displayTextProvider.notifier).state = '';
   ref.watch(shouldRecalculateProvider.notifier).state = true;
   controller.text = res;
+
   controller.selection = TextSelection.fromPosition(
     TextPosition(offset: controller.text.length),
   );

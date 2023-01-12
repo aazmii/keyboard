@@ -34,6 +34,7 @@ class BackspaceColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.one,
             color: digitColor,
+            // controller: controller,
             onTextInput: (value) {
               press.insertText(myText: value, ref: ref, controller: controller);
             },
@@ -44,6 +45,7 @@ class BackspaceColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.four,
             color: digitColor,
+            // controller: controller,
             onTextInput: (value) => press.insertText(
                 myText: value, ref: ref, controller: controller),
           ),
@@ -53,6 +55,7 @@ class BackspaceColumn extends ConsumerWidget {
           child: AgButton(
             calcKey: CalcKey.seven,
             color: digitColor,
+            // controller: controller,
             onTextInput: (value) => press.insertText(
                 myText: value, ref: ref, controller: controller),
           ),

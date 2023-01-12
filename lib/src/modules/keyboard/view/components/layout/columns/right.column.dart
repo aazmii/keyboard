@@ -25,6 +25,7 @@ class RightColumn extends ConsumerWidget {
             flex: 8,
             child: AgButton(
               calcKey: CalcKey.substract,
+              // controller: controller,
               color: operatorColor,
               onTextInput: (value) {
                 press.insertText(
@@ -36,6 +37,7 @@ class RightColumn extends ConsumerWidget {
             flex: 15,
             child: AgButton(
               calcKey: CalcKey.add,
+              // controller: controller,
               color: operatorColor,
               onTextInput: (value) {
                 press.insertText(
@@ -46,8 +48,6 @@ class RightColumn extends ConsumerWidget {
           Expanded(
             flex: 15,
             child: AgButton(
-              //!controller needed
-
               calcKey: CalcKey.equalKey,
               controller: controller,
               color: resColor,

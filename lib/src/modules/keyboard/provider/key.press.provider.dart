@@ -26,7 +26,6 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         //show result on display
         ref.watch(displayTextProvider.notifier).state =
             '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
-        controller.clear();
       }
     }
 
@@ -45,9 +44,9 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         numOfPoint++;
       }
 
+      //blocks multiple point in a number
       if (isOperator(lastChar) && isOperator(myText)) {
         final text = ref.watch(expressionProvider.notifier).state;
-
         numOfPoint = 0;
         ref.watch(expressionProvider.notifier).state =
             text.substring(0, text.length - 1);

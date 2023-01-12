@@ -24,7 +24,6 @@ class Display extends ConsumerWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 4),
-                  // DisplayTextWidget(displayText: displayText),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: SingleChildScrollView(
@@ -40,6 +39,7 @@ class Display extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 4),
                   const Expanded(child: ExpressionList())
                 ],
               ),
@@ -89,7 +89,7 @@ class ExpressionList extends ConsumerWidget {
       itemCount: ref.watch(historyProvider).length,
       separatorBuilder: (BuildContext context, int index) => Text(
         ', ',
-        style: TextStyle(color: Colors.white, fontSize: context.txtSize+2),
+        style: TextStyle(color: Colors.white, fontSize: context.txtSize + 2),
       ),
       itemBuilder: (BuildContext context, int index) => Text(
         ref.watch(historyProvider)[index],

@@ -61,8 +61,8 @@ class _KeyboardViewState extends State<KeyboardView> {
         keyboardType: TextInputType.none,
         showCursor: true,
         style: Theme.of(context).textTheme.headlineSmall,
-        decoration: const InputDecoration(
-            border: OutlineInputBorder(), hintText: 'Demo Textfiled'),
+        decoration:
+            const InputDecoration(border: OutlineInputBorder(), hintText: ''),
       ),
     );
   }

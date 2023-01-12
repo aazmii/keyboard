@@ -62,7 +62,8 @@ class NumPadLayout extends ConsumerWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        flex: (context.isLarge || context.isDesktop) ? 6 : 4,
+                        // flex: (context.isLarge || context.isDesktop) ? 6 : 4,
+                        flex: context.isPhone ? 7 : 6,
                         child: LeftOneThird(
                           digitColor: digitColor,
                           operatorColor: operatorColor,
@@ -71,7 +72,7 @@ class NumPadLayout extends ConsumerWidget {
                         ),
                       ),
                       Expanded(
-                        flex: 1,
+                        flex: context.isPhone ? 2 : 1,
                         child: RightColumn(
                           operatorColor: operatorColor,
                           resColor: resultColor,
