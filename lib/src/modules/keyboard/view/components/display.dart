@@ -2,6 +2,7 @@ import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../provider/providers.dart';
+import '../../../../extensions/cntx.dart';
 
 class Display extends ConsumerWidget {
   const Display({super.key, required this.deviceType});
@@ -30,8 +31,8 @@ class Display extends ConsumerWidget {
                       scrollDirection: Axis.horizontal,
                       child: Text(
                         displayText,
-                        style: const TextStyle(
-                          fontSize: 28,
+                        style: TextStyle(
+                          fontSize: context.txtSize + 6,
                           color: Colors.white,
                         ),
                         maxLines: 1,
@@ -86,13 +87,13 @@ class ExpressionList extends ConsumerWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: ref.watch(historyProvider).length,
-      separatorBuilder: (BuildContext context, int index) => const Text(
+      separatorBuilder: (BuildContext context, int index) => Text(
         ', ',
-        style: TextStyle(color: Colors.white, fontSize: 18),
+        style: TextStyle(color: Colors.white, fontSize: context.txtSize+2),
       ),
       itemBuilder: (BuildContext context, int index) => Text(
         ref.watch(historyProvider)[index],
-        style: const TextStyle(fontSize: 18, color: Colors.white70),
+        style: TextStyle(fontSize: context.txtSize + 2, color: Colors.white70),
       ),
     );
   }
