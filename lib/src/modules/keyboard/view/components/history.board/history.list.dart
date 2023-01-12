@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/extensions/cntx.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,9 +28,9 @@ class HistoryList extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    _expressionText(slplittedList[0]),
+                    _expressionText(context, slplittedList[0]),
                     const SizedBox(height: 8),
-                    _resultText(slplittedList[1]),
+                    _resultText(context, slplittedList[1]),
                   ],
                 ),
               );
@@ -40,21 +41,23 @@ class HistoryList extends StatelessWidget {
     );
   }
 
-  Text _resultText(String text) {
+  Text _resultText(BuildContext context, String text) {
+    ;
+    print(context.txtSize);
     return Text(
       '= $text',
-      style: const TextStyle(
-        fontSize: 22,
+      style: TextStyle(
+        fontSize: context.txtSize + 8,
         color: Colors.white,
       ),
     );
   }
 
-  Text _expressionText(String text) {
+  Text _expressionText(BuildContext context, String text) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 20,
+      style: TextStyle(
+        fontSize: context.txtSize,
         color: Colors.white70,
       ),
     );
