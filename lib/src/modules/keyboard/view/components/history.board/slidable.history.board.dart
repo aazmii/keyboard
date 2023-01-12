@@ -4,7 +4,7 @@ import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'history.list.dart';
-import '../../ui.notifier.dart';
+import '../../snackbar.dart';
 
 class SlidableHistoryBoard extends ConsumerWidget {
   const SlidableHistoryBoard({

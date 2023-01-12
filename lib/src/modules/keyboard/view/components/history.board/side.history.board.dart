@@ -3,7 +3,7 @@ import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dar
 import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/history.list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../ui.notifier.dart';
+import '../../snackbar.dart';
 
 class SideHistoryBoard extends StatelessWidget {
   const SideHistoryBoard({super.key});

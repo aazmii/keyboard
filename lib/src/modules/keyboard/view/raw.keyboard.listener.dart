@@ -2,7 +2,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 // import 'dart:async';
-
+//* KEPT AS REFFERENCE FOR DIFFERENT APPROACH
 // class RawKeyboardListenerWidget extends StatefulWidget {
 //   const RawKeyboardListenerWidget({super.key});
 //   @override

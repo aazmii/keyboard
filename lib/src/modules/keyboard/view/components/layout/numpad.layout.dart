@@ -1,3 +1,4 @@
+import 'package:ag_keyboard/src/extensions/cntx.dart';
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/key.press.provider.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
@@ -51,7 +52,7 @@ class NumPadLayout extends ConsumerWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Column(
               children: [
                 Display(deviceType: deviceType),
@@ -61,7 +62,7 @@ class NumPadLayout extends ConsumerWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        flex: 4,
+                        flex: (context.isLarge || context.isDesktop) ? 6 : 4,
                         child: LeftOneThird(
                           digitColor: digitColor,
                           operatorColor: operatorColor,

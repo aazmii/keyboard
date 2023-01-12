@@ -14,12 +14,10 @@ class AgKeyboard extends ConsumerWidget {
     this.backgroundColor,
     this.digitColor = Colors.blue,
     this.operatorColor = Colors.cyan,
-    required this.focusNode,
     this.backButtonColor,
     this.pointColor = Colors.grey,
     this.resultColor = Colors.grey,
     this.displayColor = Colors.grey,
-    // this.numpadHeight,
     this.historyColor,
   });
   final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
@@ -29,20 +27,8 @@ class AgKeyboard extends ConsumerWidget {
     ref.watch(displayTextProvider.notifier).state = value;
   }
 
-  static void onFieldSubmittedHandler(
-      {required String value,
-      required WidgetRef ref,
-      required TextEditingController controller,
-      required FocusNode focusNode}) {
-    ref.watch(expressionProvider.notifier).state = controller.text;
-    calculateResult(ref, controller);
-    ref.watch(shouldRecalculateProvider.notifier).state = false;
-    focusNode.requestFocus();
-  }
-
   final TextEditingController controller;
   final displayHeight = 70.0;
-  // final double? numpadHeight;
   final Color? backgroundColor,
       digitColor,
       operatorColor,
@@ -51,7 +37,19 @@ class AgKeyboard extends ConsumerWidget {
       resultColor,
       displayColor,
       historyColor;
-  final FocusNode focusNode;
+
+  static void onFieldSubmittedHandler({
+    required String value,
+    required WidgetRef ref,
+    required TextEditingController controller,
+    required FocusNode focusNode,
+  }) {
+    ref.watch(expressionProvider.notifier).state = controller.text;
+    calculateResult(ref, controller);
+    ref.watch(shouldRecalculateProvider.notifier).state = false;
+    focusNode.requestFocus();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final keyPress = ref.watch(keyPressProvider);
@@ -61,30 +59,37 @@ class AgKeyboard extends ConsumerWidget {
         DeviceType deviceType = getDeviceType(constraints);
         return Stack(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                NumPadLayout(
-                  deviceType: deviceType,
-                  backgroundColor: backgroundColor,
-                  keyPress: keyPress,
-                  controller: controller,
-                  digitColor: digitColor,
-                  operatorColor: operatorColor,
-                  pointColor: pointColor,
-                  backButtonColor: backButtonColor,
-                  resultColor: resultColor,
-                  onTextInput: (value) {
-                    keyPress.insertText(
-                        myText: value, ref: ref, controller: controller);
-                  },
-                  onBackspace: () => keyPress.backspace(
-                    textController: controller,
-                    ref: ref,
+            SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  NumPadLayout(
+                    deviceType: deviceType,
+                    backgroundColor: backgroundColor,
+                    keyPress: keyPress,
+                    controller: controller,
+                    digitColor: digitColor,
+                    operatorColor: operatorColor,
+                    pointColor: pointColor,
+                    backButtonColor: backButtonColor,
+                    resultColor: resultColor,
+                    onTextInput: (value) {
+                      keyPress.insertText(
+                        myText: value,
+                        ref: ref,
+                        controller: controller,
+                      );
+                    },
+                    onBackspace: () {
+                      keyPress.backspace(
+                        textController: controller,
+                        ref: ref,
+                      );
+                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             if (deviceType == DeviceType.mobile)
               SlidableHistoryBoard(

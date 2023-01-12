@@ -1,119 +1,16 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/components/ag.textfield.dart';
 import 'package:flutter/material.dart';
 import 'view/ag.keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class VisibilityView extends StatelessWidget {
-  VisibilityView({super.key});
-  final FocusNode _focusNode1 = FocusNode();
-  final Color agLight = const Color(0xff37B2F3);
-  final Color agDark = const Color(0xff226DC6);
-  final bool isKeyboardVisible = false;
-  final _controller = TextEditingController();
-  final myFocus = TextfieldFocusNode.focusNode;
-  @override
-  Widget build(BuildContext context) {
-    // bool shouldRecalculate = ref.watch(shouldRecalculateProvider);
-    // FocusScope.of(context).requestFocus(_focusNode1);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Keyboard PersistentView'),
-      ),
-      body: Stack(
-        alignment: AlignmentDirectional.bottomStart,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    return Form(
-                      key: ref.watch(formKeyProvider),
-                      child: TextFormField(
-                        focusNode: _focusNode1,
-                        controller: _controller,
-                        onFieldSubmitted: (value) =>
-                            _submissionHandled(value, ref),
-                        onChanged: (value) => _onChangeHandled(value, ref),
-                        validator: (value) {
-                          return AgKeyboard.agValidator(value);
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.none,
-                        showCursor: true,
-
-                        // readOnly: true,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(), hintText: ''),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: const Text('Close keyboard'),
-                ),
-              ],
-            ),
-          ),
-          AgKeyboard(
-            focusNode: _focusNode1,
-            // focusNode: myFocus,
-            controller: _controller,
-            backgroundColor: Colors.grey.shade900,
-            digitColor: Colors.grey.shade700,
-            historyColor: Colors.grey.shade900,
-            operatorColor: Colors.grey.shade800,
-            pointColor: Colors.grey.shade800,
-            resultColor: Colors.grey.shade600,
-          ),
-        ],
-      ),
-    );
-  }
-
-  _onChangeHandled(String value, WidgetRef ref) {
-    bool recalculate = ref.watch(shouldRecalculateProvider);
-    print(_controller.text.length);
-    print(value.length);
-    if (recalculate) {
-      _controller.clear();
-      ref.watch(shouldRecalculateProvider.notifier).state = false;
-    }
-    AgKeyboard.agValidator(value);
-    ref.watch(displayTextProvider.notifier).state = value;
-
-    ref.watch(keyPressProvider).insertText(
-          controller: _controller,
-          replace: true,
-          myText: value,
-          ref: ref,
-        );
-  }
-
-  _submissionHandled(String value, WidgetRef ref) {
-    _controller.text = value;
-    calculateResult(ref, _controller);
-    _focusNode1.requestFocus();
-  }
-}
-
-//!with persistent modal sheet
-class PersistentView extends StatefulWidget {
-  const PersistentView({super.key});
+class KeyboardView extends StatefulWidget {
+  const KeyboardView({super.key});
 
   @override
-  State<PersistentView> createState() => _TestPageState();
+  State<KeyboardView> createState() => _KeyboardViewState();
 }
 
-class _TestPageState extends State<PersistentView> {
+class _KeyboardViewState extends State<KeyboardView> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   VoidCallback? _showPersistantBottomSheetCallBack;
   final FocusNode _node = FocusNode();
@@ -131,11 +28,12 @@ class _TestPageState extends State<PersistentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(title: const Text('Keyboard ')),
       body: Consumer(
         builder: (context, ref, child) => Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 50.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: getTextfield(ref, context),
             ),
           ],
@@ -163,8 +61,8 @@ class _TestPageState extends State<PersistentView> {
         keyboardType: TextInputType.none,
         showCursor: true,
         style: Theme.of(context).textTheme.headlineSmall,
-        decoration:
-            const InputDecoration(border: OutlineInputBorder(), hintText: ''),
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(), hintText: 'Demo Textfiled'),
       ),
     );
   }
@@ -177,7 +75,6 @@ class _TestPageState extends State<PersistentView> {
     _scaffoldKey.currentState!
         .showBottomSheet((context) {
           return AgKeyboard(
-            focusNode: _node,
             controller: _controller,
             backgroundColor: Colors.grey.shade900,
             digitColor: Colors.grey.shade700,
@@ -191,8 +88,6 @@ class _TestPageState extends State<PersistentView> {
         .whenComplete(() {
           if (mounted) {
             _node.unfocus();
-            //send history board back to place
-            // ref!.watch(historyViewProvider.notifier).state = false;
             setState(() {
               _showPersistantBottomSheetCallBack = _showBottomSheet;
             });
@@ -200,3 +95,101 @@ class _TestPageState extends State<PersistentView> {
         });
   }
 }
+
+//KEPT AS DIFFERENT APPROACH
+// class VisibilityView extends StatelessWidget {
+//   VisibilityView({super.key});
+//   final FocusNode _focusNode1 = FocusNode();
+//   final Color agLight = const Color(0xff37B2F3);
+//   final Color agDark = const Color(0xff226DC6);
+//   final bool isKeyboardVisible = false;
+//   final _controller = TextEditingController();
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Keyboard KeyboardView'),
+//       ),
+//       body: Stack(
+//         alignment: AlignmentDirectional.bottomStart,
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: ListView(
+//               children: [
+//                 Consumer(
+//                   builder: (context, ref, child) {
+//                     return Form(
+//                       key: ref.watch(formKeyProvider),
+//                       child: TextFormField(
+//                         focusNode: _focusNode1,
+//                         controller: _controller,
+//                         onFieldSubmitted: (value) =>
+//                             _submissionHandled(value, ref),
+//                         onChanged: (value) => _onChangeHandled(value, ref),
+//                         validator: (value) {
+//                           return AgKeyboard.agValidator(value);
+//                         },
+//                         autovalidateMode: AutovalidateMode.onUserInteraction,
+//                         keyboardType: TextInputType.none,
+//                         showCursor: true,
+
+//                         // readOnly: true,
+//                         style: Theme.of(context).textTheme.headlineSmall,
+//                         decoration: const InputDecoration(
+//                             border: OutlineInputBorder(), hintText: ''),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//                 const SizedBox(height: 20),
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     FocusScope.of(context).unfocus();
+//                   },
+//                   child: const Text('Close keyboard'),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           AgKeyboard(
+//             focusNode: _focusNode1,
+//             // focusNode: myFocus,
+//             controller: _controller,
+//             backgroundColor: Colors.grey.shade900,
+//             digitColor: Colors.grey.shade700,
+//             historyColor: Colors.grey.shade900,
+//             operatorColor: Colors.grey.shade800,
+//             pointColor: Colors.grey.shade800,
+//             resultColor: Colors.grey.shade600,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   _onChangeHandled(String value, WidgetRef ref) {
+//     bool recalculate = ref.watch(shouldRecalculateProvider);
+//     print(_controller.text.length);
+//     print(value.length);
+//     if (recalculate) {
+//       _controller.clear();
+//       ref.watch(shouldRecalculateProvider.notifier).state = false;
+//     }
+//     AgKeyboard.agValidator(value);
+//     ref.watch(displayTextProvider.notifier).state = value;
+
+//     ref.watch(keyPressProvider).insertText(
+//           controller: _controller,
+//           replace: true,
+//           myText: value,
+//           ref: ref,
+//         );
+//   }
+
+//   _submissionHandled(String value, WidgetRef ref) {
+//     _controller.text = value;
+//     calculateResult(ref, _controller);
+//     _focusNode1.requestFocus();
+//   }
+// }
