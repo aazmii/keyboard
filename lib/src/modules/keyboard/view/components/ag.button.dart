@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../const/enums.dart';
 import '../../../../extensions/cntx.dart';
 
-class CustomKey extends ConsumerWidget {
-  const CustomKey({
+class AgButton extends ConsumerWidget {
+  const AgButton({
     super.key,
     required this.calcKey,
     this.controller,
@@ -28,39 +28,29 @@ class CustomKey extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        splashColor: Colors.blue,
-        onTap: () {
-          if (calcKey.keyType == Type.number ||
-              calcKey.keyType == Type.operator) {
-            return _textInputHandler(calcKey.getChar(calcKey));
-          }
-          if (calcKey.keyType == Type.backspace) {
-            return _backspaceHandler();
-          }
-          if (calcKey.keyType == Type.equal) {
-            controller != null ? calculateResult(ref, controller!) : null;
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: Container(
-            constraints: const BoxConstraints(
-              minWidth: 50,
-              minHeight: 100,
-              maxHeight: 100,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: color,
-            ),
-            child: Center(
-              child: ButtonContent(
-                calcKey: calcKey,
-                iconData: Icons.backspace_outlined,
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: Material(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        color: color,
+        child: InkWell(
+          splashColor: Theme.of(context).splashColor,
+          onTap: () {
+            if (calcKey.keyType == Type.number ||
+                calcKey.keyType == Type.operator) {
+              return _textInputHandler(calcKey.getChar(calcKey));
+            }
+            if (calcKey.keyType == Type.backspace) {
+              return _backspaceHandler();
+            }
+            if (calcKey.keyType == Type.equal) {
+              controller != null ? calculateResult(ref, controller!) : null;
+            }
+          },
+          child: Center(
+            child: ButtonContent(
+              calcKey: calcKey,
+              iconData: Icons.backspace_outlined,
             ),
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dar
 import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/history.list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'ui.notifier.dart';
+import '../../ui.notifier.dart';
 
 class SideHistoryBoard extends StatelessWidget {
   const SideHistoryBoard({super.key});
@@ -29,7 +29,7 @@ class SideHistoryBoard extends StatelessWidget {
                 onPressed: () {
                   ref.watch(historyProvider.notifier).state = [];
                   ref.watch(historyViewProvider.notifier).state = false;
-                  notifyUser(context, 'history cleared');
+                  showSnackbar(context, 'history cleared');
                 },
                 icon: Icon(
                   Icons.delete,

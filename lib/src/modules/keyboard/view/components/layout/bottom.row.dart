@@ -1,6 +1,6 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/components/custom.key.dart';
+import 'package:ag_keyboard/src/modules/keyboard/view/components/ag.button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +21,7 @@ class BottomRow extends ConsumerWidget {
       children: [
         Expanded(
           flex: 2,
-          child: CustomKey(
+          child: AgButton(
             calcKey: CalcKey.zero,
             color: digitColor,
             onTextInput: (value) {
@@ -31,7 +31,7 @@ class BottomRow extends ConsumerWidget {
         ),
         Expanded(
           flex: 1,
-          child: CustomKey(
+          child: AgButton(
             calcKey: CalcKey.point,
             color: digitColor,
             onTextInput: (value) {

@@ -1,6 +1,6 @@
 import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/components/custom.key.dart';
+import 'package:ag_keyboard/src/modules/keyboard/view/components/ag.button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +22,7 @@ class BackspaceColumn extends ConsumerWidget {
       children: [
         Expanded(
           flex: 1,
-          child: CustomKey(
+          child: AgButton(
               calcKey: CalcKey.backSpace,
               iconData: Icons.backspace_outlined,
               color: backColor ?? Colors.red,
@@ -31,7 +31,7 @@ class BackspaceColumn extends ConsumerWidget {
         ),
         Expanded(
           flex: 1,
-          child: CustomKey(
+          child: AgButton(
             calcKey: CalcKey.one,
             color: digitColor,
             onTextInput: (value) {
@@ -41,7 +41,7 @@ class BackspaceColumn extends ConsumerWidget {
         ),
         Expanded(
           flex: 1,
-          child: CustomKey(
+          child: AgButton(
             calcKey: CalcKey.four,
             color: digitColor,
             onTextInput: (value) => press.insertText(
@@ -50,7 +50,7 @@ class BackspaceColumn extends ConsumerWidget {
         ),
         Expanded(
           flex: 1,
-          child: CustomKey(
+          child: AgButton(
             calcKey: CalcKey.seven,
             color: digitColor,
             onTextInput: (value) => press.insertText(

@@ -4,7 +4,7 @@ import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'history.list.dart';
-import 'ui.notifier.dart';
+import '../../ui.notifier.dart';
 
 class SlidableHistoryBoard extends ConsumerWidget {
   const SlidableHistoryBoard({
@@ -54,7 +54,9 @@ class SlidableHistoryBoard extends ConsumerWidget {
         ref.watch(historyViewProvider.notifier).state = false;
       },
       child: Center(
-        child: Text(name, style: TextStyle(fontSize: context.txtSize + 8)),
+        child: Text(name,
+            style: TextStyle(fontSize: context.txtSize + 8)
+                .copyWith(color: Colors.grey)),
       ),
     );
   }
@@ -76,11 +78,12 @@ class ClearHistoryButton extends StatelessWidget {
             onTap: () {
               ref.watch(historyProvider.notifier).state = [];
               ref.watch(historyViewProvider.notifier).state = false;
-              notifyUser(context, 'history cleared');
+              showSnackbar(context, 'history cleared');
             },
             child: Text(
               'Clear History',
-              style: TextStyle(fontSize: context.txtSize - 2),
+              style: TextStyle(fontSize: context.txtSize - 2)
+                  .copyWith(color: Colors.grey),
             ),
           ),
         ),
