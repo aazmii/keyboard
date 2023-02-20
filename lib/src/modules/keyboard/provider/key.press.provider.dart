@@ -88,8 +88,10 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     }
   }
 
-  void backspace(
-      {required TextEditingController textController, required WidgetRef ref}) {
+  void backspace({
+    required TextEditingController textController,
+    required WidgetRef ref,
+  }) {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;

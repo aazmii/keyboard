@@ -14,6 +14,7 @@ class AgButton extends ConsumerWidget {
     this.onCalculate,
     this.color,
     this.iconData,
+    this.onLongPressOnBackButton,
   });
   final TextEditingController? controller;
   final IconData? iconData;
@@ -22,6 +23,7 @@ class AgButton extends ConsumerWidget {
   final ValueSetter<String>? onTextInput;
   final VoidCallback? onBackspace;
   final VoidCallback? onCalculate;
+  final VoidCallback? onLongPressOnBackButton;
 
   void _textInputHandler(String text) => onTextInput!.call(text);
   void _backspaceHandler() => onBackspace!.call();
@@ -46,6 +48,11 @@ class AgButton extends ConsumerWidget {
             if (calcKey.keyType == Type.equal) {
               controller != null ? calculateResult(ref, controller!) : null;
             }
+          },
+          onLongPress: () {
+            if (calcKey.keyType != Type.backspace) return;
+            if (onLongPressOnBackButton == null) return;
+            return onLongPressOnBackButton!();
           },
           child: Center(
             child: ButtonContent(

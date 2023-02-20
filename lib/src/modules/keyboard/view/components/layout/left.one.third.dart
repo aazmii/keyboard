@@ -18,6 +18,7 @@ class LeftOneThird extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        //<,/,*, 1-9
         Expanded(
           flex: 5,
           child: GridButtons(
@@ -27,6 +28,7 @@ class LeftOneThird extends StatelessWidget {
             backColor: backColor,
           ),
         ),
+        //ROW -> ZERO AND POINT
         Expanded(
           flex: 1,
           child: BottomRow(

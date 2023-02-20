@@ -62,8 +62,8 @@ class NumPadLayout extends ConsumerWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        // flex: (context.isLarge || context.isDesktop) ? 6 : 4,
                         flex: context.isPhone ? 7 : 6,
+                        //3 COLUMNS-> BACKSPACE, DIVISION AND MULTIPLY 
                         child: LeftOneThird(
                           digitColor: digitColor,
                           operatorColor: operatorColor,
@@ -71,6 +71,7 @@ class NumPadLayout extends ConsumerWidget {
                           controller: controller,
                         ),
                       ),
+                      //1 COLUMN -> SUBSTRACTION, ADDITION AND EQUEL 
                       Expanded(
                         flex: context.isPhone ? 2 : 1,
                         child: RightColumn(
