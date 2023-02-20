@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'view/ag.keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class KeyboardView extends StatefulWidget {
-  const KeyboardView({super.key});
+class KeyboardViewPage extends StatefulWidget {
+  const KeyboardViewPage({super.key});
 
   @override
-  State<KeyboardView> createState() => _KeyboardViewState();
+  State<KeyboardViewPage> createState() => _KeyboardViewState();
 }
 
-class _KeyboardViewState extends State<KeyboardView> {
+class _KeyboardViewState extends State<KeyboardViewPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   VoidCallback? _showPersistantBottomSheetCallBack;
   final FocusNode _node = FocusNode();
@@ -20,7 +20,6 @@ class _KeyboardViewState extends State<KeyboardView> {
   @override
   void initState() {
     super.initState();
-
     _showPersistantBottomSheetCallBack = _showBottomSheet;
   }
 
@@ -67,7 +66,6 @@ class _KeyboardViewState extends State<KeyboardView> {
     );
   }
 
-
   //*Keyboard is uesed through bottom sheet
   void _showBottomSheet() {
     setState(() {
@@ -110,7 +108,7 @@ class _KeyboardViewState extends State<KeyboardView> {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: const Text('Keyboard KeyboardView'),
+//         title: const Text('Keyboard KeyboardViewPage'),
 //       ),
 //       body: Stack(
 //         alignment: AlignmentDirectional.bottomStart,

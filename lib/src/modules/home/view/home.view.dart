@@ -1,4 +1,4 @@
-import 'package:ag_keyboard/src/modules/keyboard/keyboard.view.dart';
+import 'package:ag_keyboard/src/modules/keyboard/keyboard.view.page.dart';
 import 'package:flutter/material.dart';
 import '../../../localization/loalization.dart';
 import '../../../theme/themes/themes.dart';
@@ -27,7 +27,7 @@ class HomeView extends StatelessWidget {
           ElevatedButton(
             style: roundedButtonStyle,
             onPressed: () async =>
-                await fadePush(context, const KeyboardView()),
+                await fadePush(context, const KeyboardViewPage()),
             child: const Text('Test Keyboard'),
           ),
         ],

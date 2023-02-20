@@ -12,9 +12,7 @@ class Display extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     String displayText = ref.watch(displayTextProvider);
-
     return SizedBox(
-      // color: Colors.blue,
       height: height,
       child: Padding(
         padding: const EdgeInsets.only(left: 5.0),
@@ -30,10 +28,7 @@ class Display extends ConsumerWidget {
                       scrollDirection: Axis.horizontal,
                       child: Text(
                         displayText,
-                        style: TextStyle(
-                          fontSize: context.txtSize + 6,
-                          color: Colors.white,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

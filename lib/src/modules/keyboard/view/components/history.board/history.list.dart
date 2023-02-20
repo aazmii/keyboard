@@ -42,7 +42,7 @@ class HistoryList extends StatelessWidget {
   }
 
   Text _resultText(BuildContext context, String text) {
-    ;
+    
     print(context.txtSize);
     return Text(
       '= $text',
