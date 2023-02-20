@@ -23,11 +23,18 @@ class BackspaceColumn extends ConsumerWidget {
         Expanded(
           flex: 1,
           child: AgButton(
-              calcKey: CalcKey.backSpace,
-              iconData: Icons.backspace_outlined,
-              color: backColor ?? Colors.red,
-              onBackspace: () =>
-                  press.backspace(textController: controller, ref: ref)),
+            calcKey: CalcKey.backSpace,
+            iconData: Icons.backspace_outlined,
+            color: Theme.of(context).colorScheme.error,
+            onBackspace: () => press.backspace(
+              textController: controller,
+              ref: ref,
+            ),
+            onLongPressOnBackButton: () {
+              ref.read(displayTextProvider.notifier).state = '';
+              controller.clear();
+            },
+          ),
         ),
         Expanded(
           flex: 1,

@@ -67,6 +67,8 @@ class _KeyboardViewState extends State<KeyboardView> {
     );
   }
 
+
+  //*Keyboard is uesed through bottom sheet
   void _showBottomSheet() {
     setState(() {
       _showPersistantBottomSheetCallBack = null;

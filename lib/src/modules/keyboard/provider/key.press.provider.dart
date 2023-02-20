@@ -15,6 +15,11 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     required TextEditingController controller,
   }) {
     bool repeat = ref.watch(shouldRecalculateProvider);
+    bool isHitoryPanelOpen = ref.watch(historyViewProvider);
+    if (isHitoryPanelOpen) {
+      ref.read(historyViewProvider.notifier).state = !isHitoryPanelOpen;
+      return;
+    }
     if (repeat) {
       if (!isOperator(myText)) {
         controller.clear();
@@ -88,8 +93,10 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     }
   }
 
-  void backspace(
-      {required TextEditingController textController, required WidgetRef ref}) {
+  void backspace({
+    required TextEditingController textController,
+    required WidgetRef ref,
+  }) {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
