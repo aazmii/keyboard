@@ -59,6 +59,11 @@ String? checkInuput(String? value) {
 }
 
 calculateResult(WidgetRef ref, TextEditingController controller) {
+  bool isHitoryPanelOpen = ref.watch(historyViewProvider);
+  if (isHitoryPanelOpen) {
+    ref.read(historyViewProvider.notifier).state = !isHitoryPanelOpen;
+    return;
+  }
   bool recalculate = ref.watch(shouldRecalculateProvider);
   final formKey = ref.watch(formKeyProvider);
   String res = '';

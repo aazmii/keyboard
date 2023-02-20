@@ -15,6 +15,11 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     required TextEditingController controller,
   }) {
     bool repeat = ref.watch(shouldRecalculateProvider);
+    bool isHitoryPanelOpen = ref.watch(historyViewProvider);
+    if (isHitoryPanelOpen) {
+      ref.read(historyViewProvider.notifier).state = !isHitoryPanelOpen;
+      return;
+    }
     if (repeat) {
       if (!isOperator(myText)) {
         controller.clear();
