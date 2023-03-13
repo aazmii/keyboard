@@ -1,8 +1,8 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
+import 'package:ag_keyboard/src/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../const/enums.dart';
-import '../../../../extensions/cntx.dart';
+import '../../enum/enums.dart';
+import '../../helpers/helpers.dart';
 
 class AgButton extends ConsumerWidget {
   const AgButton({
@@ -40,7 +40,7 @@ class AgButton extends ConsumerWidget {
           onTap: () {
             if (calcKey.keyType == Type.number ||
                 calcKey.keyType == Type.operator) {
-              return _textInputHandler(calcKey.getChar(calcKey));
+              return _textInputHandler(calcKey.char);
             }
             if (calcKey.keyType == Type.backspace) {
               return _backspaceHandler();
@@ -79,11 +79,11 @@ class ButtonContent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  calcKey.getChar(calcKey),
+                  calcKey.char,
                   style: TextStyle(fontSize: context.txtSize + 10),
                 ),
-                calcKey.charactes != null
-                    ? getphabet(calcKey.charactes)
+                calcKey.characters != null
+                    ? getphabet(calcKey.characters)
                     : const SizedBox.shrink(),
               ],
             ),
@@ -98,7 +98,7 @@ class ButtonContent extends StatelessWidget {
     return Builder(builder: (context) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: calcKey.charactes!.map(
+        children: calcKey.characters!.map(
           (char) {
             return Text(
               char,

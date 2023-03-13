@@ -1,4 +1,4 @@
-import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
+import 'package:ag_keyboard/src/modules/keyboard/enum/enums.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/ag.button.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,7 @@
-import 'package:ag_keyboard/src/extensions/cntx.dart';
+
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
+import 'package:ag_keyboard/src/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'history.list.dart';

@@ -1,8 +1,16 @@
-import 'package:ag_keyboard/src/modules/keyboard/const/device.info.dart';
-import 'package:ag_keyboard/src/modules/keyboard/const/enums.dart';
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../enum/enums.dart';
+import '../provider/providers.dart';
+
+const double maxMobileHeight = 915;
+const double maxMobileWidth = 550;
+const double tabletWidth = 1280;
+const double tabletHight = 1280;
+
+RegExp regexPattern =
+    RegExp(r'^(([+-]?((\d+(\.\d*)?)|(\.\d+)))([+|\-|\*|\/]{1}?))+');
 
 DeviceType getDeviceType(BoxConstraints constraints) {
   double height = constraints.maxHeight;

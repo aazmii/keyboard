@@ -1,6 +1,7 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../helpers/helpers.dart';
 
 class ResultButton extends ConsumerWidget {
   const ResultButton({

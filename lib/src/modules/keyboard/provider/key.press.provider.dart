@@ -1,7 +1,8 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/helper.dart';
 import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../helpers/helpers.dart';
 
 class KeyPressProvider extends Notifier<KeyPressProvider> {
   String lastOperator = '';
