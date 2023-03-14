@@ -11,7 +11,7 @@ class AgKeyboard extends ConsumerWidget {
   AgKeyboard({
     super.key,
     required this.controller,
-    this.backgroundColor,
+    this.backgroundColor = Colors.black87,
     this.digitColor = Colors.blue,
     this.operatorColor = Colors.cyan,
     this.backButtonColor,
@@ -20,12 +20,6 @@ class AgKeyboard extends ConsumerWidget {
     this.displayColor = Colors.grey,
     this.historyColor,
   });
-  final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
-      KeyPressProvider.new);
-
-  static void onChangeHandler({required String value, required WidgetRef ref}) {
-    ref.watch(displayTextProvider.notifier).state = value;
-  }
 
   final TextEditingController controller;
   final displayHeight = 70.0;
@@ -37,6 +31,13 @@ class AgKeyboard extends ConsumerWidget {
       resultColor,
       displayColor,
       historyColor;
+
+  final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
+      KeyPressProvider.new);
+
+  static void onChangeHandler({required String value, required WidgetRef ref}) {
+    ref.watch(displayTextProvider.notifier).state = value;
+  }
 
   static void onFieldSubmittedHandler({
     required String value,
