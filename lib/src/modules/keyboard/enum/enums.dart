@@ -1,4 +1,4 @@
-enum DeviceType { mobile, tablet, desktop }
+enum DeviceType { mobile, desktop }
 
 enum Type { number, operator, backspace, equal }
 

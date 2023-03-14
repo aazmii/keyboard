@@ -6,8 +6,8 @@ import '../provider/providers.dart';
 
 const double maxMobileHeight = 915;
 const double maxMobileWidth = 550;
-const double tabletWidth = 1280;
-const double tabletHight = 1280;
+// const double tabletWidth = 1280;
+// const double tabletHight = 1280;
 
 RegExp regexPattern =
     RegExp(r'^(([+-]?((\d+(\.\d*)?)|(\.\d+)))([+|\-|\*|\/]{1}?))+');
@@ -18,9 +18,11 @@ DeviceType getDeviceType(BoxConstraints constraints) {
 
   if (width <= maxMobileWidth && height <= maxMobileHeight) {
     return DeviceType.mobile;
-  } else if (width <= tabletWidth && height <= tabletHight) {
-    return DeviceType.tablet;
-  } else {
+  } 
+  // else if (width <= tabletWidth && height <= tabletHight) {
+  //   return DeviceType.tablet;
+  // }
+   else {
     return DeviceType.desktop;
   }
 }

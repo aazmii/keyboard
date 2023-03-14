@@ -48,7 +48,7 @@ class NumPadLayout extends ConsumerWidget {
     bool isHitoryPanelOpen = ref.watch(historyViewProvider);
 
     bool isDesktop = deviceType == DeviceType.desktop;
-    bool isTablet = deviceType == DeviceType.tablet;
+    // bool isTablet = deviceType == DeviceType.tablet;
     return Container(
       color: backgroundColor,
       child: Row(
@@ -120,19 +120,10 @@ class NumPadLayout extends ConsumerWidget {
               ],
             ),
           ),
-          if (isTablet)
+          if (isDesktop)
             const Expanded(
               flex: 2,
               child: SideHistoryBoard(),
-            ),
-          if (isDesktop)
-            Expanded(
-              flex: 5,
-              child: SizedBox(
-                width: _boardWidth,
-                height: keyboardHeight(screenHeight: size.height),
-                child: const SideHistoryBoard(),
-              ),
             ),
         ],
       ),
