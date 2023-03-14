@@ -1,8 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:math_expressions/math_expressions.dart';
 
+typedef ResultNotifier = NotifierProvider<ResultProvider, String>;
+
+final resultProvider = ResultNotifier(ResultProvider.new);
+
 class ResultProvider extends Notifier<String> {
   String result = '';
+
+  @override
+  String build() => result;
+
   String getResult({String expression = ''}) {
     Parser p = Parser();
     Expression exp = p.parse(expression);
@@ -13,12 +21,7 @@ class ResultProvider extends Notifier<String> {
     } else {
       result = value.toStringAsFixed(3);
     }
-
-    return result;
-  }
-
-  @override
-  String build() {
+    state = result;
     return result;
   }
 }

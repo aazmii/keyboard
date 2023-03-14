@@ -4,6 +4,8 @@ import 'package:ag_keyboard/src/modules/keyboard/view/components/ag.button.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../provider/key.press.provider.dart';
+
 class BackspaceColumn extends ConsumerWidget {
   const BackspaceColumn({
     super.key,
@@ -17,7 +19,7 @@ class BackspaceColumn extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final press = ref.watch(keyPressProvider);
+    final press = ref.watch(keyPressProvider.notifier);
     return Column(
       children: [
         Expanded(
@@ -26,10 +28,7 @@ class BackspaceColumn extends ConsumerWidget {
             calcKey: CalcKey.backSpace,
             iconData: Icons.backspace_outlined,
             color: Theme.of(context).colorScheme.error,
-            onBackspace: () => press.backspace(
-              textController: controller,
-              ref: ref,
-            ),
+            onBackspace: () => press.backspace(textController: controller),
             onLongPressOnBackButton: () {
               ref.read(displayTextProvider.notifier).state = '';
               controller.clear();
@@ -43,7 +42,7 @@ class BackspaceColumn extends ConsumerWidget {
             color: digitColor,
             // controller: controller,
             onTextInput: (value) {
-              press.insertText(myText: value, ref: ref, controller: controller);
+              press.insertText(myText: value, controller: controller);
             },
           ),
         ),
@@ -54,7 +53,7 @@ class BackspaceColumn extends ConsumerWidget {
             color: digitColor,
             // controller: controller,
             onTextInput: (value) => press.insertText(
-                myText: value, ref: ref, controller: controller),
+                myText: value, controller: controller),
           ),
         ),
         Expanded(
@@ -64,7 +63,7 @@ class BackspaceColumn extends ConsumerWidget {
             color: digitColor,
             // controller: controller,
             onTextInput: (value) => press.insertText(
-                myText: value, ref: ref, controller: controller),
+                myText: value, controller: controller),
           ),
         ),
       ],

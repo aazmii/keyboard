@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../enum/enums.dart';
 import '../provider/providers.dart';
+import '../provider/result.provider.dart';
 
 const double maxMobileHeight = 915;
 const double maxMobileWidth = 550;
-// const double tabletWidth = 1280;
-// const double tabletHight = 1280;
 
 RegExp regexPattern =
     RegExp(r'^(([+-]?((\d+(\.\d*)?)|(\.\d+)))([+|\-|\*|\/]{1}?))+');
@@ -18,11 +17,8 @@ DeviceType getDeviceType(BoxConstraints constraints) {
 
   if (width <= maxMobileWidth && height <= maxMobileHeight) {
     return DeviceType.mobile;
-  } 
-  // else if (width <= tabletWidth && height <= tabletHight) {
-  //   return DeviceType.tablet;
-  // }
-   else {
+  }
+  else {
     return DeviceType.desktop;
   }
 }

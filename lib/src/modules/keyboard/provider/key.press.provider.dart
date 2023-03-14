@@ -3,15 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../helpers/helpers.dart';
+import 'result.provider.dart';
 
-class KeyPressProvider extends Notifier<KeyPressProvider> {
+typedef KeyPressNotifier = NotifierProvider<KeyPressProvider, void>;
+
+final keyPressProvider = KeyPressNotifier(KeyPressProvider.new);
+
+class KeyPressProvider extends Notifier {
   String lastOperator = '';
   String lastChar = '';
   int numOfPoint = 0;
 
+  @override
+  void build() {}
+
   void insertText({
     bool replace = false,
-    required WidgetRef ref,
     required String myText,
     required TextEditingController controller,
   }) {
@@ -25,12 +32,12 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
       if (!isOperator(myText)) {
         controller.clear();
         ref.read(displayTextProvider.notifier).state = '';
-        ref.watch(shouldRecalculateProvider.notifier).state = false;
-        ref.watch(expressionProvider.notifier).state = '';
+        ref.read(shouldRecalculateProvider.notifier).state = false;
+        ref.read(expressionProvider.notifier).state = '';
       } else {
-        ref.watch(shouldRecalculateProvider.notifier).state = false;
+        ref.read(shouldRecalculateProvider.notifier).state = false;
         //show result on display
-        ref.watch(displayTextProvider.notifier).state =
+        ref.read(displayTextProvider.notifier).state =
             '${ref.watch(expressionProvider.notifier).state} ${ref.watch(resultProvider.notifier).state}';
       }
     }
@@ -57,7 +64,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
         ref.watch(expressionProvider.notifier).state =
             text.substring(0, text.length - 1);
         //replace
-        backspace(textController: controller, ref: ref);
+        backspace(textController: controller);
       }
     }
     if (isOperator(myText)) {
@@ -94,10 +101,7 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
     }
   }
 
-  void backspace({
-    required TextEditingController textController,
-    required WidgetRef ref,
-  }) {
+  void backspace({required TextEditingController textController}) {
     final text = textController.text;
     final textSelection = textController.selection;
     final selectionLength = textSelection.end - textSelection.start;
@@ -145,10 +149,5 @@ class KeyPressProvider extends Notifier<KeyPressProvider> {
       baseOffset: newStart,
       extentOffset: newStart,
     );
-  }
-
-  @override
-  KeyPressProvider build() {
-    return KeyPressProvider();
   }
 }

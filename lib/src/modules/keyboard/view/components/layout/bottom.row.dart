@@ -1,8 +1,9 @@
 import 'package:ag_keyboard/src/modules/keyboard/enum/enums.dart';
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/ag.button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../provider/key.press.provider.dart';
 
 class BottomRow extends ConsumerWidget {
   final Color? digitColor, operatorColor;
@@ -16,7 +17,7 @@ class BottomRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final press = ref.watch(keyPressProvider);
+    final press = ref.watch(keyPressProvider.notifier);
     return Row(
       children: [
         Expanded(
@@ -25,7 +26,7 @@ class BottomRow extends ConsumerWidget {
             calcKey: CalcKey.zero,
             color: digitColor,
             onTextInput: (value) {
-              press.insertText(myText: value, ref: ref, controller: controller);
+              press.insertText(myText: value, controller: controller);
             },
           ),
         ),
@@ -35,7 +36,7 @@ class BottomRow extends ConsumerWidget {
             calcKey: CalcKey.point,
             color: digitColor,
             onTextInput: (value) {
-              press.insertText(myText: value, ref: ref, controller: controller);
+              press.insertText(myText: value,  controller: controller);
             },
           ),
         ),

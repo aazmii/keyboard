@@ -8,7 +8,7 @@ import 'components/layout/numpad.layout.dart';
 import 'components/history.board/slidable.history.board.dart';
 
 class AgKeyboard extends ConsumerWidget {
-  AgKeyboard({
+  const AgKeyboard({
     super.key,
     required this.controller,
     this.backgroundColor = Colors.black87,
@@ -32,9 +32,6 @@ class AgKeyboard extends ConsumerWidget {
       displayColor,
       historyColor;
 
-  final keyPressProvider = NotifierProvider<KeyPressProvider, KeyPressProvider>(
-      KeyPressProvider.new);
-
   static void onChangeHandler({required String value, required WidgetRef ref}) {
     ref.watch(displayTextProvider.notifier).state = value;
   }
@@ -53,7 +50,7 @@ class AgKeyboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final keyPress = ref.watch(keyPressProvider);
+    final keyPress = ref.watch(keyPressProvider.notifier);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -78,16 +75,10 @@ class AgKeyboard extends ConsumerWidget {
                     onTextInput: (value) {
                       keyPress.insertText(
                         myText: value,
-                        ref: ref,
                         controller: controller,
                       );
                     },
-                    onBackspace: () {
-                      keyPress.backspace(
-                        textController: controller,
-                        ref: ref,
-                      );
-                    },
+                    onBackspace: () => keyPress.backspace(textController: controller),
                   ),
                 ],
               ),
