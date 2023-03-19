@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-typedef AGKeyboardNotifier
-    = AutoDisposeNotifierProvider<AGKeyboardProvider, void>;
+typedef AGKeyboardNotifier = AutoDisposeNotifierProviderFamily<AGKeyboardProvider, void, String?>;
 
 final agKeyboardProvider = AGKeyboardNotifier(AGKeyboardProvider.new);
 
-class AGKeyboardProvider extends AutoDisposeNotifier<void> {
+class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
   late String showText;
   late String expText;
   late List<String> history;
@@ -17,11 +16,11 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
   late bool showHistoryPanel;
 
   @override
-  void build() {
+  void build(String? arg) {
     showText = '';
     expText = '';
     history = [];
-    controller = TextEditingController();
+    controller = TextEditingController(text: arg);
     focusNode = FocusNode();
     showHistoryPanel = false;
     return;
@@ -38,8 +37,8 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
     ref.notifyListeners();
   }
 
-  _controllerPositionFix() => controller.selection =
-      TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+  _controllerPositionFix() =>
+      controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
 
   void checkText() {
     try {
