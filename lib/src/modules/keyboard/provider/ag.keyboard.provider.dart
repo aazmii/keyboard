@@ -38,6 +38,9 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
     ref.notifyListeners();
   }
 
+  _controllerPositionFix() => controller.selection =
+      TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+
   void checkText() {
     try {
       Parser p = Parser();
@@ -50,6 +53,7 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
         history.add('$showText=$r');
         showText = r;
         controller.text = r;
+        _controllerPositionFix();
         expText = r;
         ref.notifyListeners();
       } else {
@@ -58,6 +62,7 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
         history.add('$showText=$r');
         showText = r;
         controller.text = r;
+        _controllerPositionFix();
         expText = r;
         ref.notifyListeners();
       }
@@ -71,6 +76,7 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
     if (calcKey == CalcKey.backSpace) {
       if (isLongPress) {
         controller.text = '';
+        _controllerPositionFix();
         showText = '';
         expText = '';
       } else {
@@ -81,6 +87,7 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
         showText = newText;
         expText = newExp;
         controller.text = newText;
+        _controllerPositionFix();
       }
       ref.notifyListeners();
       return;
@@ -92,6 +99,7 @@ class AGKeyboardProvider extends AutoDisposeNotifier<void> {
     showText += calcKey.char;
     expText += calcKey.val;
     controller.text = showText;
+    _controllerPositionFix();
     ref.notifyListeners();
   }
 }
