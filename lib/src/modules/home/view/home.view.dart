@@ -1,4 +1,4 @@
-import 'package:ag_keyboard/src/modules/keyboard/keyboard.view.page.dart';
+import '../../keyboard/keyboard.view.page.dart';
 import 'package:flutter/material.dart';
 import '../../../localization/loalization.dart';
 import '../../../theme/themes/themes.dart';
@@ -13,25 +13,26 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Home')),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            style: roundedButtonStyle,
-            onPressed: () async => await fadePush(
-              context,
-              const SettingView(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: roundedButtonStyle,
+              onPressed: () async => await fadePush(
+                context,
+                const SettingView(),
+              ),
+              child: Text(t!.setting),
             ),
-            child: Text(t!.setting),
-          ),
-          ElevatedButton(
-            style: roundedButtonStyle,
-            onPressed: () async =>
-                await fadePush(context, const KeyboardViewPage()),
-            child: const Text('Test Keyboard'),
-          ),
-        ],
-      )),
+            ElevatedButton(
+              style: roundedButtonStyle,
+              onPressed: () async =>
+                  await fadePush(context, const KeyboardViewPage()),
+              child: const Text('Test Keyboard'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

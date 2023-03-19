@@ -39,6 +39,7 @@ extension BuildContextExtension on BuildContext {
       width > 800 ? ScreenType.desktop : ScreenType.mobile;
 
   bool get isScreenDesktop => screenType == ScreenType.desktop;
+  bool get isScreenMobile => screenType == ScreenType.mobile;
 }
 
 enum ScreenType { mobile, desktop }

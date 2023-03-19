@@ -1,64 +1,43 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
+import 'package:ag_keyboard/src/modules/keyboard/provider/ag.keyboard.provider.dart';
 import 'package:ag_keyboard/src/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HistoryList extends StatelessWidget {
+class HistoryList extends ConsumerWidget {
   HistoryList({super.key});
   final ScrollController _controller = ScrollController(initialScrollOffset: 0);
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final historyList = ref.watch(historyProvider);
-        return Scrollbar(
-          controller: _controller,
-          child: ListView.separated(
-            controller: _controller,
-            reverse: true,
-            itemCount: historyList.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(thickness: 2),
-            itemBuilder: (BuildContext context, int index) {
-              final slplittedList = historyList[index].split('=');
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _expressionText(context, slplittedList[0]),
-                    const SizedBox(height: 8),
-                    _resultText(context, slplittedList[1]),
-                  ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final historyList =
+        ref.watch(agKeyboardProvider.notifier.select((v) => v.history));
+    return Scrollbar(
+      controller: _controller,
+      child: ListView.separated(
+        controller: _controller,
+        reverse: true,
+        itemCount: historyList.length,
+        separatorBuilder: (_, index) => const Divider(thickness: 2),
+        itemBuilder: (context, index) {
+          final slplittedList = historyList[index].split('=');
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  slplittedList[0],
+                  style: context.textTheme.titleLarge,
                 ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Text _resultText(BuildContext context, String text) {
-    
-    print(context.txtSize);
-    return Text(
-      '= $text',
-      style: TextStyle(
-        fontSize: context.txtSize + 8,
-        color: Colors.white,
-      ),
-    );
-  }
-
-  Text _expressionText(BuildContext context, String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: context.txtSize,
-        color: Colors.white70,
+                const SizedBox(height: 5),
+                Text(
+                  '= ${slplittedList[1]}',
+                  style: context.textTheme.titleMedium,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

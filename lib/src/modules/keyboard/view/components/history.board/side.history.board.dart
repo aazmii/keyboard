@@ -1,55 +1,40 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
 import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/history.list.dart';
+import 'package:ag_keyboard/src/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../snackbar.dart';
+
+import '../../../provider/ag.keyboard.provider.dart';
 
 class SideHistoryBoard extends StatelessWidget {
   const SideHistoryBoard({super.key});
-  final double iconSizeLarge = 30;
-  final double iconSizeSmall = 40;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return SizedBox(
-      height: keyboardHeight(screenHeight: size.height - 10),
+      height: context.height * 0.6,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           const SizedBox(height: 12),
-          Center(child: getTitle(context)),
+          Center(
+            child: Text(
+              'History',
+              style: TextStyle(fontSize: context.txtSize + 8),
+            ),
+          ),
           Expanded(child: HistoryList()),
-          Consumer(builder: (context, ref, child) {
-            return Padding(
+          Consumer(
+            builder: (_, ref, __) => Padding(
               padding: const EdgeInsets.only(right: 20.0, bottom: 15),
               child: IconButton(
-                color: Colors.grey,
-                onPressed: () {
-                  ref.watch(historyProvider.notifier).state = [];
-                  ref.watch(historyViewProvider.notifier).state = false;
-                  showSnackbar(context, 'history cleared');
-                },
-                icon: Icon(
-                  Icons.delete,
-                  size: iconSizeLarge,
-                ),
+                color: context.theme.colorScheme.error.withOpacity(0.7),
+                onPressed: () =>
+                    ref.watch(agKeyboardProvider.notifier).clearHistory(),
+                icon: const Icon(Icons.delete_forever),
               ),
-            );
-          })
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget getTitle(context) {
-    return Text(
-      'History',
-      style: Theme.of(context)
-          .textTheme
-          .headlineSmall!
-          .copyWith(color: Colors.grey),
     );
   }
 }

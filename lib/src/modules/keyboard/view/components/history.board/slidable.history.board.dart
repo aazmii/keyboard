@@ -1,44 +1,35 @@
-
-import 'package:ag_keyboard/src/modules/keyboard/provider/providers.dart';
-import 'package:ag_keyboard/src/modules/keyboard/view/components/constraints.dart';
-import 'package:ag_keyboard/src/utils/extensions/extensions.dart';
+import '../../../provider/ag.keyboard.provider.dart';
+import '../../../../../utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'history.list.dart';
-import '../../snackbar.dart';
 
 class SlidableHistoryBoard extends ConsumerWidget {
-  const SlidableHistoryBoard({
-    this.historyColor = Colors.lightBlue,
-    super.key,
-  });
-  final Color? historyColor;
+  const SlidableHistoryBoard({super.key});
 
-  final _duration = const Duration(milliseconds: 600);
   @override
   Widget build(BuildContext context, ref) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final historyBoardHeight = getDisplayHeight(screenHeight: screenHeight) +
-        getNumpadHeight(screenHeight: screenHeight);
-    bool isActive = ref.watch(historyViewProvider);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final activePosition = screenWidth / 4;
-    final deactivePosition = screenWidth;
+    ref.watch(agKeyboardProvider);
+    final isActive = ref
+        .watch(agKeyboardProvider.notifier.select((v) => v.showHistoryPanel));
+    final activePosition = context.width / 4;
+    final deactivePosition = context.width;
 
     return AnimatedPositioned(
-      duration: _duration,
+      duration: const Duration(milliseconds: 600),
       curve: Curves.fastOutSlowIn,
       right: isActive ? activePosition : deactivePosition,
       child: Container(
         padding: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
-        height: historyBoardHeight + screenHeight * 0.1,
-        width: MediaQuery.of(context).size.width * 0.75,
-        color: historyColor,
+        height: context.height * 0.7,
+        width: context.width * 0.75,
+        color: context.theme.scaffoldBackgroundColor,
         child: ListView(
           children: [
-            _closeButton(ref: ref, context: context, name: 'Keyboard'),
+            const CloseButton(),
             SizedBox(
-              height: screenHeight * 0.48,
+              height: context.height * 0.45,
               child: HistoryList(),
             ),
             const Center(child: ClearHistoryButton()),
@@ -47,26 +38,33 @@ class SlidableHistoryBoard extends ConsumerWidget {
       ),
     );
   }
+}
 
-  Widget _closeButton(
-      {String name = '', required ref, required BuildContext context}) {
-    return GestureDetector(
-      onTap: () {
-        ref.watch(historyViewProvider.notifier).state = false;
-      },
-      child: Center(
-        child: Text(name,
-            style: TextStyle(fontSize: context.txtSize + 8)
-                .copyWith(color: Colors.grey)),
-      ),
+class CloseButton extends ConsumerWidget {
+  const CloseButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      children: [
+        const Spacer(),
+        Text(
+          'History',
+          style: TextStyle(fontSize: context.txtSize + 8),
+        ),
+        const Spacer(),
+        InkWell(
+          onTap: () =>
+              ref.watch(agKeyboardProvider.notifier).toggleHistoryPanel(),
+          child: const Icon(Icons.close),
+        ),
+      ],
     );
   }
 }
 
 class ClearHistoryButton extends StatelessWidget {
-  const ClearHistoryButton({
-    super.key,
-  });
+  const ClearHistoryButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -75,16 +73,11 @@ class ClearHistoryButton extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 20.0),
         child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: GestureDetector(
-            onTap: () {
-              ref.watch(historyProvider.notifier).state = [];
-              ref.watch(historyViewProvider.notifier).state = false;
-              showSnackbar(context, 'history cleared');
-            },
+          child: InkWell(
+            onTap: () => ref.watch(agKeyboardProvider.notifier).clearHistory(),
             child: Text(
               'Clear History',
-              style: TextStyle(fontSize: context.txtSize - 2)
-                  .copyWith(color: Colors.grey),
+              style: TextStyle(fontSize: context.txtSize - 2),
             ),
           ),
         ),
