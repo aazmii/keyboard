@@ -6,10 +6,13 @@ import 'provider/ag.keyboard.provider.dart';
 import 'view/ag.keyboard.dart';
 
 class KeyBoardViewPage extends ConsumerStatefulWidget {
-  const KeyBoardViewPage({super.key});
+  const KeyBoardViewPage({super.key, this.initVal});
+
+  final String? initVal;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _KeyBoardViewPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _KeyBoardViewPageState();
 }
 
 class _KeyBoardViewPageState extends ConsumerState<KeyBoardViewPage> {
@@ -24,8 +27,8 @@ class _KeyBoardViewPageState extends ConsumerState<KeyBoardViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(agKeyboardProvider(null));
-    final agKeyPd = ref.watch(agKeyboardProvider(null).notifier);
+    ref.watch(agKeyboardProvider(widget.initVal));
+    final agKeyPd = ref.watch(agKeyboardProvider(widget.initVal).notifier);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(title: const Text('Keyboard ')),
@@ -50,7 +53,8 @@ class _KeyBoardViewPageState extends ConsumerState<KeyBoardViewPage> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-              onPressed: () => print('Get Value ${agKeyPd.controller.text}'), child: const Text('Reveal data'))
+              onPressed: () => print('Get Value ${agKeyPd.controller.text}'),
+              child: const Text('Reveal data'))
         ],
       ),
     );
@@ -60,7 +64,10 @@ class _KeyBoardViewPageState extends ConsumerState<KeyBoardViewPage> {
   void _showBottomSheet() {
     setState(() => _showPersistantBottomSheetCallBack = null);
 
-    _scaffoldKey.currentState!.showBottomSheet((_) => const AgKeyboard()).closed.whenComplete(() {
+    _scaffoldKey.currentState!
+        .showBottomSheet((_) => AgKeyboard(initVal: widget.initVal))
+        .closed
+        .whenComplete(() {
       if (mounted) {
         setState(() => _showPersistantBottomSheetCallBack = _showBottomSheet);
       }

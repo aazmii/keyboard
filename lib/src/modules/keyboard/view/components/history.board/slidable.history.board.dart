@@ -6,20 +6,19 @@ import '../../../provider/ag.keyboard.provider.dart';
 import 'history.list.dart';
 
 class SlidableHistoryBoard extends ConsumerWidget {
-  const SlidableHistoryBoard({super.key});
+  const SlidableHistoryBoard({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, ref) {
-    ref.watch(agKeyboardProvider);
-    final isActive = ref
-        .watch(agKeyboardProvider.notifier.select((v) => v.showHistoryPanel));
-    final activePosition = context.width / 4;
-    final deactivePosition = context.width;
-
+    ref.watch(agKeyboardProvider(initVal));
+    final isActive = ref.watch(
+        agKeyboardProvider(initVal).notifier.select((v) => v.showHistoryPanel));
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 600),
       curve: Curves.fastOutSlowIn,
-      right: isActive ? activePosition : deactivePosition,
+      right: isActive ? context.width / 4 : context.width,
       child: Container(
         padding: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 0),
         height: context.height * 0.7,
@@ -27,12 +26,12 @@ class SlidableHistoryBoard extends ConsumerWidget {
         color: context.theme.scaffoldBackgroundColor,
         child: ListView(
           children: [
-            const CloseButton(),
+            CloseButton(initVal: initVal),
             SizedBox(
               height: context.height * 0.45,
-              child: HistoryList(),
+              child: HistoryList(initVal: initVal),
             ),
-            const Center(child: ClearHistoryButton()),
+            Center(child: ClearHistoryButton(initVal: initVal)),
           ],
         ),
       ),
@@ -41,7 +40,9 @@ class SlidableHistoryBoard extends ConsumerWidget {
 }
 
 class CloseButton extends ConsumerWidget {
-  const CloseButton({super.key});
+  const CloseButton({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,8 +55,9 @@ class CloseButton extends ConsumerWidget {
         ),
         const Spacer(),
         InkWell(
-          onTap: () =>
-              ref.watch(agKeyboardProvider.notifier).toggleHistoryPanel(),
+          onTap: () => ref
+              .watch(agKeyboardProvider(initVal).notifier)
+              .toggleHistoryPanel(),
           child: const Icon(Icons.close),
         ),
       ],
@@ -64,7 +66,9 @@ class CloseButton extends ConsumerWidget {
 }
 
 class ClearHistoryButton extends StatelessWidget {
-  const ClearHistoryButton({super.key});
+  const ClearHistoryButton({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +78,8 @@ class ClearHistoryButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: InkWell(
-            onTap: () => ref.watch(agKeyboardProvider.notifier).clearHistory(),
+            onTap: () =>
+                ref.watch(agKeyboardProvider(initVal).notifier).clearHistory(),
             child: Text(
               'Clear History',
               style: TextStyle(fontSize: context.txtSize - 2),

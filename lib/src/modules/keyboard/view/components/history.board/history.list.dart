@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HistoryList extends ConsumerWidget {
-  HistoryList({super.key});
+  HistoryList({super.key, required this.initVal});
+
+  final String? initVal;
+
   final ScrollController _controller = ScrollController(initialScrollOffset: 0);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final historyList =
-        ref.watch(agKeyboardProvider.notifier.select((v) => v.history));
+        ref.watch(agKeyboardProvider(initVal).notifier.select((v) => v.history));
     return Scrollbar(
       controller: _controller,
       child: ListView.separated(

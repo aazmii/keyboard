@@ -5,13 +5,15 @@ import '../../../../utils/extensions/extensions.dart';
 import '../../provider/ag.keyboard.provider.dart';
 
 class MiniHistoryDisplay extends ConsumerWidget {
-  const MiniHistoryDisplay({super.key});
+  const MiniHistoryDisplay({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, ref) {
-    ref.watch(agKeyboardProvider);
-    final displayText =
-        ref.watch(agKeyboardProvider.notifier.select((v) => v.showText));
+    ref.watch(agKeyboardProvider(initVal));
+    final displayText = ref
+        .watch(agKeyboardProvider(initVal).notifier.select((v) => v.showText));
     return SizedBox(
       height: context.height * 0.1,
       child: Padding(
@@ -30,13 +32,13 @@ class MiniHistoryDisplay extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const Spacer(),
-                  const LastHistory(),
+                  LastHistory(initVal: initVal),
                   const Spacer(),
                 ],
               ),
             ),
             context.isScreenMobile
-                ? const HistoryButton()
+                ? HistoryButton(initVal: initVal)
                 : const SizedBox.shrink(),
           ],
         ),
@@ -46,13 +48,15 @@ class MiniHistoryDisplay extends ConsumerWidget {
 }
 
 class LastHistory extends ConsumerWidget {
-  const LastHistory({super.key});
+  const LastHistory({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, ref) {
-    ref.watch(agKeyboardProvider);
-    final history =
-        ref.watch(agKeyboardProvider.notifier.select((v) => v.history));
+    ref.watch(agKeyboardProvider(initVal));
+    final history = ref
+        .watch(agKeyboardProvider(initVal).notifier.select((v) => v.history));
     return history.isNotEmpty
         ? Text(
             history.last,
@@ -63,14 +67,16 @@ class LastHistory extends ConsumerWidget {
 }
 
 class HistoryButton extends ConsumerWidget {
-  const HistoryButton({super.key});
+  const HistoryButton({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       iconSize: 35.0,
       onPressed: () =>
-          ref.watch(agKeyboardProvider.notifier).toggleHistoryPanel(),
+          ref.watch(agKeyboardProvider(initVal).notifier).toggleHistoryPanel(),
       icon: const Icon(Icons.history),
     );
   }

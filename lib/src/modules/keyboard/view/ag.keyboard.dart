@@ -6,27 +6,25 @@ import 'components/history.board/slidable.history.board.dart';
 import 'components/numpad.layout.dart';
 
 class AgKeyboard extends ConsumerWidget {
-  const AgKeyboard({super.key});
+  const AgKeyboard({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
-                  NumPadLayout(),
-                ],
-              ),
-            ),
-            if (context.isScreenMobile) const SlidableHistoryBoard(),
-          ],
-        );
-      },
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              NumPadLayout(initVal: initVal),
+            ],
+          ),
+        ),
+        if (context.isScreenMobile) SlidableHistoryBoard(initVal: initVal),
+      ],
     );
   }
 }

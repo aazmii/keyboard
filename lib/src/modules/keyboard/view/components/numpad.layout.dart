@@ -10,7 +10,9 @@ import 'history.board/side.history.board.dart';
 import 'mini_history_display.dart';
 
 class NumPadLayout extends ConsumerWidget {
-  const NumPadLayout({super.key});
+  const NumPadLayout({super.key, required this.initVal});
+
+  final String? initVal;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -20,7 +22,7 @@ class NumPadLayout extends ConsumerWidget {
           flex: 5,
           child: Column(
             children: [
-              const MiniHistoryDisplay(),
+              MiniHistoryDisplay(initVal: initVal),
               SizedBox(
                 height: context.height * 0.5,
                 width: context.width,
@@ -34,6 +36,7 @@ class NumPadLayout extends ConsumerWidget {
                             ...List.generate(
                               min(CalcKey.values.length - (outterIdx * 5), 5),
                               (innerIdx) => KeyboardTile(
+                                initVal: initVal,
                                 calcKey:
                                     CalcKey.values[(outterIdx * 5) + innerIdx],
                               ),
@@ -49,9 +52,9 @@ class NumPadLayout extends ConsumerWidget {
           ),
         ),
         if (context.isScreenDesktop)
-          const Expanded(
+          Expanded(
             flex: 2,
-            child: SideHistoryBoard(),
+            child: SideHistoryBoard(initVal: initVal),
           ),
       ],
     );
@@ -59,8 +62,9 @@ class NumPadLayout extends ConsumerWidget {
 }
 
 class KeyboardTile extends ConsumerWidget {
-  const KeyboardTile({super.key, required this.calcKey});
+  const KeyboardTile({super.key, required this.calcKey, required this.initVal});
 
+  final String? initVal;
   final CalcKey calcKey;
 
   @override
@@ -72,11 +76,13 @@ class KeyboardTile extends ConsumerWidget {
         splashColor: calcKey == CalcKey.backSpace
             ? context.theme.colorScheme.error
             : context.theme.cardColor,
-        onTap: () => ref.watch(agKeyboardProvider.notifier).pressKey(calcKey),
+        onTap: () =>
+            ref.watch(agKeyboardProvider(initVal).notifier).pressKey(calcKey),
         onLongPress: calcKey != CalcKey.backSpace
             ? null
-            : () =>
-                ref.watch(agKeyboardProvider.notifier).pressKey(calcKey, true),
+            : () => ref
+                .watch(agKeyboardProvider(initVal).notifier)
+                .pressKey(calcKey, true),
         child: Container(
           margin: const EdgeInsets.all(0.5),
           decoration: BoxDecoration(
