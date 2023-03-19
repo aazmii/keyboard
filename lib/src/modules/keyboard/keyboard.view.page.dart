@@ -1,16 +1,19 @@
-import 'provider/ag.keyboard.provider.dart';
 import 'package:flutter/material.dart';
-import 'view/ag.keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class KeyboardViewPage extends StatefulWidget {
-  const KeyboardViewPage({super.key});
+import 'enum/enums.dart';
+import 'provider/ag.keyboard.provider.dart';
+import 'view/ag.keyboard.dart';
+
+class KeyBoardViewPage extends ConsumerStatefulWidget {
+  const KeyBoardViewPage({super.key});
 
   @override
-  State<KeyboardViewPage> createState() => _KeyboardViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _KeyBoardViewPageState();
 }
 
-class _KeyboardViewState extends State<KeyboardViewPage> {
+class _KeyBoardViewPageState extends ConsumerState<KeyBoardViewPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   VoidCallback? _showPersistantBottomSheetCallBack;
 
@@ -22,14 +25,15 @@ class _KeyboardViewState extends State<KeyboardViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(agKeyboardProvider);
+    final agKeyPd = ref.watch(agKeyboardProvider.notifier);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(title: const Text('Keyboard ')),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Consumer(builder: (_, ref, __) {
-          final agKeyPd = ref.watch(agKeyboardProvider.notifier);
-          return Form(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
             child: TextFormField(
               controller: agKeyPd.controller,
               focusNode: agKeyPd.focusNode,
@@ -37,9 +41,19 @@ class _KeyboardViewState extends State<KeyboardViewPage> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.none,
               showCursor: true,
+              validator: (v) {
+                if (!checkValid(v)) {
+                  return 'Invalid!';
+                }
+                return null;
+              },
             ),
-          );
-        }),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+              onPressed: () => print('Get Value ${agKeyPd.controller.text}'),
+              child: const Text('Reveal data'))
+        ],
       ),
     );
   }

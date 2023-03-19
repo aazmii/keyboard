@@ -1,3 +1,19 @@
+RegExp agKeyboardReg = RegExp(r'^(?:[^*/]|[0-9+/\-*](?<=^[0-9+/\-*]))$');
+
+bool checkValid(String? v) {
+  if (v!.isEmpty) return false;
+  if (v[0] == CalcKey.division.char || v[0] == CalcKey.multiply.char) {
+    return false;
+  }
+  if (v[v.length - 1] == CalcKey.addition.char ||
+      v[v.length - 1] == CalcKey.substract.char ||
+      v[v.length - 1] == CalcKey.multiply.char ||
+      v[v.length - 1] == CalcKey.division.char) {
+    return false;
+  }
+  return true;
+}
+
 enum CalcKey {
   backSpace('⌫', '↩'),
   one('1', '1'),
@@ -18,9 +34,9 @@ enum CalcKey {
   trippleZero('000', '000'),
   //
   substract('−', '-'),
-  add('+', '+'),
+  addition('+', '+'),
   equalKey('=', '='),
-  point('•', '.');
+  point('.', '.');
 
   final List? characters;
   final String char;

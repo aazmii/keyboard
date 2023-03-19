@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import '../../enum/enums.dart';
-import '../../provider/ag.keyboard.provider.dart';
-import 'history.board/side.history.board.dart';
-import '../../../../utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../utils/extensions/extensions.dart';
+import '../../enum/enums.dart';
+import '../../provider/ag.keyboard.provider.dart';
+import 'history.board/side.history.board.dart';
 import 'mini_history_display.dart';
 
 class NumPadLayout extends ConsumerWidget {
@@ -68,9 +68,17 @@ class KeyboardTile extends ConsumerWidget {
     return Expanded(
       flex: calcKey == CalcKey.equalKey ? 2 : 1,
       child: InkWell(
+        borderRadius: BorderRadius.circular(5),
+        splashColor: calcKey == CalcKey.backSpace
+            ? context.theme.colorScheme.error
+            : context.theme.cardColor,
         onTap: () => ref.watch(agKeyboardProvider.notifier).pressKey(calcKey),
+        onLongPress: calcKey != CalcKey.backSpace
+            ? null
+            : () =>
+                ref.watch(agKeyboardProvider.notifier).pressKey(calcKey, true),
         child: Container(
-          margin: const EdgeInsets.all(2.0),
+          margin: const EdgeInsets.all(0.5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: calcKey == CalcKey.backSpace

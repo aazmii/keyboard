@@ -1,9 +1,9 @@
-import 'package:ag_keyboard/src/modules/keyboard/view/components/history.board/history.list.dart';
-import 'package:ag_keyboard/src/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../utils/extensions/extensions.dart';
 import '../../../provider/ag.keyboard.provider.dart';
+import 'history.list.dart';
 
 class SideHistoryBoard extends StatelessWidget {
   const SideHistoryBoard({super.key});
