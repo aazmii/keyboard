@@ -39,6 +39,27 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
     ref.notifyListeners();
   }
 
+  lisentener() => controller.addListener(() {
+        // final txt = controller.text;
+        // print('Controller Listener Text: $txt');
+        // final lc = txt[txt.length - 1];
+        // if (lc == '=') {
+        //   controller.text =
+        //       controller.text.substring(0, controller.text.length - 1);
+        //   checkText();
+        // } else if (getCalcKeyByVal(lc) != null) {
+        //   controller.text =
+        //       controller.text.substring(0, controller.text.length - 1);
+        //   pressKey(getCalcKeyByVal(lc)!);
+        // } else {
+        //   controller.text =
+        //       controller.text.substring(0, controller.text.length - 1);
+        // }
+        showText = controller.text;
+        expText = controller.text;
+        ref.notifyListeners();
+      });
+
   _controllerPositionFix([int? p]) =>
       controller.selection = TextSelection.fromPosition(
           TextPosition(offset: p ?? controller.text.length));

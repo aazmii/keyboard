@@ -44,3 +44,12 @@ enum CalcKey {
 
   const CalcKey(this.char, this.val, [this.characters]);
 }
+
+CalcKey? getCalcKeyByVal(String val){
+  for (var item in CalcKey.values) {
+    if (item.val == val) {
+      return item;
+    }
+  }
+  return null;
+}

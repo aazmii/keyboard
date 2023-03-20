@@ -1,3 +1,5 @@
+import 'package:ag_keyboard/src/modules/keyboard/provider/ag.keyboard.provider.dart';
+
 import '../../../utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +14,7 @@ class AgKeyboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(agKeyboardProvider(initVal).notifier).lisentener();
     return Stack(
       children: [
         SingleChildScrollView(
