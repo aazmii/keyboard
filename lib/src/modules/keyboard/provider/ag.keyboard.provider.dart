@@ -117,9 +117,9 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
   }
 
   void pressKey(CalcKey calcKey, [bool isLongPress = false]) {
-    debugPrint('pressKey: ${calcKey.char}');
+    // debugPrint('pressKey: ${calcKey.char}');
     int p = controller.selection.baseOffset;
-    print('Cursor Position: $p');
+    // print('Cursor Position: $p');
     if (calcKey == CalcKey.backSpace) {
       if (isLongPress) {
         controller.text = '';
@@ -142,6 +142,16 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
       checkText();
       ref.notifyListeners();
       return;
+    }
+    if (history.isNotEmpty &&
+        history.last.split('=').last == showText &&
+        !calcKey.isOperator) {
+      debugPrint('Clear History');
+      controller.text = '';
+      showText = '';
+      expText = '';
+      _controllerPositionFix(0);
+      p = 0;
     }
     if (p == showText.length) {
       showText += calcKey.char;

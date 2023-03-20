@@ -15,37 +15,38 @@ bool checkValid(String? v) {
 }
 
 enum CalcKey {
-  backSpace('⌫', '↩'),
-  one('1', '1'),
-  four('4', '4', ['g', 'h', 'i']),
-  seven('7', '7', ['p', 'q', 'r', 's']),
-  zero('0', '0'),
+  backSpace('⌫', '↩', false),
+  one('1', '1', false),
+  four('4', '4', false, ['g', 'h', 'i']),
+  seven('7', '7', false, ['p', 'q', 'r', 's']),
+  zero('0', '0', false),
   //
-  division('÷', '/'),
-  two('2', '2', ['a', 'b', 'c']),
-  five('5', '5', ['j', 'k', 'l']),
-  eight('8', '8', ['t', 'u', 'v']),
-  doubleZero('00', '00'),
+  division('÷', '/', true),
+  two('2', '2', false, ['a', 'b', 'c']),
+  five('5', '5', false, ['j', 'k', 'l']),
+  eight('8', '8', false, ['t', 'u', 'v']),
+  doubleZero('00', '00', false),
   //
-  multiply('×', '*'),
-  three('3', '3', ['d', 'e', 'f']),
-  six('6', '6', ['m', 'n', 'o']),
-  nine('9', '9', ['w', 'x', 'y', 'z']),
-  trippleZero('000', '000'),
+  multiply('×', '*', true),
+  three('3', '3', false, ['d', 'e', 'f']),
+  six('6', '6', false, ['m', 'n', 'o']),
+  nine('9', '9', false, ['w', 'x', 'y', 'z']),
+  trippleZero('000', '000', false),
   //
-  substract('−', '-'),
-  addition('+', '+'),
-  equalKey('=', '='),
-  point('.', '.');
+  substract('−', '-', true),
+  addition('+', '+', true),
+  equalKey('=', '=', true),
+  point('.', '.', true);
 
   final List? characters;
+  final bool isOperator;
   final String char;
   final String val;
 
-  const CalcKey(this.char, this.val, [this.characters]);
+  const CalcKey(this.char, this.val, this.isOperator, [this.characters]);
 }
 
-CalcKey? getCalcKeyByVal(String val){
+CalcKey? getCalcKeyByVal(String val) {
   for (var item in CalcKey.values) {
     if (item.val == val) {
       return item;
