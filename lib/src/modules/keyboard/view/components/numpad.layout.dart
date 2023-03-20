@@ -91,7 +91,7 @@ class KeyboardTile extends ConsumerWidget {
                 : context.theme.cardColor,
             border: Border.all(
               color: context.theme.dividerColor,
-              width: 1,
+              width: 0.3,
             ),
           ),
           child: Center(

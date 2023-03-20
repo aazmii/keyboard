@@ -1,9 +1,8 @@
-import 'package:ag_keyboard/src/modules/keyboard/provider/ag.keyboard.provider.dart';
-
-import '../../../utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../utils/extensions/extensions.dart';
+import '../provider/ag.keyboard.provider.dart';
 import 'components/history.board/slidable.history.board.dart';
 import 'components/numpad.layout.dart';
 

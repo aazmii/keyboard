@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../enum/enums.dart';
@@ -41,8 +42,14 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
               focusNode: agKeyPd.focusNode,
               onTap: _showPersistantBottomSheetCallBack,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.none,
+              // keyboardType: TextInputType.none,
               showCursor: true,
+              // keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d+(?:\.\d+)?$')),
+              ],
+              // onChanged: agKeyPd.onChanged,
+
               validator: (v) {
                 if (!checkValid(v)) {
                   return 'Invalid!';
