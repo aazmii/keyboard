@@ -1,7 +1,8 @@
-import '../../keyboard/keyboard.view.page.dart';
 import 'package:flutter/material.dart';
+
 import '../../../localization/loalization.dart';
 import '../../../theme/themes/themes.dart';
+import '../../keyboard/view.test/keyboard.view.page.dart';
 import '../../router/provider/route.provider.dart';
 import '../../setting/view/setting.view.dart';
 
@@ -27,13 +28,13 @@ class HomeView extends StatelessWidget {
             ElevatedButton(
               style: roundedButtonStyle,
               onPressed: () async => await fadePush(
-                  context, const KeyBoardViewPage()),
+                  context, const TestKeyBoardView()),
               child: const Text('Test Keyboard'),
             ),
             ElevatedButton(
               style: roundedButtonStyle,
               onPressed: () async => await fadePush(
-                  context, const KeyBoardViewPage(initVal: '100.0')),
+                  context, const TestKeyBoardView(initVal: '100.0')),
               child: const Text('Test Keyboard with initial val'),
             ),
           ],

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'enum/enums.dart';
-import 'provider/ag.keyboard.provider.dart';
-import 'view/ag.keyboard.dart';
+import '../enum/enums.dart';
+import '../provider/ag.keyboard.provider.dart';
+import '../view/ag.keyboard.dart';
 
-class KeyBoardViewPage extends ConsumerStatefulWidget {
-  const KeyBoardViewPage({super.key, this.initVal});
+class TestKeyBoardView extends ConsumerStatefulWidget {
+  const TestKeyBoardView({super.key, this.initVal});
 
   final String? initVal;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _KeyBoardViewPageState();
+      _TestKeyBoardViewState();
 }
 
-class _KeyBoardViewPageState extends ConsumerState<KeyBoardViewPage> {
+class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   VoidCallback? _showPersistantBottomSheetCallBack;
 

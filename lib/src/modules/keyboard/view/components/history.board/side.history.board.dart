@@ -29,7 +29,7 @@ class SideHistoryBoard extends StatelessWidget {
             builder: (_, ref, __) => Padding(
               padding: const EdgeInsets.only(right: 20.0, bottom: 15),
               child: IconButton(
-                color: context.theme.colorScheme.error.withOpacity(0.7),
+                color: Colors.red[400],
                 onPressed: () => ref
                     .watch(agKeyboardProvider(initVal).notifier)
                     .clearHistory(),

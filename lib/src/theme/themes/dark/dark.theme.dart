@@ -25,6 +25,7 @@ const _floatingActionButtonColor = Color.fromARGB(255, 35, 105, 122);
 const _shadowColor = Color.fromARGB(90, 0, 0, 0);
 
 final darkTheme = ThemeData(
+  useMaterial3: true,
   cardTheme: _cardTheme,
   textTheme: _textTheme,
   fontFamily: fontFamily,

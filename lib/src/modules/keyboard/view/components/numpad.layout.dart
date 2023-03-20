@@ -73,9 +73,8 @@ class KeyboardTile extends ConsumerWidget {
       flex: calcKey == CalcKey.equalKey ? 2 : 1,
       child: InkWell(
         borderRadius: BorderRadius.circular(5),
-        splashColor: calcKey == CalcKey.backSpace
-            ? context.theme.colorScheme.error
-            : context.theme.cardColor,
+        splashColor:
+            calcKey == CalcKey.backSpace ? Colors.red : context.theme.cardColor,
         onTap: () =>
             ref.watch(agKeyboardProvider(initVal).notifier).pressKey(calcKey),
         onLongPress: calcKey != CalcKey.backSpace
@@ -88,8 +87,8 @@ class KeyboardTile extends ConsumerWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
             color: calcKey == CalcKey.backSpace
-                ? context.theme.colorScheme.error.withOpacity(0.7)
-                : context.theme.cardColor.withOpacity(0.7),
+                ? Colors.red[400]
+                : context.theme.cardColor,
             border: Border.all(
               color: context.theme.dividerColor,
               width: 1,
