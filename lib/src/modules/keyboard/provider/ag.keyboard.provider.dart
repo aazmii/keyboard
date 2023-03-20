@@ -4,7 +4,8 @@ import 'package:math_expressions/math_expressions.dart';
 
 import '../enum/enums.dart';
 
-typedef AGKeyboardNotifier = AutoDisposeNotifierProviderFamily<AGKeyboardProvider, void, String?>;
+typedef AGKeyboardNotifier
+    = AutoDisposeNotifierProviderFamily<AGKeyboardProvider, void, String?>;
 
 final agKeyboardProvider = AGKeyboardNotifier(AGKeyboardProvider.new);
 
@@ -18,8 +19,8 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
 
   @override
   void build(String? arg) {
-    showText = '';
-    expText = '';
+    showText = arg ?? '';
+    expText = arg ?? '';
     history = [];
     controller = TextEditingController(text: arg);
     focusNode = FocusNode();
@@ -38,8 +39,9 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
     ref.notifyListeners();
   }
 
-  _controllerPositionFix() =>
-      controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+  _controllerPositionFix([int? p]) =>
+      controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: p ?? controller.text.length));
 
   void checkText() {
     try {
@@ -73,6 +75,8 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
 
   void pressKey(CalcKey calcKey, [bool isLongPress = false]) {
     debugPrint('pressKey: ${calcKey.char}');
+    int p = controller.selection.baseOffset;
+    print('Cursor Position: $p');
     if (calcKey == CalcKey.backSpace) {
       if (isLongPress) {
         controller.text = '';
@@ -82,12 +86,12 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
       } else {
         if (showText.isEmpty) return;
         if (expText.isEmpty) return;
-        final newText = showText.substring(0, showText.length - 1);
-        final newExp = expText.substring(0, expText.length - 1);
+        final newText = showText.replaceRange(p - 1, p, '');
+        final newExp = expText.replaceRange(p - 1, p, '');
         showText = newText;
         expText = newExp;
         controller.text = newText;
-        _controllerPositionFix();
+        _controllerPositionFix(p - 1);
       }
       ref.notifyListeners();
       return;
@@ -96,10 +100,19 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
       ref.notifyListeners();
       return;
     }
-    showText += calcKey.char;
-    expText += calcKey.val;
-    controller.text = showText;
-    _controllerPositionFix();
+    if (p == showText.length) {
+      showText += calcKey.char;
+      expText += calcKey.val;
+      controller.text = showText;
+      _controllerPositionFix();
+    } else {
+      showText =
+          '${showText.substring(0, p)}${calcKey.char}${showText.substring(p, showText.length)}';
+      expText =
+          '${expText.substring(0, p)}${calcKey.val}${expText.substring(p, expText.length)}';
+      controller.text = showText;
+      _controllerPositionFix(p + 1);
+    }
     ref.notifyListeners();
   }
 }

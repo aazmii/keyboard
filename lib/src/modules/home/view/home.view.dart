@@ -34,7 +34,7 @@ class HomeView extends StatelessWidget {
             ElevatedButton(
               style: roundedButtonStyle,
               onPressed: () async => await fadePush(
-                  context, const TestKeyBoardView(initVal: '100.0')),
+                  context, const TestKeyBoardView(initVal: '0123456789')),
               child: const Text('Test Keyboard with initial val'),
             ),
           ],
