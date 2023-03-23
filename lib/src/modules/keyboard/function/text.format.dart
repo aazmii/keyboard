@@ -5,26 +5,26 @@ import '../enum/enums.dart';
 
 NumberFormat bdtNumberFormat = NumberFormat('#,##,##0.0#');
 
-String textFormat(String text, NumberFormat format, [String delimar = 'z']) {
-  debugPrint('My Text: $text');
+String textFormat(String text, NumberFormat format, [bool isDebug = false, String delimar = 'z']) {
+  if (isDebug)  debugPrint('My Text: $text');
   String str = text;
   // str = changeToCalcVal(text);
   // 123456789 + 987654321 = 1,111,111,110
   final delimeters =
       CalcKey.values.where((e) => e.isOperator).map((e) => e.val).toList();
-  debugPrint('Fixed Delimar: $delimeters');
+  if (isDebug) debugPrint('Fixed Delimar: $delimeters');
   // final delimeters = ['+', '-', '*', '/', '='];
   str = replaceDelimar(text, delimeters, delimar);
-  print('After Replace Delimar with $delimar: $str');
+  if (isDebug) debugPrint('After Replace Delimar with $delimar: $str');
   List<String> digits = str.split(delimar);
-  print('Digits After Spliting: $digits');
+  if (isDebug) debugPrint('Digits After Spliting: $digits');
   List<String> temp = [];
   for (final e in digits) {
     if (e == '') continue;
     temp.add(format.format(double.parse(e)));
   }
   digits = [...temp];
-  print('After Format: $digits');
+  if (isDebug) debugPrint('After Format: $digits');
   final concat = digits.length == 1
       ? str[0] == delimar
           ? '$delimar${digits[0]}'
@@ -32,12 +32,12 @@ String textFormat(String text, NumberFormat format, [String delimar = 'z']) {
               ? '${digits[0]}$delimar'
               : digits.join(delimar)
       : digits.join(delimar);
-  print('After Concat: $concat');
+  if (isDebug) debugPrint('After Concat: $concat');
   final operators = getOperatorList(text);
-  print('Operators: $operators');
+  if (isDebug) debugPrint('Operators: $operators');
   str = replaceDelimarReverse(concat, operators, delimar);
-  print('After Replace $delimar with Delimar: $str');
-  print('====================================');
+  if (isDebug) debugPrint('After Replace $delimar with Delimar: $str');
+  if (isDebug) debugPrint('====================================');
   return str;
 }
 

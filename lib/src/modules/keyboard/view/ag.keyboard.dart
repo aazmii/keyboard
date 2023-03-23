@@ -6,14 +6,25 @@ import '../provider/ag.keyboard.provider.dart';
 import 'components/history.board/slidable.history.board.dart';
 import 'components/numpad.layout.dart';
 
-class AgKeyboard extends ConsumerWidget {
+class AgKeyboard extends ConsumerStatefulWidget {
   const AgKeyboard({super.key, required this.initVal});
 
   final String? initVal;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(agKeyboardProvider(initVal).notifier).lisentener();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AgKeyboardState();
+}
+
+class _AgKeyboardState extends ConsumerState<AgKeyboard> {
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(agKeyboardProvider(widget.initVal).notifier).lisentener();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -21,11 +32,11 @@ class AgKeyboard extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              NumPadLayout(initVal: initVal),
+              NumPadLayout(initVal: widget.initVal),
             ],
           ),
         ),
-        if (context.isScreenMobile) SlidableHistoryBoard(initVal: initVal),
+        if (context.isScreenMobile) SlidableHistoryBoard(initVal: widget.initVal),
       ],
     );
   }
