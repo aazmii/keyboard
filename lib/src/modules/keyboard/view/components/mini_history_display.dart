@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../utils/extensions/extensions.dart';
+import '../../function/text.format.dart';
 import '../../provider/ag.keyboard.provider.dart';
 
 class MiniHistoryDisplay extends ConsumerWidget {
@@ -13,7 +14,7 @@ class MiniHistoryDisplay extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     ref.watch(agKeyboardProvider(initVal));
     final displayText = ref
-        .watch(agKeyboardProvider(initVal).notifier.select((v) => v.showText));
+        .watch(agKeyboardProvider(initVal).notifier.select((v) => v.expText));
     return SizedBox(
       height: context.height * 0.1,
       child: Padding(
@@ -26,7 +27,8 @@ class MiniHistoryDisplay extends ConsumerWidget {
                 children: [
                   const Spacer(),
                   Text(
-                    displayText,
+                    textFormat(displayText, bdtNumberFormat),
+                    // displayText,
                     style: context.textTheme.headlineSmall,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -59,6 +61,7 @@ class LastHistory extends ConsumerWidget {
         .watch(agKeyboardProvider(initVal).notifier.select((v) => v.history));
     return history.isNotEmpty
         ? Text(
+            // textFormat(history.last, bdtNumberFormat),
             history.last,
             style: TextStyle(fontSize: context.txtSize + 2),
           )

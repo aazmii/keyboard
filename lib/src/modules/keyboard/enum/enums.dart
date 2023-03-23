@@ -36,7 +36,7 @@ enum CalcKey {
   substract('−', '-', true),
   addition('+', '+', true),
   equalKey('=', '=', true),
-  point('.', '.', true);
+  point('.', '.', false);
 
   final List? characters;
   final bool isOperator;
