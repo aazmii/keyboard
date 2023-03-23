@@ -5,7 +5,7 @@ import '../enum/enums.dart';
 
 NumberFormat bdtNumberFormat = NumberFormat('#,##,##0.0#');
 
-String textFormat(String text, NumberFormat format) {
+String textFormat(String text, NumberFormat format, [String delimar = 'z']) {
   debugPrint('My Text: $text');
   String str = text;
   // str = changeToCalcVal(text);
@@ -14,29 +14,29 @@ String textFormat(String text, NumberFormat format) {
       CalcKey.values.where((e) => e.isOperator).map((e) => e.val).toList();
   debugPrint('Fixed Delimar: $delimeters');
   // final delimeters = ['+', '-', '*', '/', '='];
-  str = replaceDelimar(text, delimeters, 'z');
-  print('After Replace Delimar with z: $str');
-  List<String> digits = str.split('z');
+  str = replaceDelimar(text, delimeters, delimar);
+  print('After Replace Delimar with $delimar: $str');
+  List<String> digits = str.split(delimar);
   print('Digits After Spliting: $digits');
   List<String> temp = [];
-  for (var e in digits) {
+  for (final e in digits) {
     if (e == '') continue;
     temp.add(format.format(double.parse(e)));
   }
   digits = [...temp];
   print('After Format: $digits');
   final concat = digits.length == 1
-      ? str[0] == 'z'
-          ? 'z${digits[0]}'
-          : str[str.length - 1] == 'z'
-              ? '${digits[0]}z'
-              : digits.join('z')
-      : digits.join('z');
+      ? str[0] == delimar
+          ? '$delimar${digits[0]}'
+          : str[str.length - 1] == delimar
+              ? '${digits[0]}$delimar'
+              : digits.join(delimar)
+      : digits.join(delimar);
   print('After Concat: $concat');
-  final List<String> operators = getOperatorList(text);
+  final operators = getOperatorList(text);
   print('Operators: $operators');
-  str = replaceDelimarReverse(concat, operators, 'z');
-  print('After Replace z with Delimar: $str');
+  str = replaceDelimarReverse(concat, operators, delimar);
+  print('After Replace $delimar with Delimar: $str');
   print('====================================');
   return str;
 }
