@@ -75,13 +75,14 @@ class KeyboardTile extends ConsumerWidget {
         borderRadius: BorderRadius.circular(5),
         splashColor:
             calcKey == CalcKey.backSpace ? Colors.red : context.theme.cardColor,
-        onTap: () =>
-            ref.watch(agKeyboardProvider(initVal).notifier).pressKey(calcKey),
+        onTap: () => ref
+            .watch(agKeyboardProvider(initVal).notifier)
+            .pressKey(context, calcKey),
         onLongPress: calcKey != CalcKey.backSpace
             ? null
             : () => ref
                 .watch(agKeyboardProvider(initVal).notifier)
-                .pressKey(calcKey, true),
+                .pressKey(context, calcKey, true),
         child: Container(
           margin: const EdgeInsets.all(0.5),
           decoration: BoxDecoration(

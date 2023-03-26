@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../enum/enums.dart';
@@ -46,6 +47,8 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
               // keyboardType: const TextInputType.numberWithOptions(decimal: true),
               // inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+(?:\.\d+)?$'))],
               // onChanged: agKeyPd.onChanged,
+              inputFormatters: createInputFormatter(allowedChars),
+              onFieldSubmitted: (_) => agKeyPd.checkText(context),
               validator: (v) {
                 if (!checkValid(v)) {
                   return 'Invalid!';
@@ -76,4 +79,15 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
       }
     });
   }
+}
+
+List<TextInputFormatter> createInputFormatter(List<String> allowedChars) {
+  // debugPrint('allowedChars: $allowedChars');
+  // allowedChars: [↩, 1, 4, 7, 0, /, 2, 5, 8, 00, *, 3, 6, 9, 000, -, +, =, .]
+  String allowedCharsPattern =
+      allowedChars.map((char) => RegExp.escape(char)).join('|');
+  RegExp allowedCharsRegex = RegExp('[$allowedCharsPattern]+');
+  return [
+    FilteringTextInputFormatter.allow(allowedCharsRegex),
+  ];
 }

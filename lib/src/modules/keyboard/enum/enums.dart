@@ -48,9 +48,53 @@ enum CalcKey {
 
 CalcKey? getCalcKeyByVal(String val) {
   for (var item in CalcKey.values) {
-    if (item.val == val) {
-      return item;
-    }
+    if (item.val == val || item.char == val) return item;
   }
   return null;
 }
+
+String convertToExp(String val) {
+  String exp = '';
+  for (var i = 0; i < val.length; i++) {
+    String char = val[i];
+    CalcKey? calcKey = getCalcKeyByVal(char);
+    if (calcKey != null) {
+      exp += calcKey.val;
+    } else {
+      exp += val;
+    }
+  }
+  return exp;
+}
+
+String convertToShowText(String val) {
+  String txt = '';
+  for (var i = 0; i < val.length; i++) {
+    String char = val[i];
+    CalcKey? calcKey = getCalcKeyByVal(char);
+    if (calcKey != null) {
+      txt += calcKey.char;
+    } else {
+      txt += char;
+    }
+  }
+  return txt;
+}
+
+const allowedChars = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '.',
+  '+',
+  '-',
+  '*',
+  '/',
+];

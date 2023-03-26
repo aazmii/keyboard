@@ -4,7 +4,8 @@ import 'package:math_expressions/math_expressions.dart';
 
 import '../enum/enums.dart';
 
-typedef AGKeyboardNotifier = AutoDisposeNotifierProviderFamily<AGKeyboardProvider, void, String?>;
+typedef AGKeyboardNotifier
+    = AutoDisposeNotifierProviderFamily<AGKeyboardProvider, void, String?>;
 
 final agKeyboardProvider = AGKeyboardNotifier(AGKeyboardProvider.new);
 
@@ -38,26 +39,6 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
     ref.notifyListeners();
   }
 
-  // onChanged(String? v) {
-  //   if (v == null) return;
-  //   focusNode.requestFocus();
-  //   print('Controller onChanged Text: $v');
-  //   final lc = v[v.length - 1];
-  //   if (lc == '=') {
-  //     controller.text =
-  //         controller.text.substring(0, controller.text.length - 1);
-  //     checkText();
-  //   } else if (getCalcKeyByVal(lc) != null) {
-  //     controller.text =
-  //         controller.text.substring(0, controller.text.length - 1);
-  //     pressKey(getCalcKeyByVal(lc)!);
-  //   } else {
-  //     controller.text =
-  //         controller.text.substring(0, controller.text.length - 1);
-  //     ref.notifyListeners();
-  //   }
-  // }
-
   lisentener() => controller.addListener(() {
         final text = controller.text;
         print('Controller Listener Text: $text');
@@ -66,72 +47,73 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
         final lastChar = len < 1 ? null : text[len - 1];
         print('Last Char: $lastChar');
         print('=============================');
-        if (lastChar != null) {
-          print('Character is not null');
-          final calcKey = getCalcKeyByVal(lastChar);
-          if (calcKey == null) {
-            print('Invalid key');
-            controller.text = controller.text.substring(0, controller.text.length - 1);
-            _controllerPositionFix();
-            // ref.notifyListeners();
-          } else if (calcKey == CalcKey.equalKey) {
-            print('CalcKey Press: $calcKey');
-            controller.text = controller.text.substring(0, controller.text.length - 1);
-            _controllerPositionFix();
-            checkText();
+        if (len != 0) {
+          print(
+              'Text withour last char: ${text.substring(0, text.length - 1)}');
+          if (history.isNotEmpty &&
+              history.last.split('=').last ==
+                  text.substring(0, text.length - 1) &&
+              lastChar != null &&
+              !getCalcKeyByVal(lastChar)!.isOperator) {
+            debugPrint('Clear History');
+            controller.text = text[text.length - 1];
+            showText = text[text.length - 1];
+            expText = text[text.length - 1];
+            _controllerPositionFix(1);
           } else {
-            print('CalcKey Press: $calcKey');
+            showText = convertToShowText(text);
+            expText = convertToExp(text);
           }
-          print('>>>>>>>>>>>><<<<<<<<<<<');
-          // else {
-          //   controller.text =
-          //       controller.text.substring(0, controller.text.length - 1);
-          //   _controllerPositionFix();
-          //   pressKey(calcKey);
-          // }
-          // if (getCalcKeyByVal(lastChar) != null) {
-          //   controller.text =
-          //       controller.text.substring(0, controller.text.length - 1);
-          //   pressKey(getCalcKeyByVal(lastChar)!);
-          // } else if (lastChar == '=') {
-          //   controller.text =
-          //       controller.text.substring(0, controller.text.length - 1);
-          //   checkText();
-          // } else {
-          //   controller.text =
-          //       controller.text.substring(0, controller.text.length - 1);
-          // }
-          // ref.notifyListeners();
+          ref.notifyListeners();
+          return;
         } else {
-          print('Character is null');
-          // ref.notifyListeners();
+          showText = '';
+          expText = '';
+          ref.notifyListeners();
+          return;
         }
-        // final txt = controller.text;
-        // print('Controller Listener Text: $txt');
-        // if (txt.isNotEmpty && txt != '') {
-        //   final lc = txt[txt.length - 1];
-        //   if (lc == '=') {
-        //     controller.text =
-        //         controller.text.substring(0, controller.text.length - 1);
-        //     checkText();
-        //   } else if (getCalcKeyByVal(lc) != null) {
-        //     controller.text =
-        //         controller.text.substring(0, controller.text.length - 1);
-        //     pressKey(getCalcKeyByVal(lc)!);
-        //   } else {
-        //     controller.text =
-        //         controller.text.substring(0, controller.text.length - 1);
-        //   }
-        // }
-        // showText = controller.text;
-        // expText = controller.text;
-        // ref.notifyListeners();
       });
 
   _controllerPositionFix([int? p]) =>
-      controller.selection = TextSelection.fromPosition(TextPosition(offset: p ?? controller.text.length));
+      controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: p ?? controller.text.length));
 
-  void checkText() {
+  void pressKey(BuildContext context, CalcKey calcKey,
+      [bool isLongPress = false]) {
+    debugPrint('pressKey: ${calcKey.char}');
+    int p = controller.selection.baseOffset;
+    // print('Cursor Position: $p');
+    if (calcKey == CalcKey.backSpace) {
+      if (isLongPress) {
+        controller.text = '';
+      } else {
+        if (controller.text.isEmpty) return;
+        final newText = controller.text.replaceRange(p - 1, p, '');
+        controller.text = newText;
+        _controllerPositionFix(p - 1);
+      }
+      ref.notifyListeners();
+      return;
+    } else if (calcKey == CalcKey.equalKey) {
+      checkText(context);
+      return;
+    } else {
+      //
+      if (p == controller.text.length) {
+        controller.text += calcKey.char;
+        _controllerPositionFix();
+      } else {
+        controller.text = controller.text == ''
+            ? controller.text
+            : '${controller.text.substring(0, p)}${calcKey.char}${controller.text.substring(p, controller.text.length)}';
+        _controllerPositionFix(p + 1);
+      }
+    }
+    FocusScope.of(context).requestFocus(focusNode);
+  }
+
+  void checkText(BuildContext context) {
+    debugPrint('checkText: $expText');
     try {
       Parser p = Parser();
       Expression exp = p.parse(expText);
@@ -145,7 +127,9 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
         controller.text = r;
         _controllerPositionFix();
         expText = r;
+        FocusScope.of(context).requestFocus(focusNode);
         ref.notifyListeners();
+        return;
       } else {
         final r = value.toStringAsFixed(3);
         debugPrint('New Text toStringAsFixed(3): $r');
@@ -154,62 +138,13 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
         controller.text = r;
         _controllerPositionFix();
         expText = r;
+        FocusScope.of(context).requestFocus(focusNode);
         ref.notifyListeners();
+        return;
       }
     } catch (e) {
       print('Can\'t evaluate: $e');
-    }
-  }
-
-  void pressKey(CalcKey calcKey, [bool isLongPress = false]) {
-    // debugPrint('pressKey: ${calcKey.char}');
-    int p = controller.selection.baseOffset;
-    // print('Cursor Position: $p');
-    if (calcKey == CalcKey.backSpace) {
-      if (isLongPress) {
-        controller.text = '';
-        _controllerPositionFix();
-        showText = '';
-        expText = '';
-      } else {
-        if (showText.isEmpty) return;
-        if (expText.isEmpty) return;
-        final newText = showText.replaceRange(p - 1, p, '');
-        final newExp = expText.replaceRange(p - 1, p, '');
-        showText = newText;
-        expText = newExp;
-        controller.text = newText;
-        _controllerPositionFix(p - 1);
-      }
-      ref.notifyListeners();
-      return;
-    } else if (calcKey == CalcKey.equalKey) {
-      checkText();
-      ref.notifyListeners();
       return;
     }
-    if (history.isNotEmpty && history.last.split('=').last == showText && !calcKey.isOperator) {
-      debugPrint('Clear History');
-      controller.text = '';
-      showText = '';
-      expText = '';
-      _controllerPositionFix(0);
-      p = 0;
-    }
-    if (p == showText.length) {
-      showText += calcKey.char;
-      expText += calcKey.val;
-      controller.text = showText;
-      _controllerPositionFix();
-    } else {
-      showText = showText == ''
-          ? showText
-          : '${showText.substring(0, p)}${calcKey.char}${showText.substring(p, showText.length)}';
-      expText =
-          expText == '' ? expText : '${expText.substring(0, p)}${calcKey.val}${expText.substring(p, expText.length)}';
-      controller.text = showText;
-      _controllerPositionFix(p + 1);
-    }
-    ref.notifyListeners();
   }
 }
