@@ -39,23 +39,18 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
     ref.notifyListeners();
   }
 
-  lisentener() => controller.addListener(() {
+  lisentener([bool isDebug = false]) => controller.addListener(() {
         final text = controller.text;
-        print('Controller Listener Text: $text');
+        if (isDebug) debugPrint('Controller Listener Text: $text');
         final len = text.length;
-        print('Controller text length: $len');
+        if (isDebug) debugPrint('Controller text length: $len');
         final lastChar = len < 1 ? null : text[len - 1];
-        print('Last Char: $lastChar');
-        print('=============================');
+        if (isDebug) debugPrint('Last Char: $lastChar');
+        if (isDebug) debugPrint('=============================');
         if (len != 0) {
-          print(
-              'Text withour last char: ${text.substring(0, text.length - 1)}');
-          if (history.isNotEmpty &&
-              history.last.split('=').last ==
-                  text.substring(0, text.length - 1) &&
-              lastChar != null &&
-              !getCalcKeyByVal(lastChar)!.isOperator) {
-            debugPrint('Clear History');
+          if (isDebug) debugPrint('Text without last char: ${text.substring(0, text.length - 1)}');
+          if (history.isNotEmpty && history.last.split('=').last == text.substring(0, text.length - 1) && lastChar != null && !getCalcKeyByVal(lastChar)!.isOperator) {
+            if (isDebug) debugPrint('Clear History');
             controller.text = text[text.length - 1];
             showText = text[text.length - 1];
             expText = text[text.length - 1];
@@ -75,14 +70,13 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
       });
 
   _controllerPositionFix([int? p]) =>
-      controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: p ?? controller.text.length));
+      controller.selection = TextSelection.fromPosition(TextPosition(offset: p ?? controller.text.length));
 
   void pressKey(BuildContext context, CalcKey calcKey,
-      [bool isLongPress = false]) {
-    debugPrint('pressKey: ${calcKey.char}');
+      [bool isLongPress = false, bool isDebug = false]) {
+    if (isDebug) debugPrint('pressKey: ${calcKey.char}');
     int p = controller.selection.baseOffset;
-    // print('Cursor Position: $p');
+    if (isDebug)  debugPrint('Cursor Position: $p');
     if (calcKey == CalcKey.backSpace) {
       if (isLongPress) {
         controller.text = '';
@@ -95,7 +89,7 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
       ref.notifyListeners();
       return;
     } else if (calcKey == CalcKey.equalKey) {
-      checkText(context);
+      checkText(context, isDebug);
       return;
     } else {
       //
@@ -112,8 +106,8 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
     FocusScope.of(context).requestFocus(focusNode);
   }
 
-  void checkText(BuildContext context) {
-    debugPrint('checkText: $expText');
+  void checkText(BuildContext context, [bool isDebug = false]) {
+    if (isDebug) debugPrint('checkText: $expText');
     try {
       Parser p = Parser();
       Expression exp = p.parse(expText);
@@ -121,7 +115,7 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
       double value = (exp.evaluate(EvaluationType.REAL, cm));
       if (value == value.toInt()) {
         final r = value.toInt().toString();
-        debugPrint('New Text toInt(): $r');
+        if (isDebug) debugPrint('New Text toInt(): $r');
         history.add('$showText=$r');
         showText = r;
         controller.text = r;
@@ -132,7 +126,7 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
         return;
       } else {
         final r = value.toStringAsFixed(3);
-        debugPrint('New Text toStringAsFixed(3): $r');
+        if (isDebug) debugPrint('New Text toStringAsFixed(3): $r');
         history.add('$showText=$r');
         showText = r;
         controller.text = r;
@@ -143,7 +137,7 @@ class AGKeyboardProvider extends AutoDisposeFamilyNotifier<void, String?> {
         return;
       }
     } catch (e) {
-      print('Can\'t evaluate: $e');
+      debugPrint('Can\'t evaluate: $e');
       return;
     }
   }

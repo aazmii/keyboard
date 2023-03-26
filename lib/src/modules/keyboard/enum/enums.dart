@@ -47,7 +47,7 @@ enum CalcKey {
 }
 
 CalcKey? getCalcKeyByVal(String val) {
-  for (var item in CalcKey.values) {
+  for (final item in CalcKey.values) {
     if (item.val == val || item.char == val) return item;
   }
   return null;
@@ -55,9 +55,9 @@ CalcKey? getCalcKeyByVal(String val) {
 
 String convertToExp(String val) {
   String exp = '';
-  for (var i = 0; i < val.length; i++) {
+  for (int i = 0; i < val.length; i++) {
     String char = val[i];
-    CalcKey? calcKey = getCalcKeyByVal(char);
+    final calcKey = getCalcKeyByVal(char);
     if (calcKey != null) {
       exp += calcKey.val;
     } else {
@@ -69,9 +69,9 @@ String convertToExp(String val) {
 
 String convertToShowText(String val) {
   String txt = '';
-  for (var i = 0; i < val.length; i++) {
+  for (int i = 0; i < val.length; i++) {
     String char = val[i];
-    CalcKey? calcKey = getCalcKeyByVal(char);
+    final calcKey = getCalcKeyByVal(char);
     if (calcKey != null) {
       txt += calcKey.char;
     } else {

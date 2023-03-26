@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../enum/enums.dart';
+import '../function/input.formatters.dart';
 import '../provider/ag.keyboard.provider.dart';
 import '../view/ag.keyboard.dart';
 
@@ -12,7 +12,8 @@ class TestKeyBoardView extends ConsumerStatefulWidget {
   final String? initVal;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TestKeyBoardViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _TestKeyBoardViewState();
 }
 
 class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
@@ -37,28 +38,25 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: TextFormField(
-              controller: agKeyPd.controller,
+              showCursor: true,
               focusNode: agKeyPd.focusNode,
+              controller: agKeyPd.controller,
+              keyboardType: TextInputType.none,
               onTap: _showPersistantBottomSheetCallBack,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              keyboardType: TextInputType.none,
-              showCursor: true,
-              // keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              // inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+(?:\.\d+)?$'))],
-              // onChanged: agKeyPd.onChanged,
-              inputFormatters: createInputFormatter(allowedChars),
+              inputFormatters: [createInputFormatter(allowedChars)],
               onFieldSubmitted: (_) => agKeyPd.checkText(context),
               validator: (v) {
-                if (!checkValid(v)) {
-                  return 'Invalid!';
-                }
+                if (!checkValid(v)) return 'Invalid!';
                 return null;
               },
             ),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-              onPressed: () => print('Get Value ${agKeyPd.controller.text}'), child: const Text('Reveal data'))
+            onPressed: () => print('Get Value ${agKeyPd.controller.text}'),
+            child: const Text('Reveal data'),
+          ),
         ],
       ),
     );
@@ -67,25 +65,13 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
   //*Keyboard is uesed through bottom sheet
   void _showBottomSheet() {
     setState(() => _showPersistantBottomSheetCallBack = null);
-
-    _scaffoldKey.currentState!.showBottomSheet((_) => AgKeyboard(initVal: widget.initVal)).closed.whenComplete(() {
+    _scaffoldKey.currentState!
+        .showBottomSheet((_) => AgKeyboard(initVal: widget.initVal))
+        .closed
+        .whenComplete(() {
       if (mounted) {
         setState(() => _showPersistantBottomSheetCallBack = _showBottomSheet);
       }
     });
   }
-}
-
-List<TextInputFormatter> createInputFormatter(List<String> allowedChars) {
-  // debugPrint('allowedChars: $allowedChars');
-  // allowedChars: [↩, 1, 4, 7, 0, /, 2, 5, 8, 00, *, 3, 6, 9, 000, -, +, =, .]
-  final allowedCharsPattern = allowedChars.map((char) {
-    if (char == '-') return '\\-';
-    return RegExp.escape(char);
-  }).join('|');
-  final allowedCharsRegex = RegExp('[$allowedCharsPattern]+');
-  print('allowedCharsRegex: $allowedCharsRegex');
-  return [
-    FilteringTextInputFormatter.allow(allowedCharsRegex),
-  ];
 }

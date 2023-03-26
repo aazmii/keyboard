@@ -8,12 +8,9 @@ NumberFormat bdtNumberFormat = NumberFormat('#,##,##0.0#');
 String textFormat(String text, NumberFormat format, [bool isDebug = false, String delimar = 'z']) {
   if (isDebug)  debugPrint('My Text: $text');
   String str = text;
-  // str = changeToCalcVal(text);
-  // 123456789 + 987654321 = 1,111,111,110
   final delimeters =
       CalcKey.values.where((e) => e.isOperator).map((e) => e.val).toList();
   if (isDebug) debugPrint('Fixed Delimar: $delimeters');
-  // final delimeters = ['+', '-', '*', '/', '='];
   str = replaceDelimar(text, delimeters, delimar);
   if (isDebug) debugPrint('After Replace Delimar with $delimar: $str');
   List<String> digits = str.split(delimar);
@@ -50,18 +47,6 @@ List<String> getOperatorList(String str) {
   }
   return list;
 }
-
-// String changeToCalcVal(String text) {
-//   String str = text;
-//   for (var rune in str.runes) {
-//     CalcKey? character = getCalcKeyByVal(String.fromCharCode(rune));
-//     if (character != null) {
-//       str = str.replaceFirst(String.fromCharCode(rune), character.val);
-//     }
-//     print(character);
-//   }
-//   return str;
-// }
 
 String replaceDelimar(String text, List<String> delimeters, String r) {
   String str = text;
