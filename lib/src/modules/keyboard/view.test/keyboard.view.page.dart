@@ -12,8 +12,7 @@ class TestKeyBoardView extends ConsumerStatefulWidget {
   final String? initVal;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _TestKeyBoardViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TestKeyBoardViewState();
 }
 
 class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
@@ -59,8 +58,7 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-              onPressed: () => print('Get Value ${agKeyPd.controller.text}'),
-              child: const Text('Reveal data'))
+              onPressed: () => print('Get Value ${agKeyPd.controller.text}'), child: const Text('Reveal data'))
         ],
       ),
     );
@@ -70,10 +68,7 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
   void _showBottomSheet() {
     setState(() => _showPersistantBottomSheetCallBack = null);
 
-    _scaffoldKey.currentState!
-        .showBottomSheet((_) => AgKeyboard(initVal: widget.initVal))
-        .closed
-        .whenComplete(() {
+    _scaffoldKey.currentState!.showBottomSheet((_) => AgKeyboard(initVal: widget.initVal)).closed.whenComplete(() {
       if (mounted) {
         setState(() => _showPersistantBottomSheetCallBack = _showBottomSheet);
       }
@@ -84,9 +79,12 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
 List<TextInputFormatter> createInputFormatter(List<String> allowedChars) {
   // debugPrint('allowedChars: $allowedChars');
   // allowedChars: [↩, 1, 4, 7, 0, /, 2, 5, 8, 00, *, 3, 6, 9, 000, -, +, =, .]
-  String allowedCharsPattern =
-      allowedChars.map((char) => RegExp.escape(char)).join('|');
-  RegExp allowedCharsRegex = RegExp('[$allowedCharsPattern]+');
+  final allowedCharsPattern = allowedChars.map((char) {
+    if (char == '-') return '\\-';
+    return RegExp.escape(char);
+  }).join('|');
+  final allowedCharsRegex = RegExp('[$allowedCharsPattern]+');
+  print('allowedCharsRegex: $allowedCharsRegex');
   return [
     FilteringTextInputFormatter.allow(allowedCharsRegex),
   ];
