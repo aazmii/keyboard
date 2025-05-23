@@ -108,7 +108,7 @@ final _snackBarTheme = SnackBarThemeData(
   elevation: 0.0,
 );
 
-final _tabBarTheme = TabBarTheme(
+final _tabBarTheme = TabBarThemeData(
   labelColor: darkPrimaryColor,
   unselectedLabelColor: _unselectedColor,
   indicatorSize: TabBarIndicatorSize.label,
@@ -124,7 +124,7 @@ final _outlinedButtonTheme = OutlinedButtonThemeData(
   ),
 );
 
-final _cardTheme = CardTheme(
+final _cardTheme = CardThemeData(
   shape: roundedRectangleBorder12,
   shadowColor: _shadowColor,
   color: _backgroundColor,
@@ -138,7 +138,7 @@ final _radioTheme = RadioThemeData(
 
 final _listTileTheme = ListTileThemeData(shape: roundedRectangleBorder30);
 
-final _dialogTheme = DialogTheme(
+final _dialogTheme = DialogThemeData(
   backgroundColor: _cardBackgroundColor,
   shape: roundedRectangleBorder30,
 );

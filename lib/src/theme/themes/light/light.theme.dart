@@ -109,7 +109,7 @@ final _snackBarTheme = SnackBarThemeData(
   elevation: 0.0,
 );
 
-final _tabBarTheme = TabBarTheme(
+final _tabBarTheme = TabBarThemeData(
   labelColor: lightPrimaryColor,
   unselectedLabelColor: _unselectedColor,
   indicatorSize: TabBarIndicatorSize.label,
@@ -125,7 +125,7 @@ final _outlinedButtonTheme = OutlinedButtonThemeData(
   ),
 );
 
-final _cardTheme = CardTheme(
+final _cardTheme = CardThemeData(
   shape: roundedRectangleBorder12,
   shadowColor: _shadowColor,
   color: _backgroundColor,
@@ -139,7 +139,7 @@ final _radioTheme = RadioThemeData(
 
 final _listTileTheme = ListTileThemeData(shape: roundedRectangleBorder30);
 
-final _dialogTheme = DialogTheme(shape: roundedRectangleBorder30);
+final _dialogTheme = DialogThemeData(shape: roundedRectangleBorder30);
 
 final _tooltipTheme = TooltipThemeData(
   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),

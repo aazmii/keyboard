@@ -52,11 +52,11 @@ class _TestKeyBoardViewState extends ConsumerState<TestKeyBoardView> {
               },
             ),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => print('Get Value ${agKeyPd.controller.text}'),
-            child: const Text('Reveal data'),
-          ),
+          // const SizedBox(height: 20),
+          // ElevatedButton(
+          //   onPressed: () => print('Get Value ${agKeyPd.controller.text}'),
+          //   child: const Text('Reveal data'),
+          // ),
         ],
       ),
     );
